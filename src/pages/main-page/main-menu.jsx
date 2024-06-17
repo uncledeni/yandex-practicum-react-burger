@@ -1,16 +1,18 @@
 import React from "react";
 import { AppHeader } from "../../widgets/app-header";
 
-import "./css/style.css"
+import MainMenuStyles from "./css/style.module.css"
 import { BurgerIngredients } from "../../widgets/burger-ingredients";
 import { BurgerConstructor } from "../../widgets/burger-constructor";
 
 export const MainMenu = () => {
     return(
-        <div className="page-wrapper">
+        <div className={MainMenuStyles.pageWrapper}>
             <AppHeader />
-            <BurgerIngredients className="burger-ingredients-component" />
-            <BurgerConstructor />
+            <main className={MainMenuStyles.mainWrapper}>
+                <BurgerIngredients className={MainMenuStyles.burgerIngredientsComponent} />
+                <BurgerConstructor className={MainMenuStyles.burgerConstructorComponent}/>
+            </main>
         </div>
     )
 }

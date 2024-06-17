@@ -1,74 +1,69 @@
-.burger-ingredients-wrapper {
+.burgerIngredientsWrapper {
     width: 600px;
-    height: calc(100vh - 88px);
-    gap: 0px;
-    opacity: 0px;
-    position: absolute;
-    top: 88px;
-    left: 320px;
+    height: 100%;
+    padding: 0px 20px;
 }
 
-.burger-ingredients-wrapper-title {
+.burgerIngredientsWrapperTitle {
     margin-top: 40px;
 }
 
-.ingredients-tabs-container {
+.ingredientsTabsContainer {
     margin-top: 20px;
     display: flex;
 }
 
-.ingredients-list {
+.ingredientsList {
     height: calc(100% - 160px);
     overflow-y: scroll;
     overflow-x: hidden;
 }
 
-.ingredients-list::-webkit-scrollbar {
+.ingredientsList::-webkit-scrollbar {
     width: 8px;
 }
 
-.ingredients-list::-webkit-scrollbar-track {
+.ingredientsList::-webkit-scrollbar-track {
     background: #2F2F37;
 }
 
-.ingredients-list::-webkit-scrollbar-thumb {
+.ingredientsList::-webkit-scrollbar-thumb {
     background-color: #8585AD;
     border: 3px solid #8585AD;
 }
 
-.ingredients-stack-title {
+.ingredientsStackTitle {
     width: 100%;
     height: 30px;
     margin-top: 40px;
     opacity: 0px;
 }
 
-.ingredients-stack-content {
+.ingredientsStackContent {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     margin-top: 24px;
 }
 
-.ingredient-elem-wrapper {
+.ingredientElemWrapper {
     width: 272px;
     height: 208px;
     gap: 32px;
 }
 
-.ingredient-elem-content {
+.ingredientElemContent {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.ingredient-elem-illustration {
+.ingredientElemIllustration {
     width: 240px;
     height: 120px;
-    gap: 0px;
 }
 
-.ingredient-elem-price {
+.ingredientElemPrice {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,15 +71,14 @@
     opacity: 0px;
 }
 
-.ingredient-elem-name {
+.ingredientElemName {
     text-align: center;
 }
 
-.counter {
+.counterElem {
     width: 32px;
     height: 32px;
     left: 240px;
-    gap: 0px;
     opacity: 0px;
     position: relative;
 }

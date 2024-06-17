@@ -1,14 +1,13 @@
 import React from "react";
-
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import "./css/style.css"
+import BurgerConstructorStyles from "./css/style.module.css"
 import { INGREDIENTS_DATA as TEMP_DATA } from "../../shared/utils/data";
 
 const Info = () => {
     return (
-        <div className="burger-constructor-info-wrapper">
-            <div className="burger-constructor-info-price">
+        <div className={BurgerConstructorStyles.burgerConstructorInfoWrapper}>
+            <div className={BurgerConstructorStyles.burgerConstructorInfoPrice}>
                 <p className="text text_type_digits-medium">600</p>
                 <CurrencyIcon />
             </div>
@@ -19,7 +18,7 @@ const Info = () => {
 
 const OffStackListElement = (props) => {
     return (
-        <div className="off-stack-list-element">
+        <div className={BurgerConstructorStyles.offStackListElement}>
             <ConstructorElement
                 type={(props.isTop) ? 'top' : 'bottom'}
                 isLocked={true}
@@ -33,7 +32,7 @@ const OffStackListElement = (props) => {
 
 const StackListElement = (props) => {
     return (
-        <div className="stack-list-element">
+        <div className={BurgerConstructorStyles.stackListElement}>
             <DragIcon type="primary" />
             <ConstructorElement
                 text={props.name}
@@ -46,7 +45,7 @@ const StackListElement = (props) => {
 
 const StackList = () => {
     return (
-        <div className="stack-list-wrapper">
+        <div className={BurgerConstructorStyles.stackListWrapper}>
             <StackListElement name={TEMP_DATA[10].name} price={TEMP_DATA[10].price} image={TEMP_DATA[10].image} />
             <StackListElement name={TEMP_DATA[1].name} price={TEMP_DATA[1].price} image={TEMP_DATA[1].image} />
             <StackListElement name={TEMP_DATA[3].name} price={TEMP_DATA[3].price} image={TEMP_DATA[3].image} />
@@ -63,7 +62,7 @@ const StackList = () => {
 const ConstructorComponent = () => {
     return (
         <div className="pt-25 pr-4 pb-10 pl-4">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className={BurgerConstructorStyles.constructorComponentContainer}>
                 <OffStackListElement isTop={true} name={TEMP_DATA[0].name} price={TEMP_DATA[0].price} image={TEMP_DATA[0].image} />
                 <StackList />
                 <OffStackListElement isTop={false} name={TEMP_DATA[0].name} price={TEMP_DATA[0].price} image={TEMP_DATA[0].image} />
@@ -74,7 +73,7 @@ const ConstructorComponent = () => {
 
 export const BurgerConstructor = () => {
     return (
-        <div className="burger-constructor-wrapper">
+        <div className={BurgerConstructorStyles.burgerConstructorWrapper}>
             <ConstructorComponent />
             <Info />
         </div>

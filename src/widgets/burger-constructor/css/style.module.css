@@ -1,23 +1,19 @@
-.burger-constructor-wrapper {
+.burgerConstructorWrapper {
     width: 600px;
-    height: calc(100vh - 88px);
-    gap: 0px;
-    opacity: 0px;
-    position: absolute;
-    top: 88px;
-    right: 320px;
+    height: 100%;
+    padding: 0px 20px;
 }
 
-.off-stack-list-element {
+.offStackListElement {
     padding-left: 32px;
 }
 
-.stack-list-element {
+.stackListElement {
     display: flex;
     align-items: center;
 }
 
-.stack-list-wrapper {
+.stackListWrapper {
     width: 100%;
     height: 464px;
     display: grid;
@@ -26,7 +22,7 @@
     overflow-x: hidden;
 }
 
-.stack-list-wrapper::-webkit-scrollbar {
+.stackListWrapper::-webkit-scrollbar {
     width: 8px;
 }
 
@@ -35,18 +31,19 @@
     /* цвет дорожки */
 
 }
-.stack-list-wrapper::-webkit-scrollbar-thumb {
+
+.stackListWrapper::-webkit-scrollbar-thumb {
     background-color: #8585AD;
     border: 3px solid #8585AD;
 }
 
-.burger-constructor-info-wrapper {
+.burgerConstructorInfoWrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.burger-constructor-info-price {
+.burgerConstructorInfoPrice {
     position: relative;
     left: 250px;
     display: flex;
@@ -56,4 +53,8 @@
     opacity: 0px;
 }
 
-.burger-constructor-info-button {}
+.constructorComponentContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

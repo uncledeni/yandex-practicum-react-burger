@@ -1,9 +1,8 @@
 import React from "react";
-
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerIcon, ListIcon, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import "./css/style.css"
+import AppHeaderStyles from "./css/style.module.css"
 
 const NAVIGATION_VALUES = [
     {
@@ -25,7 +24,7 @@ const NAVIGATION_VALUES = [
 
 const HeaderElem = (props) => {
     return (
-        <div className={`nav-elem pr-5 text text_type_main-default ${(props.inactive) && "text_color_inactive"}`}>
+        <div className={`${AppHeaderStyles.navElem} pr-5 text text_type_main-default ${(props.inactive) && "text_color_inactive"}`}>
             {(props.inactive) ? props.values.icon_secondary : props.values.icon_primary}
             <p className="pl-2">{props.values.text}</p>
         </div >
@@ -34,15 +33,15 @@ const HeaderElem = (props) => {
 
 export const AppHeader = (params) => {
     return (
-        <div className="app-header-wrapper">
-            <div className="app-header-content ">
-                <div className="navigation">
+        <header className={AppHeaderStyles.appHeaderWrapper}>
+            <nav className={AppHeaderStyles.appHeaderContent}>
+                <div className={AppHeaderStyles.navigation}>
                     <HeaderElem values={NAVIGATION_VALUES[0]} />
                     <HeaderElem inactive values={NAVIGATION_VALUES[1]} />
                 </div>
-                <Logo className="logo"/>
+                <Logo className={AppHeaderStyles.logo}/>
                 <HeaderElem inactive values={NAVIGATION_VALUES[2]} />
-            </div>
-        </div>
+            </nav>
+        </header>
     )
 }
