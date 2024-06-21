@@ -1,19 +1,28 @@
-import React from "react";
+import { useState } from "react";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { PropTypes } from "prop-types";
 
 import BurgerConstructorStyles from "./css/style.module.css"
 import { INGREDIENTS_DATA as TEMP_DATA } from "../../shared/utils/data";
 
-const Info = () => {
+import { Modal } from "../../shared/components/modal/modal";
+import { OrderDetails } from "./components/order-details/order-details";
+
+const Info = (props) => {
     return (
         <div className={BurgerConstructorStyles.burgerConstructorInfoWrapper}>
             <div className={BurgerConstructorStyles.burgerConstructorInfoPrice}>
                 <p className="text text_type_digits-medium">600</p>
                 <CurrencyIcon />
             </div>
-            <Button htmlType="button" type="primary" size="medium">Оформить заказ</Button>
+            <Button htmlType="button" type="primary" size="medium" onClick={() => props.constructorModal(!props.modalStatus)}>Оформить заказ</Button>
         </div>
     )
+}
+
+Info.propTypes = {
+    constructorModal: PropTypes.func,
+    modalStatus: PropTypes.bool
 }
 
 const OffStackListElement = (props) => {
@@ -30,6 +39,13 @@ const OffStackListElement = (props) => {
     )
 }
 
+OffStackListElement.propTypes = {
+    image: PropTypes.string,
+    isTop: PropTypes.bool,
+    name: PropTypes.string,
+    price: PropTypes.number
+}
+
 const StackListElement = (props) => {
     return (
         <div className={BurgerConstructorStyles.stackListElement}>
@@ -41,6 +57,12 @@ const StackListElement = (props) => {
             />
         </div>
     )
+}
+
+StackListElement.propTypes = {
+    image: PropTypes.string,
+    name: PropTypes.string,
+    price: PropTypes.number
 }
 
 const StackList = () => {
@@ -72,10 +94,14 @@ const ConstructorComponent = () => {
 }
 
 export const BurgerConstructor = () => {
+    const [openModal, setOpenModal] = useState(false);
     return (
         <div className={BurgerConstructorStyles.burgerConstructorWrapper}>
             <ConstructorComponent />
-            <Info />
+            <Info constructorModal={setOpenModal} modalStatus={openModal} />
+            <Modal isOpen={openModal} handlerOpen={setOpenModal}>
+                <OrderDetails />
+            </Modal>
         </div>
     )
 }
