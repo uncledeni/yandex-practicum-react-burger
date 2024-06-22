@@ -6,9 +6,11 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import BurgerIngredientsStyles from "./css/style.module.css"
-import { GetDataService } from "../../shared/api/get-data-service";
+import { getDataService } from "../../shared/api/get-data-service";
 import { Modal } from "../../shared/components/modal/modal";
 import { IngredientDetails } from "./components/ingredient-details/ingredient-details";
+import { ingredientElemType, ingredientsStackType } from "../../shared/utils/types";
+import { useModal } from "../../shared/hooks/useModal";
 
 const BUN_TYPE = "bun";
 const MAIN_TYPE = "main";
@@ -33,32 +35,29 @@ const IngredientsTabs = () => {
 
 const Ingredients = () => {
     const [ingredientsData, setIngredientsData] = useState([]);
-    const [openModal, setOpenModal] = useState(false);
+    const { isModalOpen, openModal, closeModal } = useModal();
     const [ingredient, setIngredient] = useState({});
 
     useEffect(() => {
         const getData = async () => {
-            const res = await GetDataService();
-            setIngredientsData(res.data);
+            try {
+                const res = await getDataService();
+                setIngredientsData(res.data);
+            } catch (err) {
+                alert(err);
+            }
         }
         getData();
     }, [])
 
     return (
         <div className={BurgerIngredientsStyles.ingredientsList}>
-            <IngredientsStack openModal={openModal} setOpenModal={setOpenModal} setIngredient={setIngredient} title="Булки" data={ingredientsData} type={BUN_TYPE} />
-            <IngredientsStack openModal={openModal} setOpenModal={setOpenModal} setIngredient={setIngredient} title="Начинка" data={ingredientsData} type={MAIN_TYPE} />
-            <IngredientsStack openModal={openModal} setOpenModal={setOpenModal} setIngredient={setIngredient} title="Соусы" data={ingredientsData} type={SAUCE_TYPE} />
-            <Modal isOpen={openModal} handlerOpen={setOpenModal}>
-                <IngredientDetails
-                    image_large={ingredient.image_large}
-                    name={ingredient.name}
-                    calories={ingredient.calories}
-                    proteins={ingredient.proteins}
-                    fat={ingredient.fat}
-                    carbohydrates={ingredient.carbohydrates}
-                />
-            </Modal>
+            <IngredientsStack setOpenModal={openModal} setIngredient={setIngredient} title="Булки" data={ingredientsData} type={BUN_TYPE} />
+            <IngredientsStack setOpenModal={openModal} setIngredient={setIngredient} title="Начинка" data={ingredientsData} type={MAIN_TYPE} />
+            <IngredientsStack setOpenModal={openModal} setIngredient={setIngredient} title="Соусы" data={ingredientsData} type={SAUCE_TYPE} />
+            {isModalOpen && <Modal handlerOpen={closeModal}>
+                <IngredientDetails ingredient={ingredient} />
+            </Modal>}
         </div>
     )
 }
@@ -76,20 +75,13 @@ const IngredientsStack = (props) => {
     )
 }
 
-IngredientsStack.propTypes = {
-    data: PropTypes.array,
-    openModal: PropTypes.bool,
-    setIngredient: PropTypes.func,
-    setOpenModal: PropTypes.func,
-    title: PropTypes.string,
-    type: PropTypes.string
-}
+IngredientsStack.propTypes = ingredientsStackType;
 
 const IngredientElem = (props) => {
     return (
         <div className={BurgerIngredientsStyles.ingredientElemWrapper}>
             <Counter count={1} size="default" extraClass={`${BurgerIngredientsStyles.counterElem} m-1`} />
-            <div onClick={() => { props.setOpenModal(!props.openModal); props.setIngredient(props.ingredient) }} className={BurgerIngredientsStyles.ingredientElemContent}>
+            <div onClick={() => { props.setOpenModal(); props.setIngredient(props.ingredient) }} className={BurgerIngredientsStyles.ingredientElemContent}>
                 <img className={BurgerIngredientsStyles.ingredientElemIllustration} src={props.ingredient.image} alt={`${props.ingredient.name}`} />
                 <div className={BurgerIngredientsStyles.ingredientElemPrice}>
                     <p className="text text_type_digits-default">{props.ingredient.price}</p>
@@ -101,25 +93,7 @@ const IngredientElem = (props) => {
     )
 }
 
-IngredientElem.propTypes = {
-    ingredient: PropTypes.shape({
-        calories: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        fat: PropTypes.number,
-        image: PropTypes.string,
-        image_large: PropTypes.string,
-        image_mobile: PropTypes.string,
-        name: PropTypes.string,
-        price: PropTypes.number,
-        proteins: PropTypes.number,
-        type: PropTypes.string,
-        __v: PropTypes.number,
-        _id: PropTypes.string,
-    }),
-    openModal: PropTypes.bool,
-    setIngredient: PropTypes.func,
-    setOpenModal: PropTypes.func
-}
+IngredientElem.propTypes = ingredientElemType;
 
 export const BurgerIngredients = () => {
     return (

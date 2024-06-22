@@ -1,43 +1,43 @@
-import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { PropTypes } from "prop-types";
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalStyles from "./css/style.module.css"
 import { ModalOverlay } from "../modal-overlay/modal-overlay";
-import { PropTypes } from "prop-types";
 
 const modalRoot = document.getElementById("react-modals");
 
 export const Modal = (props) => {
-    if (props.isOpen) {
-        document.addEventListener('keydown', function (event) {
-            if (event.key === "Escape") props.handlerOpen(false);
-        });
-    }
+    const closeModal = () => props.handlerOpen();
 
-    if (props.isOpen) {
-        document.removeEventListener('keydown', function (event) {
-            if (event.key === "Escape") props.handlerOpen(false);
-        });
-    }
+    useEffect(() => {
+        function closeByEscape(evt) {
+            if (evt.key === 'Escape') {
+                console.log("w - Escape");
+                closeModal();
+            }
+        }
+        document.addEventListener('keydown', closeByEscape);
+        return () => {
+            document.removeEventListener('keydown', closeByEscape);
+        }
+    }, [])
 
     return (
-        <>
-            {props.isOpen && createPortal(
-                <div className={ModalStyles.modalWrapper}>
-                    <ModalOverlay handlerOpen={props.handlerOpen} />
-                    <div className={ModalStyles.modalContainer}>
-                        <div className={ModalStyles.modal}>
-                            {props.children}
-                            <span className={`${ModalStyles.closeIcon}`}>
-                                <CloseIcon onClick={() => {
-                                    props.handlerOpen(false);
-                                }} />
-                            </span>
-                        </div>
+        createPortal(
+            <div className={ModalStyles.modalWrapper}>
+                <ModalOverlay handlerOpen={closeModal} />
+                <div className={ModalStyles.modalContainer}>
+                    <div className={ModalStyles.modal}>
+                        {props.children}
+                        <span className={`${ModalStyles.closeIcon}`}>
+                            <CloseIcon onClick={() => closeModal()} />
+                        </span>
                     </div>
-                </div>,
-                modalRoot
-            )}
-        </>
+                </div>
+            </div>,
+            modalRoot
+        )
     );
 }
 

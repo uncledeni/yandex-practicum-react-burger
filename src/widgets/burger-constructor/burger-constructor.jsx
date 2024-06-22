@@ -1,12 +1,12 @@
-import { useState } from "react";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { PropTypes } from "prop-types";
 
 import BurgerConstructorStyles from "./css/style.module.css"
 import { INGREDIENTS_DATA as TEMP_DATA } from "../../shared/utils/data";
 
 import { Modal } from "../../shared/components/modal/modal";
 import { OrderDetails } from "./components/order-details/order-details";
+import { infoType, offStackListElementType, stackListElementType } from "../../shared/utils/types";
+import { useModal } from "../../shared/hooks/useModal";
 
 const Info = (props) => {
     return (
@@ -15,15 +15,12 @@ const Info = (props) => {
                 <p className="text text_type_digits-medium">600</p>
                 <CurrencyIcon />
             </div>
-            <Button htmlType="button" type="primary" size="medium" onClick={() => props.constructorModal(!props.modalStatus)}>Оформить заказ</Button>
+            <Button htmlType="button" type="primary" size="medium" onClick={() => props.constructorModal()}>Оформить заказ</Button>
         </div>
     )
 }
 
-Info.propTypes = {
-    constructorModal: PropTypes.func,
-    modalStatus: PropTypes.bool
-}
+Info.propTypes = infoType;
 
 const OffStackListElement = (props) => {
     return (
@@ -39,12 +36,7 @@ const OffStackListElement = (props) => {
     )
 }
 
-OffStackListElement.propTypes = {
-    image: PropTypes.string,
-    isTop: PropTypes.bool,
-    name: PropTypes.string,
-    price: PropTypes.number
-}
+OffStackListElement.propTypes = offStackListElementType;
 
 const StackListElement = (props) => {
     return (
@@ -59,11 +51,7 @@ const StackListElement = (props) => {
     )
 }
 
-StackListElement.propTypes = {
-    image: PropTypes.string,
-    name: PropTypes.string,
-    price: PropTypes.number
-}
+StackListElement.propTypes = stackListElementType;
 
 const StackList = () => {
     return (
@@ -94,14 +82,14 @@ const ConstructorComponent = () => {
 }
 
 export const BurgerConstructor = () => {
-    const [openModal, setOpenModal] = useState(false);
+    const { isModalOpen, openModal, closeModal } = useModal();
     return (
         <div className={BurgerConstructorStyles.burgerConstructorWrapper}>
             <ConstructorComponent />
-            <Info constructorModal={setOpenModal} modalStatus={openModal} />
-            <Modal isOpen={openModal} handlerOpen={setOpenModal}>
+            <Info constructorModal={openModal} />
+            {isModalOpen && <Modal handlerOpen={closeModal}>
                 <OrderDetails />
-            </Modal>
+            </Modal>}
         </div>
     )
 }
