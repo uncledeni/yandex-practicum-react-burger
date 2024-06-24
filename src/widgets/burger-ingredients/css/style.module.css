@@ -1,0 +1,84 @@
+.burgerIngredientsWrapper {
+    width: 600px;
+    height: 100%;
+    padding: 0px 20px;
+}
+
+.burgerIngredientsWrapperTitle {
+    margin-top: 40px;
+}
+
+.ingredientsTabsContainer {
+    margin-top: 20px;
+    display: flex;
+}
+
+.ingredientsList {
+    height: calc(100% - 160px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.ingredientsList::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ingredientsList::-webkit-scrollbar-track {
+    background: #2F2F37;
+}
+
+.ingredientsList::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+    border: 3px solid #8585AD;
+}
+
+.ingredientsStackTitle {
+    width: 100%;
+    height: 30px;
+    margin-top: 40px;
+    opacity: 0px;
+}
+
+.ingredientsStackContent {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 24px;
+}
+
+.ingredientElemWrapper {
+    width: 272px;
+    height: 208px;
+    gap: 32px;
+}
+
+.ingredientElemContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingredientElemIllustration {
+    width: 240px;
+    height: 120px;
+}
+
+.ingredientElemPrice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    opacity: 0px;
+}
+
+.ingredientElemName {
+    text-align: center;
+}
+
+.counterElem {
+    width: 32px;
+    height: 32px;
+    left: 240px;
+    opacity: 0px;
+    position: relative;
+}

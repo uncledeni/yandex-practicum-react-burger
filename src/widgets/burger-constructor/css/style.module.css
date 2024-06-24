@@ -1,0 +1,71 @@
+.burgerConstructorWrapper {
+    width: 600px;
+    height: 100%;
+    padding: 0px 20px;
+    overflow: hidden;
+}
+
+.offStackListElement {
+    padding-left: 32px;
+}
+
+.stackListElement {
+    display: flex;
+    align-items: center;
+}
+
+.stackListWrapper {
+    width: 100%;
+    height: 464px;
+    display: grid;
+    gap: 16px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.stackListWrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.stack-list-wrapper::-webkit-scrollbar-track {
+    background: #2F2F37;
+    /* цвет дорожки */
+
+}
+
+.stackListWrapper::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+    border: 3px solid #8585AD;
+}
+
+.burgerConstructorInfoWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.burgerConstructorInfoPrice {
+    position: relative;
+    left: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    opacity: 0px;
+}
+
+.constructorComponentContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.clippingContainer {
+    position: relative;
+    border: 1px solid #ff0000;
+    margin-bottom: 12px;
+    padding: 12px;
+    width: 250px;
+    height: 80px;
+    overflow: hidden;  
+}
