@@ -1,21 +1,47 @@
+import { useCallback, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrag, useDrop } from "react-dnd";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import BurgerConstructorStyles from "./css/style.module.css"
-import { INGREDIENTS_DATA as TEMP_DATA } from "../../shared/utils/data";
 
 import { Modal } from "../../shared/components/modal/modal";
 import { OrderDetails } from "./components/order-details/order-details";
 import { infoType, offStackListElementType, stackListElementType } from "../../shared/utils/types";
 import { useModal } from "../../shared/hooks/useModal";
+import { DELETE_INGREDIENT_BURGER_CONSTRUCTOR, SWAP_INGREDIENTS, addIngredient } from "../../shared/services/actions/burger-constructor";
+import { checkEmptyArr } from "../../shared/utils/checks";
+import { DECREASE_BUN_COUNTER, DECREASE_INGREDIENT_COUNTER, INCREASE_INGREDIENT_COUNTER } from "../../shared/services/actions/burger-ingredients";
+import { CLEAR_ORDER_DETAILS, getOrderDetails } from "../../shared/services/actions/order-details";
 
 const Info = (props) => {
+    const arr = useSelector(store => store.order);
+
+    const calcTotal = (data) => {
+        let price = (checkEmptyArr(data.fillings)) ? (data.fillings.reduce((sum, current) => sum + current.ingredient.price, 0)) : 0;
+        return price += (data.bun !== null) ? (data.bun.price * 2) : 0;
+    }
+
+    const dispatch = useDispatch();
+
+    const orderDetailsArr = (arr) => {
+        let tempArr = [];
+        tempArr.push(arr.bun._id);
+        arr.fillings.map(ingredient => tempArr.push(ingredient.ingredient._id));
+        tempArr.push(arr.bun._id);
+        return tempArr;
+    }
+
     return (
         <div className={BurgerConstructorStyles.burgerConstructorInfoWrapper}>
             <div className={BurgerConstructorStyles.burgerConstructorInfoPrice}>
-                <p className="text text_type_digits-medium">600</p>
+                <p className="text text_type_digits-medium">{calcTotal(arr)}</p>
                 <CurrencyIcon />
             </div>
-            <Button htmlType="button" type="primary" size="medium" onClick={() => props.constructorModal()}>Оформить заказ</Button>
+            <Button htmlType="button" type="primary" size="medium" onClick={() => {
+                dispatch(getOrderDetails(orderDetailsArr(arr)))
+                props.constructorModal()
+            }}>Оформить заказ</Button>
         </div>
     )
 }
@@ -28,9 +54,9 @@ const OffStackListElement = (props) => {
             <ConstructorElement
                 type={(props.isTop) ? 'top' : 'bottom'}
                 isLocked={true}
-                text={`${props.name} ${(props.isTop) ? 'верх' : 'низ'}`}
-                price={props.price}
-                thumbnail={props.image}
+                text={`${props.bun.name} ${(props.isTop) ? 'верх' : 'низ'}`}
+                price={props.bun.price}
+                thumbnail={props.bun.image}
             />
         </div>
     )
@@ -38,14 +64,71 @@ const OffStackListElement = (props) => {
 
 OffStackListElement.propTypes = offStackListElementType;
 
-const StackListElement = (props) => {
+const StackListElement = ({ ingredient, id, index, swap }) => {
+    const ref = useRef(null);
+
+    const [{ isDragging }, dragRef] = useDrag({
+        type: "self",
+        item: () => {
+            return { id, index }
+        },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    });
+
+    const [{ handlerId }, dropRef] = useDrop({
+        accept: "self",
+        collect(monitor) {
+            return {
+                handlerId: monitor.getHandlerId(),
+            }
+        },
+        hover(item, monitor) {
+            if (!ref.current) {
+                return
+            }
+            const dragIndex = item.index
+            const hoverIndex = index
+            if (dragIndex === hoverIndex) {
+                return
+            }
+            const hoverBoundingRect = ref.current?.getBoundingClientRect()
+            const hoverMiddleY =
+                (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+            const clientOffset = monitor.getClientOffset()
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top
+
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return
+            }
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                return
+            }
+            swap(dragIndex, hoverIndex)
+            item.index = hoverIndex
+        },
+    });
+    const opacity = isDragging ? 0 : 1
+    dragRef(dropRef(ref))
+
+
+    const dispatch = useDispatch();
+    const deleteIngredient = () => {
+        dispatch({ type: DELETE_INGREDIENT_BURGER_CONSTRUCTOR, id });
+        dispatch({ type: DECREASE_INGREDIENT_COUNTER, ingredient });
+    }
+
     return (
-        <div className={BurgerConstructorStyles.stackListElement}>
+        <div style={{ opacity }} ref={ref} data-handler-id={handlerId} className={BurgerConstructorStyles.stackListElement}>
             <DragIcon type="primary" />
             <ConstructorElement
-                text={props.name}
-                price={props.price}
-                thumbnail={props.image}
+                text={ingredient.name}
+                price={ingredient.price}
+                thumbnail={ingredient.image}
+                handleClose={() => {
+                    deleteIngredient(ingredient)
+                }}
             />
         </div>
     )
@@ -54,28 +137,68 @@ const StackListElement = (props) => {
 StackListElement.propTypes = stackListElementType;
 
 const StackList = () => {
+    const fillings = useSelector(store => store.order.fillings);
+
+    const dispatch = useDispatch();
+    const swapIngredients = (dragIndex, hoverIndex) => {
+        dispatch({ type: SWAP_INGREDIENTS, dragIndex, hoverIndex })
+    }
+
+    const renderIngredient = useCallback((ingredient, index) => {
+        return (
+            <StackListElement
+                key={ingredient.id}
+                index={index}
+                id={ingredient.id}
+                ingredient={ingredient.ingredient}
+                swap={swapIngredients}
+            />
+        )
+    }, [])
+
     return (
         <div className={BurgerConstructorStyles.stackListWrapper}>
-            <StackListElement name={TEMP_DATA[10].name} price={TEMP_DATA[10].price} image={TEMP_DATA[10].image} />
-            <StackListElement name={TEMP_DATA[1].name} price={TEMP_DATA[1].price} image={TEMP_DATA[1].image} />
-            <StackListElement name={TEMP_DATA[3].name} price={TEMP_DATA[3].price} image={TEMP_DATA[3].image} />
-            <StackListElement name={TEMP_DATA[2].name} price={TEMP_DATA[2].price} image={TEMP_DATA[2].image} />
-            <StackListElement name={TEMP_DATA[4].name} price={TEMP_DATA[4].price} image={TEMP_DATA[4].image} />
-            <StackListElement name={TEMP_DATA[6].name} price={TEMP_DATA[6].price} image={TEMP_DATA[6].image} />
-            <StackListElement name={TEMP_DATA[5].name} price={TEMP_DATA[5].price} image={TEMP_DATA[5].image} />
-            <StackListElement name={TEMP_DATA[8].name} price={TEMP_DATA[8].price} image={TEMP_DATA[8].image} />
-            <StackListElement name={TEMP_DATA[7].name} price={TEMP_DATA[7].price} image={TEMP_DATA[7].image} />
+            {fillings.map((ingredient, i) => renderIngredient(ingredient, i))}
         </div>
     )
 }
 
 const ConstructorComponent = () => {
+    const bun = useSelector(store => store.order.bun);
+
+    const dispatch = useDispatch();
+    const dropIngredient = (ingredient) => {
+
+        dispatch(addIngredient(ingredient));
+
+        if (ingredient.ingredient.type === 'bun') {
+            if ( bun === null) {
+                dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
+                dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
+            } else {
+                dispatch({type: DECREASE_BUN_COUNTER, bun});
+                dispatch({type: DECREASE_BUN_COUNTER, bun});
+                dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
+                dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
+            }
+        } else {
+            dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
+        }
+    }
+
+    const [, dropTarget] = useDrop({
+        accept: "ingredient",
+        drop(itemId) {
+            dropIngredient(itemId)
+        }
+    });
+
     return (
         <div className="pt-25 pr-4 pb-10 pl-4">
-            <div className={BurgerConstructorStyles.constructorComponentContainer}>
-                <OffStackListElement isTop={true} name={TEMP_DATA[0].name} price={TEMP_DATA[0].price} image={TEMP_DATA[0].image} />
+            <div className={BurgerConstructorStyles.constructorComponentContainer} ref={dropTarget}>
+                {(bun !== null) ? <OffStackListElement isTop={true} bun={bun} /> : <></>}
                 <StackList />
-                <OffStackListElement isTop={false} name={TEMP_DATA[0].name} price={TEMP_DATA[0].price} image={TEMP_DATA[0].image} />
+                {(bun !== null) ? <OffStackListElement isTop={false} bun={bun} /> : <></>}
             </div>
         </div>
     )
@@ -83,11 +206,23 @@ const ConstructorComponent = () => {
 
 export const BurgerConstructor = () => {
     const { isModalOpen, openModal, closeModal } = useModal();
+
+    const dispatch = useDispatch();
+
+    const clearOrderDetails = () => {
+        dispatch({ type: CLEAR_ORDER_DETAILS })
+    }
+
+    const closeAndClear = () => {
+        closeModal();
+        clearOrderDetails();
+    }
+
     return (
         <div className={BurgerConstructorStyles.burgerConstructorWrapper}>
             <ConstructorComponent />
             <Info constructorModal={openModal} />
-            {isModalOpen && <Modal handlerOpen={closeModal}>
+            {isModalOpen && <Modal handlerOpen={closeAndClear}>
                 <OrderDetails />
             </Modal>}
         </div>

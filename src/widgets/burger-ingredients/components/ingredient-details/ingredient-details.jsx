@@ -1,7 +1,11 @@
+import { useSelector } from "react-redux";
 import { ingredientDetailsType } from "../../../../shared/utils/types";
 import BurgerIngredientsModalStyles from "./style.module.css";
 
-export const IngredientDetails = ({ ingredient }) => {
+export const IngredientDetails = () => {
+
+    const ingredient = useSelector(store => store.ingredientsDetails.details)
+
     return (
         <div className={BurgerIngredientsModalStyles.card}>
             <div className={BurgerIngredientsModalStyles.titleButton}>

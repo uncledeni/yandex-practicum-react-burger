@@ -13,10 +13,15 @@
     display: flex;
 }
 
-.ingredientsList {
+.ingredientsListWrapper {
     height: calc(100% - 160px);
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+.ingredientsList {
+    width: 100%;
+    height: 100%;
 }
 
 .ingredientsList::-webkit-scrollbar {

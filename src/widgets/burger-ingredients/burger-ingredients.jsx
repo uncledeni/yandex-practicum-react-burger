@@ -1,93 +1,132 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from 'prop-types';
+import React, { useEffect, useRef } from "react";
 
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import BurgerIngredientsStyles from "./css/style.module.css"
-import { getDataService } from "../../shared/api/get-data-service";
+import BurgerIngredientsStyles from "./css/style.module.css";
 import { Modal } from "../../shared/components/modal/modal";
 import { IngredientDetails } from "./components/ingredient-details/ingredient-details";
 import { ingredientElemType, ingredientsStackType } from "../../shared/utils/types";
 import { useModal } from "../../shared/hooks/useModal";
+import { useDispatch, useSelector } from "react-redux";
+import { getBurgerIngredients } from "../../shared/services/actions/burger-ingredients";
+import { CLEAR_INGREDIENT_DETAILS, GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
+import { useDrag } from "react-dnd";
 
 const BUN_TYPE = "bun";
 const MAIN_TYPE = "main";
 const SAUCE_TYPE = "sauce";
 
-const IngredientsTabs = () => {
-    const [current, setCurrent] = React.useState('one')
+const IngredientsTabs = ({ current }) => {
     return (
         <div className={BurgerIngredientsStyles.ingredientsTabsContainer}>
-            <Tab value="burger" active={current === 'burger'} onClick={setCurrent}>
+            <Tab value="burger" active={current === 'burger'} >
                 Булки
             </Tab>
-            <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
-                Соусы
-            </Tab>
-            <Tab value="filling" active={current === 'filling'} onClick={setCurrent}>
+            <Tab value="filling" active={current === 'filling'} >
                 Начинки
             </Tab>
+            <Tab value="sauce" active={current === 'sauce'} >
+                Соусы
+            </Tab>
         </div>
     )
 }
 
-const Ingredients = () => {
-    const [ingredientsData, setIngredientsData] = useState([]);
+const Ingredients = ({ setCurrentTab }) => {
     const { isModalOpen, openModal, closeModal } = useModal();
-    const [ingredient, setIngredient] = useState({});
 
+    const dispatch = useDispatch();
     useEffect(() => {
-        const getData = async () => {
-            try {
-                const res = await getDataService();
-                setIngredientsData(res.data);
-            } catch (err) {
-                alert(err);
-            }
+        dispatch(getBurgerIngredients());
+    }, [dispatch]);
+
+    const clearIngredientDetails = () => {
+        dispatch({ type: CLEAR_INGREDIENT_DETAILS })
+    }
+
+    const closeAndClear = () => {
+        closeModal();
+        clearIngredientDetails();
+    }
+
+    const bunRef = useRef(null)
+    const sauceRef = useRef(null)
+    const mainRef = useRef(null)
+
+    const onEditClick = () => {
+        if (bunRef.current.getBoundingClientRect().top > 0) {
+            setCurrentTab('burger');
+        } else if (mainRef.current.getBoundingClientRect().top > 0) {
+            setCurrentTab('filling');
+        } else if (sauceRef.current.getBoundingClientRect().top > 0) {
+            setCurrentTab('sauce');
+        } else {
+            setCurrentTab('sauce');
         }
-        getData();
-    }, [])
+    };
 
     return (
-        <div className={BurgerIngredientsStyles.ingredientsList}>
-            <IngredientsStack setOpenModal={openModal} setIngredient={setIngredient} title="Булки" data={ingredientsData} type={BUN_TYPE} />
-            <IngredientsStack setOpenModal={openModal} setIngredient={setIngredient} title="Начинка" data={ingredientsData} type={MAIN_TYPE} />
-            <IngredientsStack setOpenModal={openModal} setIngredient={setIngredient} title="Соусы" data={ingredientsData} type={SAUCE_TYPE} />
-            {isModalOpen && <Modal handlerOpen={closeModal}>
-                <IngredientDetails ingredient={ingredient} />
-            </Modal>}
-        </div>
-    )
-}
-
-const IngredientsStack = (props) => {
-    return (
-        <div className={BurgerIngredientsStyles.ingredientsStackWrapper}>
-            <p className={`${BurgerIngredientsStyles.ingredientsStackTitle} text text_type_main-medium`}>{props.title}</p>
-            <div className={BurgerIngredientsStyles.ingredientsStackContent}>
-                {props.data.map((ingredient) => (
-                    (ingredient.type === props.type) && <IngredientElem key={ingredient._id} openModal={props.openModal} setOpenModal={props.setOpenModal} setIngredient={props.setIngredient} ingredient={ingredient} />
-                ))}
+        <div onScroll={() => onEditClick()} className={BurgerIngredientsStyles.ingredientsListWrapper}>
+            <div className={BurgerIngredientsStyles.ingredientsList}>
+                <IngredientsStack scrollRef={bunRef} setOpenModal={openModal} title="Булки" type={BUN_TYPE} />
+                <IngredientsStack scrollRef={mainRef} setOpenModal={openModal} title="Начинка" type={MAIN_TYPE} />
+                <IngredientsStack scrollRef={sauceRef} setOpenModal={openModal} title="Соусы" type={SAUCE_TYPE} />
+                {isModalOpen && <Modal handlerOpen={closeAndClear}>
+                    <IngredientDetails />
+                </Modal>}
             </div>
         </div>
     )
 }
 
+const IngredientsStack = (props) => {
+    const ingredientsData = useSelector(store => store.ingredients.ingredients);
+
+    return (
+        (ingredientsData !== undefined) ?
+            <div className={BurgerIngredientsStyles.ingredientsStackWrapper}>
+                <p ref={props.scrollRef} className={`${BurgerIngredientsStyles.ingredientsStackTitle} text text_type_main-medium`}>{props.title}</p>
+                <div className={BurgerIngredientsStyles.ingredientsStackContent}>
+                    {ingredientsData.map((ingredient) => (
+                        (ingredient.type === props.type) && <IngredientElem key={ingredient._id} setOpenModal={props.setOpenModal} ingredient={ingredient} />
+                    ))}
+                </div>
+            </div>
+            :
+            <></>
+    )
+}
+
 IngredientsStack.propTypes = ingredientsStackType;
 
-const IngredientElem = (props) => {
+const IngredientElem = ({ setOpenModal, ingredient }) => {
+    const dispatch = useDispatch();
+    const getIngredientDetails = (ingredient) => {
+        dispatch({ type: GET_INGREDIENT_DETAILS, details: ingredient })
+    }
+
+    const [, dragRef] = useDrag({
+        type: "ingredient",
+        item: { ingredient }
+    });
+
+    const openModal = () => {
+        setOpenModal();
+        getIngredientDetails(ingredient);
+    }
+
     return (
         <div className={BurgerIngredientsStyles.ingredientElemWrapper}>
-            <Counter count={1} size="default" extraClass={`${BurgerIngredientsStyles.counterElem} m-1`} />
-            <div onClick={() => { props.setOpenModal(); props.setIngredient(props.ingredient) }} className={BurgerIngredientsStyles.ingredientElemContent}>
-                <img className={BurgerIngredientsStyles.ingredientElemIllustration} src={props.ingredient.image} alt={`${props.ingredient.name}`} />
+            {(ingredient.__v !== 0) ? <Counter count={ingredient.__v} size="default" extraClass={`${BurgerIngredientsStyles.counterElem} m-1`} /> : <></>}
+            <div onClick={() => openModal()} className={BurgerIngredientsStyles.ingredientElemContent} ref={dragRef}>
+                <img className={BurgerIngredientsStyles.ingredientElemIllustration} src={ingredient.image} alt={`${ingredient.name}`} />
                 <div className={BurgerIngredientsStyles.ingredientElemPrice}>
-                    <p className="text text_type_digits-default">{props.ingredient.price}</p>
+                    <p className="text text_type_digits-default">{ingredient.price}</p>
                     <CurrencyIcon />
                 </div>
-                <h3 className={`${BurgerIngredientsStyles.ingredientElemName} text text_type_main-default`}>{props.ingredient.name}</h3>
+                <h3 className={`${BurgerIngredientsStyles.ingredientElemName} text text_type_main-default`}>{ingredient.name}</h3>
             </div>
         </div>
     )
@@ -96,11 +135,13 @@ const IngredientElem = (props) => {
 IngredientElem.propTypes = ingredientElemType;
 
 export const BurgerIngredients = () => {
+    const [current, setCurrent] = React.useState('burger');
+
     return (
         <div className={BurgerIngredientsStyles.burgerIngredientsWrapper}>
             <p className={`${BurgerIngredientsStyles.burgerIngredientsWrapperTitle} text text_type_main-large`}>Соберите бургер</p>
-            <IngredientsTabs />
-            <Ingredients />
+            <IngredientsTabs current={current} />
+            <Ingredients setCurrentTab={setCurrent} />
         </div>
     )
 }
