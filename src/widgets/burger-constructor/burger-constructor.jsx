@@ -25,11 +25,11 @@ const Info = (props) => {
     const dispatch = useDispatch();
 
     const orderDetailsArr = (arr) => {
-        let tempArr = [];
-        tempArr.push(arr.bun._id);
-        arr.fillings.map(ingredient => tempArr.push(ingredient.ingredient._id));
-        tempArr.push(arr.bun._id);
-        return tempArr;
+            let tempArr = [];
+            tempArr.push(arr.bun._id);
+            arr.fillings.map(ingredient => tempArr.push(ingredient.ingredient._id));
+            tempArr.push(arr.bun._id);
+            return tempArr;
     }
 
     return (
@@ -38,7 +38,7 @@ const Info = (props) => {
                 <p className="text text_type_digits-medium">{calcTotal(arr)}</p>
                 <CurrencyIcon />
             </div>
-            <Button htmlType="button" type="primary" size="medium" onClick={() => {
+            <Button disabled={(arr.bun === null)} htmlType="button" type="primary" size="medium" onClick={() => {
                 dispatch(getOrderDetails(orderDetailsArr(arr)))
                 props.constructorModal()
             }}>Оформить заказ</Button>
