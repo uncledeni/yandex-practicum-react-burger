@@ -1,11 +1,13 @@
-const BURGER_DATA = "https://norma.nomoreparties.space/api/ingredients";
+import { request } from "../utils/checks";
 
-export const getDataService = async () => {
-    const response = await fetch(BURGER_DATA).then(res => {
-        if (res.ok) {
-            return res.json();
-        }
-        return Promise.reject(`Ошибка HTTP: ${res.status}`);
-    });
-    return response;
-}
+export const getDataService = async () => await request('ingredients');
+
+export const postOrder = async (data) => await request('orders', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify({
+        "ingredients": data
+    })
+})

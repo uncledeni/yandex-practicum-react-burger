@@ -13,7 +13,6 @@ export const Modal = (props) => {
     useEffect(() => {
         function closeByEscape(evt) {
             if (evt.key === 'Escape') {
-                console.log("w - Escape");
                 closeModal();
             }
         }
