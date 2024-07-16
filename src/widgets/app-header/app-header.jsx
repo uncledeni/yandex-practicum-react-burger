@@ -1,4 +1,3 @@
-import React from "react";
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerIcon, ListIcon, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -39,7 +38,9 @@ export const AppHeader = (params) => {
                     <HeaderElem values={NAVIGATION_VALUES[0]} />
                     <HeaderElem inactive values={NAVIGATION_VALUES[1]} />
                 </div>
-                <Logo className={AppHeaderStyles.logo}/>
+                <span className={AppHeaderStyles.logo}>
+                    <Logo/>
+                </span>
                 <HeaderElem inactive values={NAVIGATION_VALUES[2]} />
             </nav>
         </header>

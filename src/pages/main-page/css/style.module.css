@@ -8,7 +8,7 @@
 }
 
 .mainWrapper {
-    /* background-color: aqua; */
+    display: flex;
     height: calc(100vh - 88px);
     justify-content: center;
     align-items: center;
