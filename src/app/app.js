@@ -16,10 +16,13 @@ function App() {
       <Routes>
         <Route path="/" element={<MainMenu />} />
         <Route path="/login" element={<SignInPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/register" element={<RegistrationPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/orders" element={<ProfilePage />} />
+        <Route path="/profile/orders/:number" element={<ProfilePage />} />
+        <Route path="/ingredients/:id" />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>

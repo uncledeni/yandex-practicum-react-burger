@@ -1,3 +1,7 @@
-.profileNavbar {
+.profileNavbarContainer {
     width: 320px;
+}
+
+.profileNavbar {
+    display: grid;
 }

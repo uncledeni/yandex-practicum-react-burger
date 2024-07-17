@@ -3,11 +3,25 @@ import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-comp
 import { AppHeader } from "../../../widgets/app-header";
 import { ActionBlock } from '../components/action-block/action-block';
 import ForgotPasswordStyles from "./css/style.module.css";
+import { requestResetCode } from '../../../shared/api/get-data-service';
+import { useNavigate } from 'react-router-dom';
 
 export const ForgotPasswordPage = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const onChangeEmail = e => {
         setEmail(e.target.value)
+    }
+
+    const goToResetPage = async (email) => {
+        try {
+            const res = await requestResetCode(email);
+            if (res.success) {
+                navigate('/reset-password');
+            }
+        } catch (err) {
+            alert(err)
+        }
     }
 
     return (
@@ -24,7 +38,7 @@ export const ForgotPasswordPage = () => {
                         extraClass='mt-6'
                     />
                     <div className={`${ForgotPasswordStyles.button} mt-6 mb-20`}>
-                        <Button htmlType="button" type="primary" size="large">
+                        <Button htmlType="button" type="primary" size="large" onClick={() => goToResetPage(email)}>
                             Восстановить
                         </Button>
                     </div>

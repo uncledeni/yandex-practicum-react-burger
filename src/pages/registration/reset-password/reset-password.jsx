@@ -3,6 +3,7 @@ import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burg
 import { AppHeader } from "../../../widgets/app-header";
 import { ActionBlock } from '../components/action-block/action-block';
 import ResetPasswordStyles from "./css/style.module.css";
+import { resetPassword } from '../../../shared/api/get-data-service';
 
 export const ResetPassword = () => {
     const [password, setPassword] = useState('');
@@ -22,16 +23,17 @@ export const ResetPassword = () => {
             <AppHeader />
             <main className={ResetPasswordStyles.mainWrapper}>
                 <div className={ResetPasswordStyles.mainContainer}>
-                    <h1 className={`${ResetPasswordStyles.title} text text_type_main-medium`}>Регистрация</h1>
+                    <h1 className={`${ResetPasswordStyles.title} text text_type_main-medium`}>Восстановление пароля</h1>
                     <PasswordInput
                         onChange={onChangePassword}
                         value={password}
                         name={'password'}
                         extraClass="mt-6"
+                        placeholder='Введите новый пароль'
                     />
                     <Input
                         type={'text'}
-                        placeholder={'Имя'}
+                        placeholder={'Введите код из письма'}
                         onChange={e => setCode(e.target.value)}
                         value={code}
                         name={'code'}
@@ -43,7 +45,7 @@ export const ResetPassword = () => {
                         extraClass="mt-6"
                     />
                     <div className={`${ResetPasswordStyles.button} mt-6 mb-20`}>
-                        <Button htmlType="button" type="primary" size="large">
+                        <Button htmlType="button" type="primary" size="large" onClick={() => resetPassword(password, code)}>
                             Сохранить
                         </Button>
                     </div>

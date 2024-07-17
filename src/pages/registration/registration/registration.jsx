@@ -3,6 +3,7 @@ import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-de
 import { AppHeader } from "../../../widgets/app-header";
 import { ActionBlock } from '../components/action-block/action-block';
 import RegistrationStyles from "./css/style.module.css";
+import { register } from '../../../shared/api/get-data-service';
 
 export const RegistrationPage = () => {
     const [email, setEmail] = useState('');
@@ -55,8 +56,8 @@ export const RegistrationPage = () => {
                         extraClass="mt-6"
                     />
                     <div className={`${RegistrationStyles.button} mt-6 mb-20`}>
-                        <Button htmlType="button" type="primary" size="large">
-                            Войти
+                        <Button htmlType="button" type="primary" size="large" onClick={() => register(email, password, name)}>
+                            Зарегистрироваться
                         </Button>
                     </div>
                     <ActionBlock link={'/login'} title={'Уже зарегистрированы?'} linkTitle={'Войти'} />
