@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { login } from "../../api/get-data-service";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
@@ -16,20 +17,28 @@ export const TOKEN_REQUEST = 'TOKEN_REQUEST';
 export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
 export const TOKEN_FAILED = 'TOKEN_FAILED';
 
-export function loginThunk(data) {
+export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
+
+export const LoginThunk = (data) => {
     return function (dispatch) {
         dispatch({
             type: LOGIN_REQUEST
         })
         login(data).then(res => {
+            console.log(res);
             try {
+                localStorage.setItem('refreshToken', res.refreshToken);
+                localStorage.setItem('accessToken', res.accessToken);
                 dispatch({
                     type: LOGIN_SUCCESS,
                     email: res.user.email,
-                    name: res.user.name,
-                    accessToken: res.accessToken,
-                    refreshToken: res.refreshToken
+                    name: res.user.name
                 })
+                dispatch({
+                    type: SET_AUTH_CHECKED,
+                    isAuthChecked: true
+                })
+
             } catch (err) {
                 alert(err);
                 dispatch({

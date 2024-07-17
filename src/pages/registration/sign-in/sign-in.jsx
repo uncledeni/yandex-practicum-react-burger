@@ -6,7 +6,7 @@ import SignInStyles from "./css/style.module.css";
 import { login } from '../../../shared/api/get-data-service';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginThunk } from '../../../shared/services/actions/auth';
+import { LoginThunk } from '../../../shared/services/actions/auth';
 
 export const SignInPage = () => {
     const navigate = useNavigate();
@@ -57,7 +57,7 @@ export const SignInPage = () => {
                         <Button htmlType="button"
                         type="primary"
                         size="large"
-                        onClick={() => dispatch(loginThunk({email, password}))}>
+                        onClick={() => dispatch(LoginThunk({email, password}))}>
                             Войти
                         </Button>
                     </div>
