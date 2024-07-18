@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { MainMenu } from '../pages/main-page';
+import { Home } from '../pages/home';
 import { SignInPage } from '../pages/registration/sign-in/sign-in';
 import { RegistrationPage } from '../pages/registration/registration/registration';
 import { ErrorPage } from '../pages/error/error';
@@ -22,7 +22,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<OnlyAuth component={<MainMenu />} />} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<OnlyUnAuth component={<SignInPage />} />} />
         <Route path="/register" element={<OnlyUnAuth component={<RegistrationPage />} />} />
         <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />

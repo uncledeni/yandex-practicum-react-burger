@@ -5,3 +5,8 @@
 .profileNavbar {
     display: grid;
 }
+
+.navbarElem {
+    text-decoration: none;
+    cursor: pointer;
+}

@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { login, getUserData } from "../../api/get-data-service";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
@@ -37,7 +36,7 @@ const getUser = () => {
         return getUserData().then((res) => {
             console.log('DdD')
             console.log(res);
-            dispatch(setUser(res.user.name))
+            dispatch(setUser(res.user.email, res.user.name))
         })
     }
 }
@@ -56,7 +55,7 @@ export const LoginThunk = (data) => {
                     email: res.user.email,
                     name: res.user.name,
                 })
-                dispatch(setUser(res.user.name));
+                dispatch(setUser(res.user.email, res.user.name));
                 dispatch(setAuthChecked(true));
             } catch (err) {
                 alert(err);
@@ -76,7 +75,7 @@ export const checkUserAuth = () => {
                 .catch(() => {
                     localStorage.removeItem('accessToken');
                     localStorage.removeItem('refreshToken');
-                    dispatch(setUser(null));
+                    dispatch(setUser(null, null));
                 })
                 .finally(() => dispatch(setAuthChecked(true)));
         } else {
@@ -87,9 +86,9 @@ export const checkUserAuth = () => {
 
 export const logout = () => {
     return (dispatch) => {
-        console.log('ccc')
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        dispatch(setUser(null));
+            console.log('ccc')
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            dispatch(setUser(null, null));
     }
 }

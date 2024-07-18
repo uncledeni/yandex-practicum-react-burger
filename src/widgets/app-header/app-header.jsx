@@ -24,29 +24,27 @@ const NAVIGATION_VALUES = [
 
 const HeaderElem = (props) => {
     return (
-        <NavLink to={props.link} className={({isActive}) => {
-            return `pr-5 text text_type_main-default ${(!isActive) ? "text_color_inactive" : ""}`
+        <NavLink to={props.link} className={({ isActive }) => {
+            return `${AppHeaderStyles.navElem} pr-5 text text_type_main-default ${(!isActive) ? "text_color_inactive" : ""}`
         }}>
-            <div className={`${AppHeaderStyles.navElem} `}>
-                {(props.inactive) ? props.values.icon_secondary : props.values.icon_primary}
-                <p className="pl-2">{props.values.text}</p>
-            </div >
+            {(props.inactive) ? props.values.icon_secondary : props.values.icon_primary}
+            <p className="pl-2">{props.values.text}</p>
         </NavLink>
     )
 }
 
-export const AppHeader = (params) => {
+export const AppHeader = () => {
     return (
         <header className={AppHeaderStyles.appHeaderWrapper}>
             <nav className={AppHeaderStyles.appHeaderContent}>
                 <div className={AppHeaderStyles.navigation}>
                     <HeaderElem link={'/'} values={NAVIGATION_VALUES[0]} />
-                    <HeaderElem link={'/b'} inactive values={NAVIGATION_VALUES[1]} />
+                    <HeaderElem link={'/b'} values={NAVIGATION_VALUES[1]} />
                 </div>
                 <span className={AppHeaderStyles.logo}>
                     <Logo />
                 </span>
-                <HeaderElem link={'/profile'} inactive values={NAVIGATION_VALUES[2]} />
+                <HeaderElem link={'/profile'} values={NAVIGATION_VALUES[2]} />
             </nav>
         </header>
     )

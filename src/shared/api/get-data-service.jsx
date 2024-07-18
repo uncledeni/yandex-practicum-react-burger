@@ -6,7 +6,8 @@ export const getDataService = async () => await request('ingredients');
 export const postOrder = async (data) => await fetchWithRefresh('orders', {
     method: 'POST',
     headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
     },
     body: JSON.stringify({
         "ingredients": data
@@ -62,5 +63,18 @@ export const getUserData = async () => await fetchWithRefresh('auth/user', {
     headers: {
         'Content-Type': 'application/json;charset=utf-8',
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+    }
+})
+
+export const patchUserData = async (email, password, name) => await fetchWithRefresh('auth/user', {
+    method: 'PATCH',
+    headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+    },
+    body: {
+        "email": email,
+        "password": password,
+        "name": name
     }
 })
