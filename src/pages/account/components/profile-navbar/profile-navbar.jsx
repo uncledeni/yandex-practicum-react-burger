@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import ProfileNavbarStyles from "./css/style.module.css";
+import { logout } from "../../../../shared/services/actions/auth";
 
 export const ProfileNavbar = () => {
     return (
@@ -12,7 +13,7 @@ export const ProfileNavbar = () => {
                 <NavLink to={'/a'} className={({ isActive }) => {
                     return `pt-4 pb-4 text text_type_main-medium ${(!isActive) ? "text_color_inactive" : ""}`
                 }}>История заказов</NavLink>
-                <NavLink to={'/login'} className={({ isActive }) => {
+                <NavLink to={'/login'} onClick={() => {logout()}} className={({ isActive }) => {
                     return `pt-4 pb-4 text text_type_main-medium ${(!isActive) ? "text_color_inactive" : ""}`
                 }}>Выход</NavLink>
             </nav>

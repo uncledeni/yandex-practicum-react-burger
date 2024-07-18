@@ -2,7 +2,8 @@ import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAILED,
-    SET_AUTH_CHECKED
+    SET_AUTH_CHECKED,
+    SET_USER
 } from "../actions/auth"
 
 const initialState = {
@@ -36,6 +37,13 @@ export const authReducer = (state = initialState, action) => {
                 ...state,
                 loginRequest: false,
                 loginFailed: true
+            }
+        }
+        case SET_USER: {
+            return {
+                ...state,
+                email: action.email,
+                name: action.name
             }
         }
         case SET_AUTH_CHECKED: {

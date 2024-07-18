@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { MainMenu } from '../pages/main-page';
 import { SignInPage } from '../pages/registration/sign-in/sign-in';
@@ -9,8 +10,15 @@ import { ResetPassword } from '../pages/registration/reset-password/reset-passwo
 import { ProfilePage } from '../pages/account/profile/profile';
 
 import { OnlyAuth, OnlyUnAuth } from '../shared/utils/protected-route';
+import { checkUserAuth } from '../shared/services/actions/auth';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => { 
+    dispatch(checkUserAuth());
+  }, [])
+
   return (
     <BrowserRouter>
       <Routes>

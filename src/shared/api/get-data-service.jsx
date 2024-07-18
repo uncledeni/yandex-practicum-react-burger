@@ -1,8 +1,9 @@
 import { request } from "../utils/checks";
+import { fetchWithRefresh } from "../utils/checks";
 
 export const getDataService = async () => await request('ingredients');
 
-export const postOrder = async (data) => await request('orders', {
+export const postOrder = async (data) => await fetchWithRefresh('orders', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -35,7 +36,6 @@ export const login = async (data) => await request('auth/login', {
     })
 })
 
-
 export const requestResetCode = async (email) => await request('password-reset', {
     method: 'POST',
     headers: {
@@ -55,4 +55,12 @@ export const resetPassword = async (password, token) => await request('password-
         "password": password,
         "token": token
     })
+})
+
+export const getUserData = async () => await fetchWithRefresh('auth/user', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+    }
 })

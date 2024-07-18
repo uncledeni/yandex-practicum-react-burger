@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { login } from "../../api/get-data-service";
+import { login, getUserData } from "../../api/get-data-service";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -18,6 +18,29 @@ export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
 export const TOKEN_FAILED = 'TOKEN_FAILED';
 
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
+export const SET_USER = 'SET_USER';
+
+const setAuthChecked = (value) => ({
+    type: SET_AUTH_CHECKED,
+    isAuthChecked: value
+})
+
+const setUser = (email, name) => ({
+    type: SET_USER,
+    email: email,
+    name: name
+})
+
+const getUser = () => {
+    console.log(localStorage.getItem('accessToken'))
+    return async function (dispatch) {
+        return getUserData().then((res) => {
+            console.log('DdD')
+            console.log(res);
+            dispatch(setUser(res.user.name))
+        })
+    }
+}
 
 export const LoginThunk = (data) => {
     return function (dispatch) {
@@ -25,20 +48,16 @@ export const LoginThunk = (data) => {
             type: LOGIN_REQUEST
         })
         login(data).then(res => {
-            console.log(res);
             try {
                 localStorage.setItem('refreshToken', res.refreshToken);
-                localStorage.setItem('accessToken', res.accessToken);
+                localStorage.setItem('accessToken', res.accessToken.split('Bearer ')[1]);
                 dispatch({
                     type: LOGIN_SUCCESS,
                     email: res.user.email,
-                    name: res.user.name
+                    name: res.user.name,
                 })
-                dispatch({
-                    type: SET_AUTH_CHECKED,
-                    isAuthChecked: true
-                })
-
+                dispatch(setUser(res.user.name));
+                dispatch(setAuthChecked(true));
             } catch (err) {
                 alert(err);
                 dispatch({
@@ -46,5 +65,31 @@ export const LoginThunk = (data) => {
                 });
             }
         })
+    }
+}
+
+export const checkUserAuth = () => {
+    return (dispatch) => {
+        console.log("BbB")
+        if (localStorage.getItem('accessToken')) {
+            dispatch(getUser())
+                .catch(() => {
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('refreshToken');
+                    dispatch(setUser(null));
+                })
+                .finally(() => dispatch(setAuthChecked(true)));
+        } else {
+            dispatch(setAuthChecked(true));
+        }
+    }
+}
+
+export const logout = () => {
+    return (dispatch) => {
+        console.log('ccc')
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        dispatch(setUser(null));
     }
 }
