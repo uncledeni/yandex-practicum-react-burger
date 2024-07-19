@@ -3,7 +3,6 @@ import { ingredientDetailsType } from "../../../../shared/utils/types";
 import BurgerIngredientsModalStyles from "./style.module.css";
 
 export const IngredientDetails = () => {
-
     const ingredient = useSelector(store => store.ingredientsDetails.details)
 
     return (

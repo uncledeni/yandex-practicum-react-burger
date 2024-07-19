@@ -5,7 +5,7 @@ import { AppHeader } from "../../widgets/app-header";
 import { BurgerIngredients } from "../../widgets/burger-ingredients";
 import { BurgerConstructor } from "../../widgets/burger-constructor";
 
-import HomeStyles from "./css/style.module.css"
+import HomeStyles from "./css/style.module.css";
 
 export const Home = () => {
     return (

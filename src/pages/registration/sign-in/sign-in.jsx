@@ -1,15 +1,13 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { AppHeader } from "../../../widgets/app-header";
 import { ActionBlock } from '../components/action-block/action-block';
-import SignInStyles from "./css/style.module.css";
-import { login } from '../../../shared/api/get-data-service';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { LoginThunk } from '../../../shared/services/actions/auth';
 
+import SignInStyles from "./css/style.module.css";
+
 export const SignInPage = () => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const onChangeEmail = e => {
@@ -20,19 +18,6 @@ export const SignInPage = () => {
     const onChangePassword = e => {
         setPassword(e.target.value)
     }
-
-    const goToHomePage = async (email, password) => {
-        try {
-            const res = await login(email, password);
-            if (res.success) {
-                navigate('/');
-            }
-        } catch (err) {
-            console.log(err);
-            alert(err);
-        }
-    }
-
 
     return (
         <div className={SignInStyles.pageWrapper}>

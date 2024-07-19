@@ -37,7 +37,7 @@ export const login = async (data) => await request('auth/login', {
     })
 })
 
-export const requestResetCode = async (email) => await request('password-reset', {
+export const getResetPasswordCode = async (email) => await request('password-reset', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json;charset=utf-8'

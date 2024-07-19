@@ -31,7 +31,6 @@ const checkSuccess = (res) => {
 const BASE_URL = 'https://norma.nomoreparties.space/api/'
 
 export const request = async (endpoint, options) => {
-    console.log("AaA" + endpoint)
     return fetch(`${BASE_URL}${endpoint}`, options)
         .then(checkResponse)
         .then(checkSuccess)

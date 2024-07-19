@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBurgerIngredients } from "../../shared/services/actions/burger-ingredients";
 import { CLEAR_INGREDIENT_DETAILS, GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
 import { useDrag } from "react-dnd";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const BUN_TYPE = "bun";
 const MAIN_TYPE = "main";
@@ -36,6 +37,7 @@ const IngredientsTabs = ({ current }) => {
 
 const Ingredients = ({ setCurrentTab }) => {
     const { isModalOpen, openModal, closeModal } = useModal();
+    let navigate = useNavigate();
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -48,6 +50,7 @@ const Ingredients = ({ setCurrentTab }) => {
 
     const closeAndClear = () => {
         closeModal();
+        navigate(-1);
         clearIngredientDetails();
     }
 
@@ -83,6 +86,7 @@ const Ingredients = ({ setCurrentTab }) => {
 
 const IngredientsStack = (props) => {
     const ingredientsData = useSelector(store => store.ingredients.ingredients);
+    let location = useLocation();
 
     return (
         (ingredientsData !== undefined) ?
@@ -90,7 +94,10 @@ const IngredientsStack = (props) => {
                 <p ref={props.scrollRef} className={`${BurgerIngredientsStyles.ingredientsStackTitle} text text_type_main-medium`}>{props.title}</p>
                 <div className={BurgerIngredientsStyles.ingredientsStackContent}>
                     {ingredientsData.map((ingredient) => (
-                        (ingredient.type === props.type) && <IngredientElem key={ingredient._id} setOpenModal={props.setOpenModal} ingredient={ingredient} />
+                        (ingredient.type === props.type) &&
+                        <Link key={ingredient._id} to={`/ingredients/${ingredient._id}`} state={{ backgroundLocation: location }} >
+                            <IngredientElem setOpenModal={props.setOpenModal} ingredient={ingredient} />
+                        </Link>
                     ))}
                 </div>
             </div>

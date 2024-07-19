@@ -1,4 +1,5 @@
-import { login, getUserData } from "../../api/get-data-service";
+import { useNavigate } from "react-router-dom";
+import { login, getUserData, getResetPasswordCode } from "../../api/get-data-service";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -16,6 +17,10 @@ export const TOKEN_REQUEST = 'TOKEN_REQUEST';
 export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
 export const TOKEN_FAILED = 'TOKEN_FAILED';
 
+export const RESET_PASSWORD_CODE_REQUEST = 'RESET_PASSWORD_CODE_REQUEST';
+export const RESET_PASSWORD_CODE_SUCCESS = 'RESET_PASSWORD_CODE_SUCCESS';
+export const RESET_PASSWORD_CODE_FAILED = 'RESET_PASSWORD_CODE_FAILED';
+
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
 export const SET_USER = 'SET_USER';
 
@@ -31,11 +36,8 @@ const setUser = (email, name) => ({
 })
 
 const getUser = () => {
-    console.log(localStorage.getItem('accessToken'))
     return async function (dispatch) {
         return getUserData().then((res) => {
-            console.log('DdD')
-            console.log(res);
             dispatch(setUser(res.user.email, res.user.name))
         })
     }
@@ -69,7 +71,6 @@ export const LoginThunk = (data) => {
 
 export const checkUserAuth = () => {
     return (dispatch) => {
-        console.log("BbB")
         if (localStorage.getItem('accessToken')) {
             dispatch(getUser())
                 .catch(() => {
@@ -86,9 +87,30 @@ export const checkUserAuth = () => {
 
 export const logout = () => {
     return (dispatch) => {
-            console.log('ccc')
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             dispatch(setUser(null, null));
+    }
+}
+
+export const GetResetPasswordCodeThunk = (data) => {
+
+    return function (dispatch) {
+        dispatch({
+            type: RESET_PASSWORD_CODE_REQUEST
+        })
+        getResetPasswordCode(data).then(res => {
+            console.log(res);
+            try {
+                dispatch({
+                    type: RESET_PASSWORD_CODE_SUCCESS
+                });
+            } catch (err) {
+                alert(err);
+                dispatch({
+                    type: RESET_PASSWORD_CODE_FAILED
+                });
+            }
+        })
     }
 }
