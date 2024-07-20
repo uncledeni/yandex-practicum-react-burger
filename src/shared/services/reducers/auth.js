@@ -3,20 +3,14 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAILED,
     SET_AUTH_CHECKED,
-    SET_USER,
-    RESET_PASSWORD_CODE_REQUEST,
-    RESET_PASSWORD_CODE_SUCCESS,
-    RESET_PASSWORD_CODE_FAILED
+    SET_USER
 } from "../actions/auth"
 
 const initialState = {
     email: '',
     name: '',
     loginRequest: false,
-    loginFailed: false,
-    resetPasswordCodeRequest: false,
-    resetPasswordCodeFailed: false,
-    isAuthChecked: false
+    loginFailed: false
 }
 
 export const authReducer = (state = initialState, action) => {
@@ -54,26 +48,6 @@ export const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAuthChecked: action.isAuthChecked
-            }
-        }
-        case RESET_PASSWORD_CODE_REQUEST: {
-            return {
-                ...state,
-                resetPasswordCodeRequest: true
-            };
-        }
-        case RESET_PASSWORD_CODE_SUCCESS: {
-            return {
-                ...state,
-                resetPasswordCodeRequest: false,
-                resetPasswordCodeFailed: false
-            }
-        }
-        case RESET_PASSWORD_CODE_FAILED: {
-            return {
-                ...state,
-                resetPasswordCodeRequest: false,
-                resetPasswordCodeFailed: true
             }
         }
         default: {

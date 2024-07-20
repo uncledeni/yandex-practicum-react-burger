@@ -1,4 +1,4 @@
-import { login, getUserData, getResetPasswordCode } from "../../api/get-data-service";
+import { login, getUserData } from "../../api/get-data-service";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -8,17 +8,9 @@ export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILED = 'REGISTER_FAILED';
 
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_FAILED = 'LOGOUT_FAILED';
-
 export const TOKEN_REQUEST = 'TOKEN_REQUEST';
 export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
 export const TOKEN_FAILED = 'TOKEN_FAILED';
-
-export const RESET_PASSWORD_CODE_REQUEST = 'RESET_PASSWORD_CODE_REQUEST';
-export const RESET_PASSWORD_CODE_SUCCESS = 'RESET_PASSWORD_CODE_SUCCESS';
-export const RESET_PASSWORD_CODE_FAILED = 'RESET_PASSWORD_CODE_FAILED';
 
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
 export const SET_USER = 'SET_USER';
@@ -89,26 +81,5 @@ export const logout = () => {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             dispatch(setUser(null, null));
-    }
-}
-
-export const GetResetPasswordCodeThunk = (data) => {
-
-    return function (dispatch) {
-        dispatch({
-            type: RESET_PASSWORD_CODE_REQUEST
-        })
-        getResetPasswordCode(data).then(res => {
-            try {
-                dispatch({
-                    type: RESET_PASSWORD_CODE_SUCCESS
-                });
-            } catch (err) {
-                alert(err);
-                dispatch({
-                    type: RESET_PASSWORD_CODE_FAILED
-                });
-            }
-        })
     }
 }

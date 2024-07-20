@@ -1,11 +1,17 @@
 import { useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
+
 import { AppHeader } from "../../../widgets/app-header";
 import { ActionBlock } from '../components/action-block/action-block';
-import ResetPasswordStyles from "./css/style.module.css";
 import { resetPassword } from '../../../shared/api/get-data-service';
 
+import ResetPasswordStyles from "./css/style.module.css";
+
 export const ResetPassword = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const [password, setPassword] = useState('');
     const onChangePassword = e => {
         setPassword(e.target.value)
@@ -45,7 +51,15 @@ export const ResetPassword = () => {
                         extraClass="mt-6"
                     />
                     <div className={`${ResetPasswordStyles.button} mt-6 mb-20`}>
-                        <Button htmlType="button" type="primary" size="large" onClick={() => resetPassword(password, code)}>
+                        <Button htmlType="button" type="primary" size="large" onClick={() => {
+                            resetPassword(password, code).then(res => {
+                                try {
+                                    navigate('/login', { state: { from: location } });
+                                } catch (err) {
+                                    alert(err);
+                                }
+                            })
+                        }}>
                             Сохранить
                         </Button>
                     </div>

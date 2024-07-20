@@ -3,16 +3,13 @@ import { useSelector } from 'react-redux';
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { AppHeader } from "../../../widgets/app-header";
 import { ProfileNavbar } from '../components/profile-navbar/profile-navbar';
-import { getUserData } from '../../../shared/api/get-data-service';
+import { getUserData, patchUserData } from '../../../shared/api/get-data-service';
 
 import ProfileStyles from "./css/style.module.css";
 
 export const ProfilePage = () => {
     const auth = useSelector(store => store.auth);
-
-    // useMemo(() => {
-    //     console.log(auth)
-    // }, [])
+    const [isEditable, setIsEditable] = useState(false)
 
     const [email, setEmail] = useState(auth.email);
     const onChangeEmail = e => {
@@ -27,22 +24,8 @@ export const ProfilePage = () => {
     const [name, setName] = useState(auth.name);
     const inputRef = useRef(null)
     const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        alert('Icon Click Callback')
+        setIsEditable(prevState => !prevState)
     }
-
-    // const getUser = () => {
-    //     return async function (dispatch) {
-    //         return getUserData().then((res) => {
-    //             console.log(res);
-    //             dispatch(setUser(res.user))
-    //         })
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     getUser();
-    // }, [])
 
     return (
         <div className={ProfileStyles.pageWrapper}>
@@ -60,6 +43,8 @@ export const ProfilePage = () => {
                                 name={'name'}
                                 error={false}
                                 ref={inputRef}
+                                disabled={(!isEditable)}
+                                icon={'EditIcon'}
                                 onIconClick={onIconClick}
                                 errorText={'Ошибка'}
                                 size={'default'}
@@ -69,22 +54,31 @@ export const ProfilePage = () => {
                                 value={email}
                                 name={'email'}
                                 isIcon={false}
-                                // extraClass='mt-6'
+                                disabled={(!isEditable)}
+                                icon={'EditIcon'}
+                                onIconClick={onIconClick}
                             />
                             <PasswordInput
                                 onChange={onChangePassword}
                                 value={password}
                                 name={'password'}
-                                // extraClass="mt-6"
+                                disabled={(!isEditable)}
+                                icon={'EditIcon'}
+                                onIconClick={onIconClick}
                             />
-                            <div className={ProfileStyles.buttonsWrapper}>
+                            {(isEditable) && <div className={ProfileStyles.buttonsWrapper}>
                                 <Button htmlType="button" type="secondary" size="medium">
                                     Отмена
                                 </Button>
-                                <Button htmlType="button" type="primary" size="medium" extraClass="ml-2">
+                                <Button htmlType="button" type="primary" size="medium" extraClass="ml-2"
+                                    onClick={() => {
+                                        patchUserData(email, password, name);
+                                        onIconClick();
+                                    }}
+                                >
                                     Сохранить
                                 </Button>
-                            </div>
+                            </div>}
                         </form>
                     </div>
                 </div>

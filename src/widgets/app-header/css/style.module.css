@@ -26,6 +26,11 @@
 .navElem {
     display: flex;
     align-items: center;
+    text-decoration: none;
+}
+
+.navElemColor {
+    color: #F2F2F3;
 }
 
 .navElemText {

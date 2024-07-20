@@ -14,7 +14,6 @@ export const ForgotPasswordPage = () => {
         setEmail(e.target.value)
     }
 
-
     return (
         <div className={ForgotPasswordStyles.pageWrapper}>
             <AppHeader />

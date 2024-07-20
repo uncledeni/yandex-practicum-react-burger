@@ -25,7 +25,7 @@ const NAVIGATION_VALUES = [
 const HeaderElem = (props) => {
     return (
         <NavLink to={props.link} className={({ isActive }) => {
-            return `${AppHeaderStyles.navElem} pr-5 text text_type_main-default ${(!isActive) ? "text_color_inactive" : ""}`
+            return `${(!isActive) ? "text_color_inactive" : AppHeaderStyles.navElemColor} ${AppHeaderStyles.navElem} pr-5 text text_type_main-default`
         }}>
             {(props.inactive) ? props.values.icon_secondary : props.values.icon_primary}
             <p className="pl-2">{props.values.text}</p>

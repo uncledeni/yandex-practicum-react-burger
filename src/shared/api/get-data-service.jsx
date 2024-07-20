@@ -72,9 +72,9 @@ export const patchUserData = async (email, password, name) => await fetchWithRef
         'Content-Type': 'application/json;charset=utf-8',
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
     },
-    body: {
+    body: JSON.stringify({
         "email": email,
         "password": password,
         "name": name
-    }
+    })
 })
