@@ -4,29 +4,16 @@ import { AppHeader } from "../../../widgets/app-header";
 import { ActionBlock } from '../components/action-block/action-block';
 import ForgotPasswordStyles from "./css/style.module.css";
 import { getResetPasswordCode } from '../../../shared/api/get-data-service';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { GetResetPasswordCodeThunk } from '../../../shared/services/actions/auth';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const ForgotPasswordPage = () => {
+    const location = useLocation();
     const navigate = useNavigate();
-    const dispath = useDispatch();
-    const auth = useSelector(store => store.auth);
     const [email, setEmail] = useState('');
     const onChangeEmail = e => {
         setEmail(e.target.value)
     }
 
-    const goToResetPage = async (email) => {
-        try {
-            const res = await getResetPasswordCode(email);
-            if (res.success) {
-                navigate('/reset-password');
-            }
-        } catch (err) {
-            alert(err)
-        }
-    }
 
     return (
         <div className={ForgotPasswordStyles.pageWrapper}>
@@ -43,8 +30,11 @@ export const ForgotPasswordPage = () => {
                     />
                     <div className={`${ForgotPasswordStyles.button} mt-6 mb-20`}>
                         <Button htmlType="button" type="primary" size="large" onClick={() => {
-                            dispath(GetResetPasswordCodeThunk(email));
-                            navigate('/reset-password');
+                            getResetPasswordCode(email).then(res => {
+                                if (res.success) {
+                                    navigate('/reset-password', { state: { from: location } })
+                                }
+                            })
                         }}>
                             Восстановить
                         </Button>

@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { login, getUserData, getResetPasswordCode } from "../../api/get-data-service";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
@@ -100,7 +99,6 @@ export const GetResetPasswordCodeThunk = (data) => {
             type: RESET_PASSWORD_CODE_REQUEST
         })
         getResetPasswordCode(data).then(res => {
-            console.log(res);
             try {
                 dispatch({
                     type: RESET_PASSWORD_CODE_SUCCESS
