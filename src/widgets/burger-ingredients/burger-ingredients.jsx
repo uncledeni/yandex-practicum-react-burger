@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -7,7 +7,6 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsStyles from "./css/style.module.css";
 import { ingredientElemType, ingredientsStackType } from "../../shared/utils/types";
 import { useDispatch, useSelector } from "react-redux";
-import { getBurgerIngredients } from "../../shared/services/actions/burger-ingredients";
 import { GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
 import { useDrag } from "react-dnd";
 import { Link, useLocation } from "react-router-dom";
@@ -34,11 +33,6 @@ const IngredientsTabs = ({ current }) => {
 
 const Ingredients = ({ setCurrentTab }) => {
     let location = useLocation();
-
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getBurgerIngredients());
-    }, [dispatch]);
 
     const bunRef = useRef(null);
     const sauceRef = useRef(null);

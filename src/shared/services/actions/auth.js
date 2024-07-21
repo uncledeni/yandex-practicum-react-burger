@@ -34,7 +34,7 @@ const getUser = () => {
     }
 }
 
-export const LoginThunk = (data) => {
+export const loginThunk = (data) => {
     return function (dispatch) {
         dispatch({
             type: LOGIN_REQUEST

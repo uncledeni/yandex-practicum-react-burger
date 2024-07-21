@@ -14,15 +14,15 @@ export const postOrder = async (data) => await fetchWithRefresh('orders', {
     })
 })
 
-export const register = async (email, password, name) => await request('auth/register', {
+export const register = async (values) => await request('auth/register', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json;charset=utf-8'
     },
     body: JSON.stringify({
-        "email": email,
-        "password": password,
-        "name": name
+        "email": values.email,
+        "password": values.password,
+        "name": values.name
     })
 })
 
@@ -37,24 +37,24 @@ export const login = async (data) => await request('auth/login', {
     })
 })
 
-export const getResetPasswordCode = async (email) => await request('password-reset', {
+export const getResetPasswordCode = async (values) => await request('password-reset', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json;charset=utf-8'
     },
     body: JSON.stringify({
-        "email": email
+        "email": values.email
     })
 })
 
-export const resetPassword = async (password, token) => await request('password-reset/reset', {
+export const resetPassword = async (values) => await request('password-reset/reset', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json;charset=utf-8'
     },
     body: JSON.stringify({
-        "password": password,
-        "token": token
+        "password": values.password,
+        "token": values.code
     })
 })
 
@@ -66,15 +66,15 @@ export const getUserData = async () => await fetchWithRefresh('auth/user', {
     }
 })
 
-export const patchUserData = async (email, password, name) => await fetchWithRefresh('auth/user', {
+export const patchUserData = async (values) => await fetchWithRefresh('auth/user', {
     method: 'PATCH',
     headers: {
         'Content-Type': 'application/json;charset=utf-8',
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
     },
     body: JSON.stringify({
-        "email": email,
-        "password": password,
-        "name": name
+        "email": values.email,
+        "password": values.password,
+        "name": values.name
     })
 })

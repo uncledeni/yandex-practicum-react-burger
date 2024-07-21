@@ -13,6 +13,8 @@ import { IngredientPage } from '../pages/ingredient-info/ingredient-page/ingredi
 import { OnlyAuth, OnlyUnAuth } from '../shared/utils/protected-route';
 import { checkUserAuth } from '../shared/services/actions/auth';
 import { IngredientDetailsModal } from '../widgets/burger-ingredients/components/ingredient-details-modal/ingredient-details';
+import { AppHeader } from '../widgets/app-header';
+import { getBurgerIngredients } from "../shared/services/actions/burger-ingredients";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,8 +25,13 @@ function App() {
     dispatch(checkUserAuth());
   }, [dispatch])
 
+  useEffect(() => {
+    dispatch(getBurgerIngredients());
+}, [dispatch]);
+
   return (
     <>
+      <AppHeader />
       <Routes location={state?.backgroundLocation || location}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<OnlyUnAuth component={<SignInPage />} />} />

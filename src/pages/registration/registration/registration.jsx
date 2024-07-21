@@ -1,22 +1,15 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import { AppHeader } from "../../../widgets/app-header";
+
 import { ActionBlock } from '../components/action-block/action-block';
-import RegistrationStyles from "./css/style.module.css";
 import { register } from '../../../shared/api/get-data-service';
+import { useForm } from '../../../shared/hooks/useForm';
+
+import RegistrationStyles from "./css/style.module.css";
 
 export const RegistrationPage = () => {
-    const [email, setEmail] = useState('');
-    const onChangeEmail = e => {
-        setEmail(e.target.value)
-    }
+    const { values, handleChange } = useForm({ email: '', password: '', name: '' });
 
-    const [password, setPassword] = useState('');
-    const onChangePassword = e => {
-        setPassword(e.target.value)
-    }
-
-    const [name, setName] = useState('');
     const inputRef = useRef(null)
     const onIconClick = () => {
         setTimeout(() => inputRef.current.focus(), 0)
@@ -24,16 +17,18 @@ export const RegistrationPage = () => {
     }
 
     return (
-        <div className={RegistrationStyles.pageWrapper}>
-            <AppHeader />
-            <main className={RegistrationStyles.mainWrapper}>
-                <div className={RegistrationStyles.mainContainer}>
+        <main className={RegistrationStyles.pageWrapper}>
+            <div className={RegistrationStyles.mainWrapper}>
+                <form className={RegistrationStyles.mainContainer} onSubmit={(e) => {
+                    e.preventDefault();
+                    register(values)
+                }}>
                     <h1 className={`${RegistrationStyles.title} text text_type_main-medium`}>Регистрация</h1>
                     <Input
                         type={'text'}
                         placeholder={'Имя'}
-                        onChange={e => setName(e.target.value)}
-                        value={name}
+                        onChange={handleChange}
+                        value={values.name}
                         name={'name'}
                         error={false}
                         ref={inputRef}
@@ -43,26 +38,26 @@ export const RegistrationPage = () => {
                         extraClass="mt-6"
                     />
                     <EmailInput
-                        onChange={onChangeEmail}
-                        value={email}
+                        onChange={handleChange}
+                        value={values.email}
                         name={'email'}
                         isIcon={false}
                         extraClass='mt-6'
                     />
                     <PasswordInput
-                        onChange={onChangePassword}
-                        value={password}
+                        onChange={handleChange}
+                        value={values.password}
                         name={'password'}
                         extraClass="mt-6"
                     />
                     <div className={`${RegistrationStyles.button} mt-6 mb-20`}>
-                        <Button htmlType="button" type="primary" size="large" onClick={() => register(email, password, name)}>
+                        <Button htmlType="submit" type="primary" size="large">
                             Зарегистрироваться
                         </Button>
                     </div>
                     <ActionBlock link={'/login'} title={'Уже зарегистрированы?'} linkTitle={'Войти'} />
-                </div>
-            </main>
-        </div>
+                </form>
+            </div>
+        </main>
     )
 }
