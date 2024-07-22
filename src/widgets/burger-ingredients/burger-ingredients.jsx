@@ -1,18 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import BurgerIngredientsStyles from "./css/style.module.css";
-import { Modal } from "../../shared/components/modal/modal";
-import { IngredientDetails } from "./components/ingredient-details/ingredient-details";
 import { ingredientElemType, ingredientsStackType } from "../../shared/utils/types";
-import { useModal } from "../../shared/hooks/useModal";
 import { useDispatch, useSelector } from "react-redux";
-import { getBurgerIngredients } from "../../shared/services/actions/burger-ingredients";
-import { CLEAR_INGREDIENT_DETAILS, GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
+import { GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
 import { useDrag } from "react-dnd";
+import { Link, useLocation } from "react-router-dom";
 
 const BUN_TYPE = "bun";
 const MAIN_TYPE = "main";
@@ -35,25 +32,11 @@ const IngredientsTabs = ({ current }) => {
 }
 
 const Ingredients = ({ setCurrentTab }) => {
-    const { isModalOpen, openModal, closeModal } = useModal();
+    let location = useLocation();
 
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getBurgerIngredients());
-    }, [dispatch]);
-
-    const clearIngredientDetails = () => {
-        dispatch({ type: CLEAR_INGREDIENT_DETAILS })
-    }
-
-    const closeAndClear = () => {
-        closeModal();
-        clearIngredientDetails();
-    }
-
-    const bunRef = useRef(null)
-    const sauceRef = useRef(null)
-    const mainRef = useRef(null)
+    const bunRef = useRef(null);
+    const sauceRef = useRef(null);
+    const mainRef = useRef(null);
 
     const onEditClick = () => {
         if (bunRef.current.getBoundingClientRect().top > 0) {
@@ -70,12 +53,9 @@ const Ingredients = ({ setCurrentTab }) => {
     return (
         <div onScroll={() => onEditClick()} className={BurgerIngredientsStyles.ingredientsListWrapper}>
             <div className={BurgerIngredientsStyles.ingredientsList}>
-                <IngredientsStack scrollRef={bunRef} setOpenModal={openModal} title="Булки" type={BUN_TYPE} />
-                <IngredientsStack scrollRef={mainRef} setOpenModal={openModal} title="Начинка" type={MAIN_TYPE} />
-                <IngredientsStack scrollRef={sauceRef} setOpenModal={openModal} title="Соусы" type={SAUCE_TYPE} />
-                {isModalOpen && <Modal handlerOpen={closeAndClear}>
-                    <IngredientDetails />
-                </Modal>}
+                <IngredientsStack location={location} scrollRef={bunRef} title="Булки" type={BUN_TYPE} />
+                <IngredientsStack location={location} scrollRef={mainRef} title="Начинка" type={MAIN_TYPE} />
+                <IngredientsStack location={location} scrollRef={sauceRef} title="Соусы" type={SAUCE_TYPE} />
             </div>
         </div>
     )
@@ -90,7 +70,10 @@ const IngredientsStack = (props) => {
                 <p ref={props.scrollRef} className={`${BurgerIngredientsStyles.ingredientsStackTitle} text text_type_main-medium`}>{props.title}</p>
                 <div className={BurgerIngredientsStyles.ingredientsStackContent}>
                     {ingredientsData.map((ingredient) => (
-                        (ingredient.type === props.type) && <IngredientElem key={ingredient._id} setOpenModal={props.setOpenModal} ingredient={ingredient} />
+                        (ingredient.type === props.type) &&
+                        <Link key={ingredient._id} to={`/ingredients/${ingredient._id}`} state={{ backgroundLocation: props.location }} >
+                            <IngredientElem ingredient={ingredient} />
+                        </Link>
                     ))}
                 </div>
             </div>
@@ -101,7 +84,7 @@ const IngredientsStack = (props) => {
 
 IngredientsStack.propTypes = ingredientsStackType;
 
-const IngredientElem = ({ setOpenModal, ingredient }) => {
+const IngredientElem = ({ ingredient }) => {
     const dispatch = useDispatch();
     const getIngredientDetails = (ingredient) => {
         dispatch({ type: GET_INGREDIENT_DETAILS, details: ingredient })
@@ -113,7 +96,6 @@ const IngredientElem = ({ setOpenModal, ingredient }) => {
     });
 
     const openModal = () => {
-        setOpenModal();
         getIngredientDetails(ingredient);
     }
 

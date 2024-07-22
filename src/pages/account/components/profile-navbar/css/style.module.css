@@ -1,0 +1,16 @@
+.profileNavbarContainer {
+    width: 320px;
+}
+
+.profileNavbar {
+    display: grid;
+}
+
+.navbarElem {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.navbarElemColor {
+    color: #F2F2F3;
+}

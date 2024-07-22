@@ -13,9 +13,13 @@ import { DELETE_INGREDIENT_BURGER_CONSTRUCTOR, SWAP_INGREDIENTS, addIngredient }
 import { checkEmptyArr } from "../../shared/utils/checks";
 import { DECREASE_BUN_COUNTER, DECREASE_INGREDIENT_COUNTER, INCREASE_INGREDIENT_COUNTER } from "../../shared/services/actions/burger-ingredients";
 import { CLEAR_ORDER_DETAILS, getOrderDetails } from "../../shared/services/actions/order-details";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Info = (props) => {
+    const navigate = useNavigate()
+    const location = useLocation();
     const arr = useSelector(store => store.order);
+    const user = useSelector((store) => store.auth.email);
 
     const calcTotal = (data) => {
         let price = (checkEmptyArr(data.fillings)) ? (data.fillings.reduce((sum, current) => sum + current.ingredient.price, 0)) : 0;
@@ -39,8 +43,12 @@ const Info = (props) => {
                 <CurrencyIcon />
             </div>
             <Button disabled={(arr.bun === null)} htmlType="button" type="primary" size="medium" onClick={() => {
-                dispatch(getOrderDetails(orderDetailsArr(arr)))
-                props.constructorModal()
+                if (user) {
+                    dispatch(getOrderDetails(orderDetailsArr(arr)));
+                    props.constructorModal();
+                } else {
+                    navigate('/login', { state: { from: location } });
+                }
             }}>Оформить заказ</Button>
         </div>
     )

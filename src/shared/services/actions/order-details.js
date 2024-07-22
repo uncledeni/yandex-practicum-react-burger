@@ -11,21 +11,18 @@ export function getOrderDetails(data) {
         dispatch({
             type: GET_ORDER_DETAILS_REQUEST
         });
-        try {
-            postOrder(data).then(res => {
-                if (res && res.success) {
-                    dispatch({
-                        type: GET_ORDER_DETAILS_SUCCESS,
-                        order: res
-                    });
-                } else {
-                    dispatch({
-                        type: GET_ORDER_DETAILS_FAILED
-                    });
-                }
-            });
-        } catch (err) {
-            alert (err);
-        }
+        postOrder(data).then(res => {
+            try {
+                dispatch({
+                    type: GET_ORDER_DETAILS_SUCCESS,
+                    order: res
+                });
+            } catch (err) {
+                alert(err);
+                dispatch({
+                    type: GET_ORDER_DETAILS_FAILED
+                });
+            }
+        });
     }
 }

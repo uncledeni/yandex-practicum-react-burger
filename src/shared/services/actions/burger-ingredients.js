@@ -13,21 +13,19 @@ export function getBurgerIngredients() {
         dispatch({
             type: GET_BURGER_INGREDIENTS_REQUEST
         });
-        try {
-            getDataService().then(res => {
-                if (res && res.success) {
-                    dispatch({
-                        type: GET_BURGER_INGREDIENTS_SUCCESS,
-                        ingredients: res.data
-                    });
-                } else {
-                    dispatch({
-                        type: GET_BURGER_INGREDIENTS_FAILED
-                    });
-                }
-            });
-        } catch (err) {
-            alert(err)
-        }
+        getDataService().then(res => {
+            try {
+                dispatch({
+                    type: GET_BURGER_INGREDIENTS_SUCCESS,
+                    ingredients: res.data
+                });
+            } 
+            catch (err) {
+                alert(err)
+                dispatch({
+                    type: GET_BURGER_INGREDIENTS_FAILED
+                });
+            }
+        });
     }
 }

@@ -35,3 +35,46 @@ export const request = async (endpoint, options) => {
         .then(checkResponse)
         .then(checkSuccess)
 };
+
+const checkReponseWithRefresh = (res) => {
+    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+};
+
+const refreshToken = async (endpoint) => {
+    return fetch(`${BASE_URL}${endpoint}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem("refreshToken"),
+        }),
+    })
+        .then(checkReponseWithRefresh)
+        // !! Важно для обновления токена в мидлваре, чтобы запись
+        // была тут, а не в fetchWithRefresh
+        .then((refreshData) => {
+            if (!refreshData.success) {
+                return Promise.reject(refreshData);
+            }
+            localStorage.setItem("refreshToken", refreshData.refreshToken);
+            localStorage.setItem("accessToken", refreshData.accessToken);
+            return refreshData;
+        });
+};
+
+export const fetchWithRefresh = async (endpoint, options) => {
+    try {
+        const res = await fetch(`${BASE_URL}${endpoint}`, options);
+        return await checkReponseWithRefresh(res);
+    } catch (err) {
+        if (err.message === "jwt expired") {
+            const refreshData = await refreshToken(`auth/token`); //обновляем токен
+            options.headers.authorization = refreshData.accessToken;
+            const res = await fetch(`${BASE_URL}${endpoint}`, options); //повторяем запрос
+            return await checkReponseWithRefresh(res);
+        } else {
+            return Promise.reject(err);
+        }
+    }
+}
