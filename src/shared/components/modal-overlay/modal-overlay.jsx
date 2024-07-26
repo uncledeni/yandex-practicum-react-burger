@@ -9,6 +9,6 @@ export const ModalOverlay = (props) => {
     )
 }
 
-ModalOverlay.propTypes = {
-    handlerOpen: PropTypes.func
-}
+// ModalOverlay.propTypes = {
+//     handlerOpen: PropTypes.func
+// }

@@ -5,7 +5,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import BurgerIngredientsStyles from "./css/style.module.css";
-import { ingredientElemType, ingredientsStackType } from "../../shared/utils/types";
+import { ingredientElemType, ingredientsStackType } from "../../shared/types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
 import { useDrag } from "react-dnd";
@@ -82,7 +82,7 @@ const IngredientsStack = (props) => {
     )
 }
 
-IngredientsStack.propTypes = ingredientsStackType;
+// IngredientsStack.propTypes = ingredientsStackType;
 
 const IngredientElem = ({ ingredient }) => {
     const dispatch = useDispatch();
@@ -114,7 +114,7 @@ const IngredientElem = ({ ingredient }) => {
     )
 }
 
-IngredientElem.propTypes = ingredientElemType;
+// IngredientElem.propTypes = ingredientElemType;
 
 export const BurgerIngredients = () => {
     const [current, setCurrent] = React.useState('burger');

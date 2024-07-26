@@ -1,12 +1,33 @@
-import { useSelector } from "react-redux";
+import React, { FC } from "react";
 import OrderDetailsStyles from "./style.module.css";
 import done from "../../../../shared/images/done.svg"
 import { checkOnUndefined } from "../../../../shared/utils/checks";
+import { useTypedSelector } from "../../../../shared/hooks/useTypedSelector";
+import { IIngredient } from "../../../../shared/types/types";
 
-export const OrderDetails = () => {
-    const orderData = useSelector(store => store.orderDetails.order);
+interface IOrderData {
+    type: string;
+    order: {
+        name: string;
+        success: boolean;
+        order: {
+            createdAt: string;
+            ingredients: IIngredient[];
+            name: string;
+            number: number
+            owner: { name: string, email: string, createdAt: string, updatedAt: string }
+            price: number
+            status: string
+            updatedAt: string
+            _id: string
+        }
+    }
+}
 
-    const orderNumber = (data) => {
+export const OrderDetails: FC = () => {
+    const orderData = useTypedSelector(store => store.orderDetails.order);
+
+    const orderNumber = (data: IOrderData): number | undefined => {
         if (checkOnUndefined(data.order)) {
             return data.order.order.number;
         }

@@ -6,8 +6,9 @@ export const GET_ORDER_DETAILS_FAILED = 'GET_ORDER_DETAILS_FAILED';
 
 export const CLEAR_ORDER_DETAILS = 'CLEAR_ORDER_DETAILS';
 
-export function getOrderDetails(data) {
+export function getOrderDetails(data: string[]) {
     return function (dispatch) {
+        console.log(dispatch)
         dispatch({
             type: GET_ORDER_DETAILS_REQUEST
         });

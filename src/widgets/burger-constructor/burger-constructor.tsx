@@ -1,39 +1,42 @@
-import { useCallback, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { FC, useCallback, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDrag, useDrop } from "react-dnd";
+import type { Identifier, XYCoord } from 'dnd-core'
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+
+import { OrderDetails } from "./components/order-details/order-details";
+import { Modal } from "../../shared/components/modal/modal";
+import { useModal } from "../../shared/hooks/useModal";
+import { DELETE_INGREDIENT_BURGER_CONSTRUCTOR, SWAP_INGREDIENTS, addIngredient } from "../../shared/services/actions/burger-constructor";
+import { DECREASE_BUN_COUNTER, DECREASE_INGREDIENT_COUNTER, INCREASE_INGREDIENT_COUNTER } from "../../shared/services/actions/burger-ingredients";
+import { CLEAR_ORDER_DETAILS, getOrderDetails } from "../../shared/services/actions/order-details";
+import { useTypedSelector } from "../../shared/hooks/useTypedSelector";
+import { IBun, IFilling, IOffStackListElementType, IOrder, IStackListElementType } from "../../shared/types/types";
+import { calcTotal } from "../../shared/utils/calculating";
 
 import BurgerConstructorStyles from "./css/style.module.css"
 
-import { Modal } from "../../shared/components/modal/modal";
-import { OrderDetails } from "./components/order-details/order-details";
-import { infoType, offStackListElementType, stackListElementType } from "../../shared/utils/types";
-import { useModal } from "../../shared/hooks/useModal";
-import { DELETE_INGREDIENT_BURGER_CONSTRUCTOR, SWAP_INGREDIENTS, addIngredient } from "../../shared/services/actions/burger-constructor";
-import { checkEmptyArr } from "../../shared/utils/checks";
-import { DECREASE_BUN_COUNTER, DECREASE_INGREDIENT_COUNTER, INCREASE_INGREDIENT_COUNTER } from "../../shared/services/actions/burger-ingredients";
-import { CLEAR_ORDER_DETAILS, getOrderDetails } from "../../shared/services/actions/order-details";
-import { useLocation, useNavigate } from "react-router-dom";
+interface IInfo {
+    constructorModal: () => void
+}
 
-const Info = (props) => {
+const Info: FC<IInfo> = (props) => {
     const navigate = useNavigate()
     const location = useLocation();
-    const arr = useSelector(store => store.order);
-    const user = useSelector((store) => store.auth.email);
-
-    const calcTotal = (data) => {
-        let price = (checkEmptyArr(data.fillings)) ? (data.fillings.reduce((sum, current) => sum + current.ingredient.price, 0)) : 0;
-        return price += (data.bun !== null) ? (data.bun.price * 2) : 0;
-    }
+    const arr = useTypedSelector(store => store.order);
+    const user = useTypedSelector(store => store.auth.email);
 
     const dispatch = useDispatch();
 
-    const orderDetailsArr = (arr) => {
-            let tempArr = [];
-            tempArr.push(arr.bun._id);
-            arr.fillings.map(ingredient => tempArr.push(ingredient.ingredient._id));
-            tempArr.push(arr.bun._id);
+    const orderDetailsArr = (data: IOrder): (string[] | undefined)  => {
+        if (data.bun !== null) {
+            const tempArr = [];
+            tempArr.push(data.bun._id);
+            data.fillings.map(ingredient => tempArr.push(ingredient.ingredient._id));
+            tempArr.push(data.bun._id);
             return tempArr;
+        }
     }
 
     return (
@@ -53,10 +56,9 @@ const Info = (props) => {
         </div>
     )
 }
+// Info.propTypes = infoType;
 
-Info.propTypes = infoType;
-
-const OffStackListElement = (props) => {
+const OffStackListElement: FC<IOffStackListElementType> = (props) => {
     return (
         <div className={BurgerConstructorStyles.offStackListElement}>
             <ConstructorElement
@@ -69,11 +71,17 @@ const OffStackListElement = (props) => {
         </div>
     )
 }
+// OffStackListElement.propTypes = offStackListElementType;
 
-OffStackListElement.propTypes = offStackListElementType;
+interface DragItem {
+    index: number
+    id: string
+    type: string
+  }
 
-const StackListElement = ({ ingredient, id, index, swap }) => {
-    const ref = useRef(null);
+const StackListElement: FC<IStackListElementType> = ({ ingredient, id, index, swap }) => {
+
+    const ref = useRef<HTMLDivElement>(null);
 
     const [{ isDragging }, dragRef] = useDrag({
         type: "self",
@@ -85,14 +93,15 @@ const StackListElement = ({ ingredient, id, index, swap }) => {
         }),
     });
 
-    const [{ handlerId }, dropRef] = useDrop({
+    const [{ handlerId }, dropRef] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
         accept: "self",
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId(),
             }
         },
-        hover(item, monitor) {
+        hover(item: DragItem, monitor) {
+            console.log(item)
             if (!ref.current) {
                 return
             }
@@ -105,7 +114,7 @@ const StackListElement = ({ ingredient, id, index, swap }) => {
             const hoverMiddleY =
                 (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
             const clientOffset = monitor.getClientOffset()
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top
+            const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
 
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return
@@ -135,24 +144,23 @@ const StackListElement = ({ ingredient, id, index, swap }) => {
                 price={ingredient.price}
                 thumbnail={ingredient.image}
                 handleClose={() => {
-                    deleteIngredient(ingredient)
+                    deleteIngredient()
                 }}
             />
         </div>
     )
 }
+// StackListElement.propTypes = stackListElementType;
 
-StackListElement.propTypes = stackListElementType;
-
-const StackList = () => {
-    const fillings = useSelector(store => store.order.fillings);
+const StackList: FC = () => {
+    const fillings = useTypedSelector(store => store.order.fillings);
 
     const dispatch = useDispatch();
-    const swapIngredients = (dragIndex, hoverIndex) => {
+    const swapIngredients = (dragIndex: number, hoverIndex: number) => {
         dispatch({ type: SWAP_INGREDIENTS, dragIndex, hoverIndex })
     }
 
-    const renderIngredient = useCallback((ingredient, index) => {
+    const renderIngredient = useCallback((ingredient: IFilling, index: number) => {
         return (
             <StackListElement
                 key={ingredient.id}
@@ -172,20 +180,19 @@ const StackList = () => {
 }
 
 const ConstructorComponent = () => {
-    const bun = useSelector(store => store.order.bun);
+    const bun = useTypedSelector(store => store.order.bun);
 
     const dispatch = useDispatch();
-    const dropIngredient = (ingredient) => {
-
+    const dropIngredient = (ingredient: IBun) => {
         dispatch(addIngredient(ingredient));
 
         if (ingredient.ingredient.type === 'bun') {
-            if ( bun === null) {
+            if (bun === null) {
                 dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
                 dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
             } else {
-                dispatch({type: DECREASE_BUN_COUNTER, bun});
-                dispatch({type: DECREASE_BUN_COUNTER, bun});
+                dispatch({ type: DECREASE_BUN_COUNTER, bun });
+                dispatch({ type: DECREASE_BUN_COUNTER, bun });
                 dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
                 dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
             }
@@ -196,7 +203,7 @@ const ConstructorComponent = () => {
 
     const [, dropTarget] = useDrop({
         accept: "ingredient",
-        drop(itemId) {
+        drop(itemId: IBun | IFilling) {
             dropIngredient(itemId)
         }
     });

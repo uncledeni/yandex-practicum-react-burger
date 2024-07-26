@@ -40,7 +40,7 @@ export const Modal = (props) => {
     );
 }
 
-Modal.propTypes = {
-    handlerOpen: PropTypes.func,
-    isOpen: PropTypes.bool
-}
+// Modal.propTypes = {
+//     handlerOpen: PropTypes.func,
+//     isOpen: PropTypes.bool
+// }
