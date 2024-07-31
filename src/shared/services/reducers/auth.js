@@ -10,7 +10,8 @@ const initialState = {
     email: '',
     name: '',
     loginRequest: false,
-    loginFailed: false
+    loginFailed: false,
+    isAuthChecked: false
 }
 
 export const authReducer = (state = initialState, action) => {

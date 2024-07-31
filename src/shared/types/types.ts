@@ -1,3 +1,5 @@
+export type TODO_ANY = any;
+
 export interface IIngredientDetailsType {
     image_large: string;
     name: string;
@@ -72,4 +74,23 @@ export interface IOrder {
 export interface IDragItem {
     id: string;
     index: number;
+}
+
+export interface IOrderData {
+    type: string;
+    order: {
+        name: string;
+        success: boolean;
+        order: {
+            createdAt: string;
+            ingredients: IIngredient[];
+            name: string;
+            number: number
+            owner: { name: string, email: string, createdAt: string, updatedAt: string }
+            price: number
+            status: string
+            updatedAt: string
+            _id: string
+        }
+    }
 }

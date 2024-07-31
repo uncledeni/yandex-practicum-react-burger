@@ -1,16 +1,18 @@
+import { IFilling, TODO_ANY } from "../types/types";
+
 export const checkEmptyObj = (obj) => {
     return !(Object.keys(obj).length === 0)
 }
 
-export const checkEmptyArr = (arr) => {
+export const checkEmptyArr = (arr: IFilling[]): boolean => {
     return (arr.length > 0);
 }
 
-export const checkOnUndefined = (data) => {
+export const checkOnUndefined = (data: TODO_ANY): boolean => {
     return !(data === undefined);
 }
 
-export const checkOnNull = (data) => {
+export const checkOnNull = (data: TODO_ANY): boolean => {
     return !(data === null)
 }
 

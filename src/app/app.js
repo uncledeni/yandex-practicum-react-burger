@@ -12,7 +12,7 @@ import { ErrorPage } from '../pages/error/error';
 import { IngredientPage } from '../pages/ingredient-info/ingredient-page/ingredient-page';
 import { OnlyAuth, OnlyUnAuth } from '../shared/utils/protected-route';
 import { checkUserAuth } from '../shared/services/actions/auth';
-import { IngredientDetailsModal } from '../widgets/burger-ingredients/components/ingredient-details-modal/ingredient-details';
+import { IngredientDetailsModal } from '../widgets/burger-ingredients/components/ingredient-details-modal/ingredient-details-modal';
 import { AppHeader } from '../widgets/app-header';
 import { getBurgerIngredients } from "../shared/services/actions/burger-ingredients";
 

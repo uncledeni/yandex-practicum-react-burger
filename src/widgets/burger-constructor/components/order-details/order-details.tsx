@@ -3,26 +3,7 @@ import OrderDetailsStyles from "./style.module.css";
 import done from "../../../../shared/images/done.svg"
 import { checkOnUndefined } from "../../../../shared/utils/checks";
 import { useTypedSelector } from "../../../../shared/hooks/useTypedSelector";
-import { IIngredient } from "../../../../shared/types/types";
-
-interface IOrderData {
-    type: string;
-    order: {
-        name: string;
-        success: boolean;
-        order: {
-            createdAt: string;
-            ingredients: IIngredient[];
-            name: string;
-            number: number
-            owner: { name: string, email: string, createdAt: string, updatedAt: string }
-            price: number
-            status: string
-            updatedAt: string
-            _id: string
-        }
-    }
-}
+import { IOrderData } from "../../../../shared/types/types";
 
 export const OrderDetails: FC = () => {
     const orderData = useTypedSelector(store => store.orderDetails.order);

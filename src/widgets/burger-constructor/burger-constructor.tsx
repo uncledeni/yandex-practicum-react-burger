@@ -12,7 +12,7 @@ import { DELETE_INGREDIENT_BURGER_CONSTRUCTOR, SWAP_INGREDIENTS, addIngredient }
 import { DECREASE_BUN_COUNTER, DECREASE_INGREDIENT_COUNTER, INCREASE_INGREDIENT_COUNTER } from "../../shared/services/actions/burger-ingredients";
 import { CLEAR_ORDER_DETAILS, getOrderDetails } from "../../shared/services/actions/order-details";
 import { useTypedSelector } from "../../shared/hooks/useTypedSelector";
-import { IBun, IFilling, IOffStackListElementType, IOrder, IStackListElementType } from "../../shared/types/types";
+import { IBun, IFilling, IOffStackListElementType, IOrder, IStackListElementType, TODO_ANY } from "../../shared/types/types";
 import { calcTotal } from "../../shared/utils/calculating";
 
 import BurgerConstructorStyles from "./css/style.module.css"
@@ -24,10 +24,10 @@ interface IInfo {
 const Info: FC<IInfo> = (props) => {
     const navigate = useNavigate()
     const location = useLocation();
-    const arr = useTypedSelector(store => store.order);
+    const arr: IOrder = useTypedSelector(store => store.order);
     const user = useTypedSelector(store => store.auth.email);
 
-    const dispatch = useDispatch();
+    const dispatch: TODO_ANY = useDispatch();
 
     const orderDetailsArr = (data: IOrder): (string[] | undefined)  => {
         if (data.bun !== null) {
@@ -35,6 +35,7 @@ const Info: FC<IInfo> = (props) => {
             tempArr.push(data.bun._id);
             data.fillings.map(ingredient => tempArr.push(ingredient.ingredient._id));
             tempArr.push(data.bun._id);
+            console.log(tempArr);
             return tempArr;
         }
     }
@@ -129,7 +130,6 @@ const StackListElement: FC<IStackListElementType> = ({ ingredient, id, index, sw
     const opacity = isDragging ? 0 : 1
     dragRef(dropRef(ref))
 
-
     const dispatch = useDispatch();
     const deleteIngredient = () => {
         dispatch({ type: DELETE_INGREDIENT_BURGER_CONSTRUCTOR, id });
@@ -150,7 +150,6 @@ const StackListElement: FC<IStackListElementType> = ({ ingredient, id, index, sw
         </div>
     )
 }
-// StackListElement.propTypes = stackListElementType;
 
 const StackList: FC = () => {
     const fillings = useTypedSelector(store => store.order.fillings);

@@ -1,15 +1,16 @@
 import React, { useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrag } from "react-dnd";
 
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import BurgerIngredientsStyles from "./css/style.module.css";
 import { ingredientElemType, ingredientsStackType } from "../../shared/types/types";
-import { useDispatch, useSelector } from "react-redux";
 import { GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
-import { useDrag } from "react-dnd";
-import { Link, useLocation } from "react-router-dom";
+
+import BurgerIngredientsStyles from "./css/style.module.css";
 
 const BUN_TYPE = "bun";
 const MAIN_TYPE = "main";

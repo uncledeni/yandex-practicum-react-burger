@@ -1,9 +1,19 @@
-import { useSelector } from "react-redux"
+import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
-const Protected = ({ onlyUnAuth = false, component }) => {
-    const isAuthChecked = useSelector((store) => store.auth.isAuthChecked);
-    const user = useSelector((store) => store.auth.email);
+interface IProtected {
+    onlyUnAuth: boolean,
+    component: JSX.Element
+}
+
+interface IComponent {
+    component: JSX.Element
+}
+
+const Protected = ({ onlyUnAuth = false, component }: IProtected): JSX.Element | null => {
+    const isAuthChecked = useTypedSelector(store => store.auth.isAuthChecked);
+    const user = useTypedSelector((store) => store.auth.email);
     const location = useLocation();
 
     if (!isAuthChecked) {
@@ -27,6 +37,6 @@ const Protected = ({ onlyUnAuth = false, component }) => {
 }
 
 export const OnlyAuth = Protected;
-export const OnlyUnAuth = ({ component }) => (
+export const OnlyUnAuth = ({ component }: IComponent): JSX.Element | null => (
     <Protected onlyUnAuth={true} component={component} />
 )
