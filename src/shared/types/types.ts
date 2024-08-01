@@ -94,3 +94,32 @@ export interface IOrderData {
         }
     }
 }
+
+export interface ILoginData {
+    email: string;
+    password: string;
+}
+
+export interface IUserData extends ILoginData {
+    name: string;
+}
+
+export interface IResetPassword {
+    password: string;
+    code: string;
+}
+
+export interface IResetPasswordCode {
+    email: string;
+}
+
+export interface IPostOrder {
+    ingredients: string[]
+}
+
+export interface IActionBlock {
+    link: string;
+    title: string;
+    linkTitle: string;
+    extraClass?: string;
+}

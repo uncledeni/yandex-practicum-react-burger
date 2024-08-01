@@ -1,3 +1,4 @@
+import React, { FC } from 'react';
 import { useRef } from 'react';
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -7,7 +8,7 @@ import { useForm } from '../../../shared/hooks/useForm';
 
 import RegistrationStyles from "./css/style.module.css";
 
-export const RegistrationPage = () => {
+export const RegistrationPage: FC = () => {
     const { values, handleChange } = useForm({ email: '', password: '', name: '' });
 
     const inputRef = useRef(null)

@@ -1,15 +1,16 @@
+import React from 'react';
 import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { ProfileNavbar } from '../components/profile-navbar/profile-navbar';
 import { patchUserData } from '../../../shared/api/get-data-service';
 import { useForm } from '../../../shared/hooks/useForm';
+import { useTypedSelector } from '../../../shared/hooks/useTypedSelector';
 
 import ProfileStyles from "./css/style.module.css";
 
 export const ProfilePage = () => {
-    const auth = useSelector(store => store.auth);
+    const auth = useTypedSelector(store => store.auth);
     const [isEditable, setIsEditable] = useState(false);
     const { values, handleChange, setValues } = useForm({ name: auth.name, email: auth.email, password: '',  });
 

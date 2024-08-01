@@ -7,25 +7,26 @@ import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { ingredientElemType, ingredientsStackType } from "../../shared/types/types";
 import { GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
 
 import BurgerIngredientsStyles from "./css/style.module.css";
 
-const BUN_TYPE = "bun";
-const MAIN_TYPE = "main";
-const SAUCE_TYPE = "sauce";
+enum IngredientTypes {
+    bun = 'bun',
+    main = 'main',
+    sauce = 'sauce'
+}
 
 const IngredientsTabs = ({ current }) => {
     return (
         <div className={BurgerIngredientsStyles.ingredientsTabsContainer}>
-            <Tab value="burger" active={current === 'burger'} >
+            <Tab value={IngredientTypes.bun} active={current === IngredientTypes.bun} >
                 Булки
             </Tab>
-            <Tab value="filling" active={current === 'filling'} >
+            <Tab value={IngredientTypes.main} active={current === IngredientTypes.main} >
                 Начинки
             </Tab>
-            <Tab value="sauce" active={current === 'sauce'} >
+            <Tab value={IngredientTypes.sauce} active={current === IngredientTypes.sauce} >
                 Соусы
             </Tab>
         </div>
@@ -33,30 +34,30 @@ const IngredientsTabs = ({ current }) => {
 }
 
 const Ingredients = ({ setCurrentTab }) => {
-    let location = useLocation();
+    const location = useLocation();
 
-    const bunRef = useRef(null);
-    const sauceRef = useRef(null);
-    const mainRef = useRef(null);
+    const bunRef = useRef<HTMLParagraphElement>(null);
+    const sauceRef = useRef<HTMLParagraphElement>(null);
+    const mainRef = useRef<HTMLParagraphElement>(null);
 
     const onEditClick = () => {
         if (bunRef.current.getBoundingClientRect().top > 0) {
-            setCurrentTab('burger');
+            setCurrentTab(IngredientTypes.bun);
         } else if (mainRef.current.getBoundingClientRect().top > 0) {
-            setCurrentTab('filling');
+            setCurrentTab(IngredientTypes.main);
         } else if (sauceRef.current.getBoundingClientRect().top > 0) {
-            setCurrentTab('sauce');
+            setCurrentTab(IngredientTypes.sauce);
         } else {
-            setCurrentTab('sauce');
+            setCurrentTab(IngredientTypes.sauce);
         }
     };
 
     return (
         <div onScroll={() => onEditClick()} className={BurgerIngredientsStyles.ingredientsListWrapper}>
             <div className={BurgerIngredientsStyles.ingredientsList}>
-                <IngredientsStack location={location} scrollRef={bunRef} title="Булки" type={BUN_TYPE} />
-                <IngredientsStack location={location} scrollRef={mainRef} title="Начинка" type={MAIN_TYPE} />
-                <IngredientsStack location={location} scrollRef={sauceRef} title="Соусы" type={SAUCE_TYPE} />
+                <IngredientsStack location={location} scrollRef={bunRef} title="Булки" type={IngredientTypes.bun} />
+                <IngredientsStack location={location} scrollRef={mainRef} title="Начинка" type={IngredientTypes.main} />
+                <IngredientsStack location={location} scrollRef={sauceRef} title="Соусы" type={IngredientTypes.sauce} />
             </div>
         </div>
     )
@@ -107,7 +108,7 @@ const IngredientElem = ({ ingredient }) => {
                 <img className={BurgerIngredientsStyles.ingredientElemIllustration} src={ingredient.image} alt={`${ingredient.name}`} />
                 <div className={BurgerIngredientsStyles.ingredientElemPrice}>
                     <p className="text text_type_digits-default">{ingredient.price}</p>
-                    <CurrencyIcon />
+                    <CurrencyIcon type="primary" />
                 </div>
                 <h3 className={`${BurgerIngredientsStyles.ingredientElemName} text text_type_main-default`}>{ingredient.name}</h3>
             </div>
@@ -118,7 +119,7 @@ const IngredientElem = ({ ingredient }) => {
 // IngredientElem.propTypes = ingredientElemType;
 
 export const BurgerIngredients = () => {
-    const [current, setCurrent] = React.useState('burger');
+    const [current, setCurrent] = React.useState<string>(IngredientTypes.bun);
 
     return (
         <div className={BurgerIngredientsStyles.burgerIngredientsWrapper}>

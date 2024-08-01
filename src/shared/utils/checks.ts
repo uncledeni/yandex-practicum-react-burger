@@ -32,7 +32,7 @@ const checkSuccess = (res) => {
 
 const BASE_URL = 'https://norma.nomoreparties.space/api/'
 
-export const request = async (endpoint, options) => {
+export const request = async (endpoint: string, options?: TODO_ANY) => {
     return fetch(`${BASE_URL}${endpoint}`, options)
         .then(checkResponse)
         .then(checkSuccess)
@@ -42,7 +42,7 @@ const checkReponseWithRefresh = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-const refreshToken = async (endpoint) => {
+const refreshToken = async (endpoint: string) => {
     return fetch(`${BASE_URL}${endpoint}`, {
         method: "POST",
         headers: {
@@ -65,7 +65,7 @@ const refreshToken = async (endpoint) => {
         });
 };
 
-export const fetchWithRefresh = async (endpoint, options) => {
+export const fetchWithRefresh = async (endpoint: string, options?: TODO_ANY) => {
     try {
         const res = await fetch(`${BASE_URL}${endpoint}`, options);
         return await checkReponseWithRefresh(res);

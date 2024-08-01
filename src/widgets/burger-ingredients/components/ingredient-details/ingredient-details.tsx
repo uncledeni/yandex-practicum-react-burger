@@ -1,19 +1,21 @@
 import React, { useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { GET_INGREDIENT_DETAILS } from "../../../../shared/services/actions/ingredient-details";
 
 import BurgerIngredientsModalStyles from "./style.module.css";
+import { useTypedSelector } from "../../../../shared/hooks/useTypedSelector";
+import { IIngredient } from "../../../../shared/types/types";
 
 export const IngredientDetails = () => {
-    const ingredients = useSelector(store => store.ingredients.ingredients);
-    const ingredient = useSelector(store => store.ingredientsDetails.details);
+    const ingredients: IIngredient[] = useTypedSelector(store => store.ingredients.ingredients);
+    const ingredient: IIngredient = useTypedSelector(store => store.ingredientsDetails.details);
     const { id } = useParams();
     const dispatch = useDispatch();
 
-    const getIngredientDetails = useCallback((ingredient) => {
-        dispatch({ type: GET_INGREDIENT_DETAILS, details: ingredient })
+    const getIngredientDetails = useCallback((ingredients: IIngredient[]) => {
+        dispatch({ type: GET_INGREDIENT_DETAILS, details: ingredients })
     }, [dispatch])   
 
     useEffect(() => {

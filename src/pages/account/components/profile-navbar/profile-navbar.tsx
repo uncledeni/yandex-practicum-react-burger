@@ -1,3 +1,4 @@
+import React from 'react';
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../../shared/services/actions/auth";
@@ -8,7 +9,6 @@ export const ProfileNavbar = () => {
     const dispatch = useDispatch();
 
     return (
-        // 
         <div className={`${ProfileNavbarStyles.profileNavbarContainer} ml-15`}>
             <nav className={`${ProfileNavbarStyles.profileNavbar}`}>
                 <NavLink to={'/profile'} className={({ isActive }) => {

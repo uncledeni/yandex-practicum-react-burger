@@ -1,13 +1,14 @@
+import React, { FC } from 'react';
 import { IngredientDetails } from "../../../widgets/burger-ingredients/components/ingredient-details/ingredient-details";
 
 import IngredientPageStyles from "./css/style.module.css";
 
-export const IngredientPage = () => {
+export const IngredientPage: FC = () => {
     return (
-        <mian className={IngredientPageStyles.pageWrapper}>
+        <main className={IngredientPageStyles.pageWrapper}>
             <div className={IngredientPageStyles.mainWrapper}>
                 <IngredientDetails />
             </div>
-        </mian>
+        </main>
     )
 }

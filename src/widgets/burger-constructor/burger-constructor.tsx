@@ -35,7 +35,6 @@ const Info: FC<IInfo> = (props) => {
             tempArr.push(data.bun._id);
             data.fillings.map(ingredient => tempArr.push(ingredient.ingredient._id));
             tempArr.push(data.bun._id);
-            console.log(tempArr);
             return tempArr;
         }
     }
@@ -44,7 +43,7 @@ const Info: FC<IInfo> = (props) => {
         <div className={BurgerConstructorStyles.burgerConstructorInfoWrapper}>
             <div className={BurgerConstructorStyles.burgerConstructorInfoPrice}>
                 <p className="text text_type_digits-medium">{calcTotal(arr)}</p>
-                <CurrencyIcon />
+                <CurrencyIcon type="primary" />
             </div>
             <Button disabled={(arr.bun === null)} htmlType="button" type="primary" size="medium" onClick={() => {
                 if (user) {
@@ -57,7 +56,6 @@ const Info: FC<IInfo> = (props) => {
         </div>
     )
 }
-// Info.propTypes = infoType;
 
 const OffStackListElement: FC<IOffStackListElementType> = (props) => {
     return (
@@ -72,7 +70,6 @@ const OffStackListElement: FC<IOffStackListElementType> = (props) => {
         </div>
     )
 }
-// OffStackListElement.propTypes = offStackListElementType;
 
 interface DragItem {
     index: number
@@ -102,7 +99,6 @@ const StackListElement: FC<IStackListElementType> = ({ ingredient, id, index, sw
             }
         },
         hover(item: DragItem, monitor) {
-            console.log(item)
             if (!ref.current) {
                 return
             }

@@ -1,3 +1,4 @@
+import React, { FC } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -7,13 +8,13 @@ import { useForm } from '../../../shared/hooks/useForm';
 
 import ForgotPasswordStyles from "./css/style.module.css";
 
-export const ForgotPasswordPage = () => {
+export const ForgotPasswordPage: FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { values, handleChange } = useForm({ email: '', password: '', name: '' });
 
     return (
-        <mian className={ForgotPasswordStyles.pageWrapper}>
+        <main className={ForgotPasswordStyles.pageWrapper}>
             <div className={ForgotPasswordStyles.mainWrapper}>
                 <form className={ForgotPasswordStyles.mainContainer} onSubmit={(e) => {
                     e.preventDefault();
@@ -39,6 +40,6 @@ export const ForgotPasswordPage = () => {
                     <ActionBlock link={'/login'} title={'Вспомнили пароль?'} linkTitle={'Войти'} />
                 </form>
             </div>
-        </mian>
+        </main>
     )
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -7,11 +7,16 @@ import { ModalOverlay } from "../modal-overlay/modal-overlay";
 
 const modalRoot = document.getElementById("react-modals");
 
-export const Modal = (props) => {
-    const closeModal = () => props.handlerOpen();
+interface IModal {
+    handlerOpen: () => void;
+    children: JSX.Element;
+}
+
+export const Modal: FC<IModal> = ({ handlerOpen, children }) => {
+    const closeModal = () => handlerOpen();
 
     useEffect(() => {
-        function closeByEscape(evt) {
+        function closeByEscape(evt: KeyboardEvent) {
             if (evt.key === 'Escape') {
                 closeModal();
             }
@@ -28,9 +33,9 @@ export const Modal = (props) => {
                 <ModalOverlay handlerOpen={closeModal} />
                 <div className={ModalStyles.modalContainer}>
                     <div className={ModalStyles.modal}>
-                        {props.children}
+                        {children}
                         <span className={`${ModalStyles.closeIcon}`}>
-                            <CloseIcon onClick={() => closeModal()} />
+                            <CloseIcon type='primary' onClick={() => closeModal()} />
                         </span>
                     </div>
                 </div>
