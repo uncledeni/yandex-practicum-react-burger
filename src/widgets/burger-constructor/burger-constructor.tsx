@@ -29,7 +29,7 @@ const Info: FC<IInfo> = (props) => {
 
     const dispatch: TODO_ANY = useDispatch();
 
-    const orderDetailsArr = (data: IOrder): (string[] | undefined)  => {
+    const orderDetailsArr = (data: IOrder): (string[] | undefined) => {
         if (data.bun !== null) {
             const tempArr = [];
             tempArr.push(data.bun._id);
@@ -75,7 +75,7 @@ interface DragItem {
     index: number
     id: string
     type: string
-  }
+}
 
 const StackListElement: FC<IStackListElementType> = ({ ingredient, id, index, swap }) => {
 

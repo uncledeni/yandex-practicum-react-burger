@@ -16,13 +16,13 @@ export const IngredientDetails = () => {
 
     const getIngredientDetails = useCallback((ingredients: IIngredient[]) => {
         dispatch({ type: GET_INGREDIENT_DETAILS, details: ingredients })
-    }, [dispatch])   
+    }, [dispatch])
 
     useEffect(() => {
         if (ingredients.length !== 0) {
             getIngredientDetails(ingredients.find(ingredient => ingredient._id === id))
         }
-    }, [dispatch, ingredients, id ,getIngredientDetails])
+    }, [dispatch, ingredients, id, getIngredientDetails])
 
     return (
         <div className={BurgerIngredientsModalStyles.card}>

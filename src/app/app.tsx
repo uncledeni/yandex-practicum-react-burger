@@ -18,8 +18,8 @@ import { getBurgerIngredients } from "../shared/services/actions/burger-ingredie
 
 function App() {
   const dispatch = useDispatch();
-  let location = useLocation();
-  let state = location.state;
+  const location = useLocation();
+  const state = location.state;
 
   useEffect(() => {
     dispatch(checkUserAuth());

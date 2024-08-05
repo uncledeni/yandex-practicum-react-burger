@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, { FC, useRef } from "react";
+import { Link, useLocation, Location } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useDrag } from "react-dnd";
 
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -10,6 +10,10 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
 
 import BurgerIngredientsStyles from "./css/style.module.css";
+import { useTypedSelector } from "../../shared/hooks/useTypedSelector";
+import { Loader } from "../../shared/components/loader/loader";
+import { checkOnUndefined } from "../../shared/utils/checks";
+import { IIngredient, TODO_ANY } from "../../shared/types/types";
 
 enum IngredientTypes {
     bun = 'bun',
@@ -17,7 +21,11 @@ enum IngredientTypes {
     sauce = 'sauce'
 }
 
-const IngredientsTabs = ({ current }) => {
+interface IIngredientsTabsFC {
+    current: string
+}
+
+const IngredientsTabs: FC<IIngredientsTabsFC> = ({ current }) => {
     return (
         <div className={BurgerIngredientsStyles.ingredientsTabsContainer}>
             <Tab value={IngredientTypes.bun} active={current === IngredientTypes.bun} >
@@ -33,7 +41,11 @@ const IngredientsTabs = ({ current }) => {
     )
 }
 
-const Ingredients = ({ setCurrentTab }) => {
+interface IIngredientsFC {
+    setCurrentTab: (arg0: IngredientTypes) => void
+}
+
+const Ingredients: FC<IIngredientsFC> = ({ setCurrentTab }) => {
     const location = useLocation();
 
     const bunRef = useRef<HTMLParagraphElement>(null);
@@ -63,32 +75,43 @@ const Ingredients = ({ setCurrentTab }) => {
     )
 }
 
-const IngredientsStack = (props) => {
-    const ingredientsData = useSelector(store => store.ingredients.ingredients);
+interface IIngredientsStackFC {
+    location: Location<TODO_ANY>;
+    scrollRef: React.RefObject<HTMLParagraphElement>;
+    title: string;
+    type: IngredientTypes;
+}
+
+const IngredientsStack: FC<IIngredientsStackFC> = ( {scrollRef, title, type, location} ) => {
+    const { ingredients, isLoading } = useTypedSelector(store => store.ingredients);
 
     return (
-        (ingredientsData !== undefined) ?
-            <div className={BurgerIngredientsStyles.ingredientsStackWrapper}>
-                <p ref={props.scrollRef} className={`${BurgerIngredientsStyles.ingredientsStackTitle} text text_type_main-medium`}>{props.title}</p>
+        <div className={BurgerIngredientsStyles.ingredientsStackWrapper}>
+            <p ref={scrollRef} className={`${BurgerIngredientsStyles.ingredientsStackTitle} text text_type_main-medium`}>{title}</p>
+            {checkOnUndefined(ingredients) && <Loader
+                isLoading={isLoading}
+                loadingText="пожалуйста подождите, данные загружаются"
+            >
                 <div className={BurgerIngredientsStyles.ingredientsStackContent}>
-                    {ingredientsData.map((ingredient) => (
-                        (ingredient.type === props.type) &&
-                        <Link key={ingredient._id} to={`/ingredients/${ingredient._id}`} state={{ backgroundLocation: props.location }} >
+                    {ingredients.map((ingredient: IIngredient) => (
+                        (ingredient.type === type) &&
+                        <Link key={ingredient._id} to={`/ingredients/${ingredient._id}`} state={{ backgroundLocation: location }} >
                             <IngredientElem ingredient={ingredient} />
                         </Link>
                     ))}
                 </div>
-            </div>
-            :
-            <></>
+            </Loader>}
+        </div>
     )
 }
 
-// IngredientsStack.propTypes = ingredientsStackType;
+interface IIngredientElemFC {
+    ingredient: IIngredient
+}
 
-const IngredientElem = ({ ingredient }) => {
+const IngredientElem: FC<IIngredientElemFC> = ({ ingredient }) => {
     const dispatch = useDispatch();
-    const getIngredientDetails = (ingredient) => {
+    const getIngredientDetails = (ingredient: IIngredient) => {
         dispatch({ type: GET_INGREDIENT_DETAILS, details: ingredient })
     }
 
@@ -116,9 +139,7 @@ const IngredientElem = ({ ingredient }) => {
     )
 }
 
-// IngredientElem.propTypes = ingredientElemType;
-
-export const BurgerIngredients = () => {
+export const BurgerIngredients: FC = () => {
     const [current, setCurrent] = React.useState<string>(IngredientTypes.bun);
 
     return (
