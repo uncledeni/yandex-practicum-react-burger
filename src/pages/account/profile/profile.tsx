@@ -8,6 +8,7 @@ import { useForm } from '../../../shared/hooks/useForm';
 import { useTypedSelector } from '../../../shared/hooks/useTypedSelector';
 
 import ProfileStyles from "./css/style.module.css";
+import { deepEqual } from '../../../shared/utils/checks';
 
 export const ProfilePage = () => {
     const auth = useTypedSelector(store => store.auth);
@@ -53,20 +54,15 @@ export const ProfilePage = () => {
                                 onChange={handleChange}
                                 value={values.email}
                                 name={'email'}
-                                isIcon={false}
-                                disabled={(!isEditable)}
-                                icon={'EditIcon'}
-                                onIconClick={onIconClick}
+                                isIcon={true}
                             />
                             <PasswordInput
                                 onChange={handleChange}
                                 value={values.password}
                                 name={'password'}
-                                disabled={(!isEditable)}
                                 icon={'EditIcon'}
-                                onIconClick={onIconClick}
                             />
-                            {(isEditable) && <div className={ProfileStyles.buttonsWrapper}>
+                            {(!deepEqual(values, {name: auth.name, email: auth.email, password: ''})) && <div className={ProfileStyles.buttonsWrapper}>
                                 <Button htmlType="button" type="secondary" size="medium" onClick={setDefaultValues}>Отмена</Button>
                                 <Button htmlType="submit" type="primary" size="medium" extraClass="ml-2">Сохранить</Button>
                             </div>}

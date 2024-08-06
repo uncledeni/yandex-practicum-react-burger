@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -9,15 +9,15 @@ import { useForm } from '../../../shared/hooks/useForm';
 
 import ResetPasswordStyles from "./css/style.module.css";
 
-export const ResetPassword: FC = () => {
+export const ResetPassword = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { values, handleChange } = useForm({ password: '', code: '' });
 
-    const codeRef = useRef(null);
+    const codeRef = useRef<HTMLInputElement>(null);
     const onIconClick = () => {
-        setTimeout(() => codeRef.current.focus(), 0)
-        alert('Icon Click Callback')
+        setTimeout(() => { if (codeRef.current !== null) codeRef.current.focus() }, 0);
+        alert('Icon Click Callback');
     }
 
     return (

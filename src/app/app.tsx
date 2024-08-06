@@ -15,9 +15,10 @@ import { checkUserAuth } from '../shared/services/actions/auth';
 import { IngredientDetailsModal } from '../widgets/burger-ingredients/components/ingredient-details-modal/ingredient-details-modal';
 import { AppHeader } from '../widgets/app-header';
 import { getBurgerIngredients } from "../shared/services/actions/burger-ingredients";
+import { TODO_ANY } from '../shared/types/types';
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch: TODO_ANY = useDispatch();
   const location = useLocation();
   const state = location.state;
 
@@ -38,7 +39,7 @@ function App() {
         <Route path="/register" element={<OnlyUnAuth component={<RegistrationPage />} />} />
         <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
         <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword />} />} />
-        <Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
+        <Route path="/profile" element={<OnlyAuth onlyUnAuth={false} component={<ProfilePage />} />} />
         <Route path="/profile/orders" />
         <Route path="/profile/orders/:number" />
         <Route path="/ingredients/:id" element={<IngredientPage />} />

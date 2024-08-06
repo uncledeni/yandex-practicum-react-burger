@@ -4,8 +4,8 @@ import { TODO_ANY } from "../types/types";
 export function useForm(inputValues = {}) {
     const [values, setValues] = useState<TODO_ANY>(inputValues);
 
-    const handleChange = (event) => {
-        const { value, name } = event.target;
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value, name } = e.target;
         setValues({ ...values, [name]: value });
     };
 

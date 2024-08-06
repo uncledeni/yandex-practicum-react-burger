@@ -1,4 +1,4 @@
-import React, { FC, useRef } from "react";
+import React, { useRef } from "react";
 import { Link, useLocation, Location } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useDrag } from "react-dnd";
@@ -25,16 +25,16 @@ interface IIngredientsTabsFC {
     current: string
 }
 
-const IngredientsTabs: FC<IIngredientsTabsFC> = ({ current }) => {
+const IngredientsTabs = ({ current }: IIngredientsTabsFC) => {
     return (
         <div className={BurgerIngredientsStyles.ingredientsTabsContainer}>
-            <Tab value={IngredientTypes.bun} active={current === IngredientTypes.bun} >
+            <Tab onClick={() => { return }} value={IngredientTypes.bun} active={current === IngredientTypes.bun} >
                 Булки
             </Tab>
-            <Tab value={IngredientTypes.main} active={current === IngredientTypes.main} >
+            <Tab onClick={() => { return }} value={IngredientTypes.main} active={current === IngredientTypes.main} >
                 Начинки
             </Tab>
-            <Tab value={IngredientTypes.sauce} active={current === IngredientTypes.sauce} >
+            <Tab onClick={() => { return }} value={IngredientTypes.sauce} active={current === IngredientTypes.sauce} >
                 Соусы
             </Tab>
         </div>
@@ -45,7 +45,7 @@ interface IIngredientsFC {
     setCurrentTab: (arg0: IngredientTypes) => void
 }
 
-const Ingredients: FC<IIngredientsFC> = ({ setCurrentTab }) => {
+const Ingredients = ({ setCurrentTab }: IIngredientsFC) => {
     const location = useLocation();
 
     const bunRef = useRef<HTMLParagraphElement>(null);
@@ -53,14 +53,16 @@ const Ingredients: FC<IIngredientsFC> = ({ setCurrentTab }) => {
     const mainRef = useRef<HTMLParagraphElement>(null);
 
     const onEditClick = () => {
-        if (bunRef.current.getBoundingClientRect().top > 0) {
-            setCurrentTab(IngredientTypes.bun);
-        } else if (mainRef.current.getBoundingClientRect().top > 0) {
-            setCurrentTab(IngredientTypes.main);
-        } else if (sauceRef.current.getBoundingClientRect().top > 0) {
-            setCurrentTab(IngredientTypes.sauce);
-        } else {
-            setCurrentTab(IngredientTypes.sauce);
+        if ((bunRef.current !== null) && (mainRef.current !== null) && (sauceRef.current !== null)) {
+            if (bunRef.current.getBoundingClientRect().top > 0) {
+                setCurrentTab(IngredientTypes.bun);
+            } else if (mainRef.current.getBoundingClientRect().top > 0) {
+                setCurrentTab(IngredientTypes.main);
+            } else if (sauceRef.current.getBoundingClientRect().top > 0) {
+                setCurrentTab(IngredientTypes.sauce);
+            } else {
+                setCurrentTab(IngredientTypes.sauce);
+            }
         }
     };
 
@@ -82,7 +84,7 @@ interface IIngredientsStackFC {
     type: IngredientTypes;
 }
 
-const IngredientsStack: FC<IIngredientsStackFC> = ( {scrollRef, title, type, location} ) => {
+const IngredientsStack = ({ scrollRef, title, type, location }: IIngredientsStackFC) => {
     const { ingredients, isLoading } = useTypedSelector(store => store.ingredients);
 
     return (
@@ -109,7 +111,7 @@ interface IIngredientElemFC {
     ingredient: IIngredient
 }
 
-const IngredientElem: FC<IIngredientElemFC> = ({ ingredient }) => {
+const IngredientElem = ({ ingredient }: IIngredientElemFC) => {
     const dispatch = useDispatch();
     const getIngredientDetails = (ingredient: IIngredient) => {
         dispatch({ type: GET_INGREDIENT_DETAILS, details: ingredient })
@@ -139,7 +141,7 @@ const IngredientElem: FC<IIngredientElemFC> = ({ ingredient }) => {
     )
 }
 
-export const BurgerIngredients: FC = () => {
+export const BurgerIngredients = () => {
     const [current, setCurrent] = React.useState<string>(IngredientTypes.bun);
 
     return (

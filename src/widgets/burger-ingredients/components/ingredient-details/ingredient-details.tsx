@@ -3,14 +3,14 @@ import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { GET_INGREDIENT_DETAILS } from "../../../../shared/services/actions/ingredient-details";
-
-import BurgerIngredientsModalStyles from "./style.module.css";
 import { useTypedSelector } from "../../../../shared/hooks/useTypedSelector";
 import { IIngredient } from "../../../../shared/types/types";
 
+import BurgerIngredientsModalStyles from "./style.module.css";
+
 export const IngredientDetails = () => {
-    const ingredients: IIngredient[] = useTypedSelector(store => store.ingredients.ingredients);
-    const ingredient: IIngredient = useTypedSelector(store => store.ingredientsDetails.details);
+    const ingredients = useTypedSelector(store => store.ingredients.ingredients);
+    const ingredient = useTypedSelector(store => store.ingredientsDetails.details);
     const { id } = useParams();
     const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ export const IngredientDetails = () => {
 
     useEffect(() => {
         if (ingredients.length !== 0) {
-            getIngredientDetails(ingredients.find(ingredient => ingredient._id === id))
+            getIngredientDetails(ingredients.find((ingredient: IIngredient) => ingredient._id === id))
         }
     }, [dispatch, ingredients, id, getIngredientDetails])
 

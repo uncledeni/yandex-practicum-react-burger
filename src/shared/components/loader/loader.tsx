@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 
 interface ILoader {
     isLoading: boolean;
@@ -6,7 +6,7 @@ interface ILoader {
     children: JSX.Element;
 }
 
-export const Loader: FC<ILoader> = ({ isLoading, loadingText, children }) => {
+export const Loader = ({ isLoading, loadingText, children }: ILoader) => {
     return (
         <>
             {(isLoading) ?

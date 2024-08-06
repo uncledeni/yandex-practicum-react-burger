@@ -1,8 +1,9 @@
 import { IFilling, TODO_ANY } from "../types/types";
+const BASE_URL = 'https://norma.nomoreparties.space/api/'
 
-export const checkEmptyObj = (obj) => {
-    return !(Object.keys(obj).length === 0)
-}
+// export const checkEmptyObj = (obj) => {
+//     return !(Object.keys(obj).length === 0)
+// }
 
 export const checkEmptyArr = (arr: IFilling[]): boolean => {
     return (arr.length > 0);
@@ -16,34 +17,37 @@ export const checkOnNull = (data: TODO_ANY): boolean => {
     return !(data === null)
 }
 
-const checkResponse = (res) => {
-    if (res.ok) {
-        return res.json();
+export const deepEqual = (a: TODO_ANY, b: TODO_ANY) => {
+    if (a === b) return true;
+    if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') return false;
+    const keysA = Object.keys(a), keysB = Object.keys(b);
+    if (keysA.length !== keysB.length) return false;
+    for (const key of keysA) {
+      if (!keysB.includes(key) || !deepEqual(a[key], b[key])) return false;
     }
-    return Promise.reject(`Ошибка HTTP: ${res.status}`);
+    return true;
+  }
+
+const checkResponse = <T>(res: Response): Promise<T> => {
+    return res.ok ? res.json() : res.json().then((err) => Promise.reject(`Ошибка: ${err}`));
 };
 
-const checkSuccess = (res) => {
-    if (res && res.success) {
-        return res;
-    }
-    return Promise.reject(`Ответ не success: ${res}`);
-};
+type TServerResponse<T> = {
+    success: boolean;
+} & T;
 
-const BASE_URL = 'https://norma.nomoreparties.space/api/'
+type TRefreshResponse = TServerResponse<{
+    refreshToken: string;
+    accessToken: string;
+}>
 
-export const request = async (endpoint: string, options?: TODO_ANY) => {
+export const request = async (endpoint: RequestInfo, options?: TODO_ANY) => {
     return fetch(`${BASE_URL}${endpoint}`, options)
         .then(checkResponse)
-        .then(checkSuccess)
 };
 
-const checkReponseWithRefresh = (res) => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-};
-
-const refreshToken = async (endpoint: string) => {
-    return fetch(`${BASE_URL}${endpoint}`, {
+const refreshToken = async () => {
+    return fetch(`${BASE_URL}/auth/token`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -52,7 +56,7 @@ const refreshToken = async (endpoint: string) => {
             token: localStorage.getItem("refreshToken"),
         }),
     })
-        .then(checkReponseWithRefresh)
+        .then((res: Response) => checkResponse<TRefreshResponse>(res))
         // !! Важно для обновления токена в мидлваре, чтобы запись
         // была тут, а не в fetchWithRefresh
         .then((refreshData) => {
@@ -65,16 +69,16 @@ const refreshToken = async (endpoint: string) => {
         });
 };
 
-export const fetchWithRefresh = async (endpoint: string, options?: TODO_ANY) => {
+export const fetchWithRefresh = async <T>(endpoint: RequestInfo, options?: TODO_ANY) => {
     try {
         const res = await fetch(`${BASE_URL}${endpoint}`, options);
-        return await checkReponseWithRefresh(res);
+        return await checkResponse<T>(res);
     } catch (err) {
-        if (err.message === "jwt expired") {
-            const refreshData = await refreshToken(`auth/token`); //обновляем токен
+        if ((err as {message: string}).message === "jwt expired") {
+            const refreshData = await refreshToken(); //обновляем токен
             options.headers.authorization = refreshData.accessToken;
             const res = await fetch(`${BASE_URL}${endpoint}`, options); //повторяем запрос
-            return await checkReponseWithRefresh(res);
+            return await checkResponse<T>(res);
         } else {
             return Promise.reject(err);
         }

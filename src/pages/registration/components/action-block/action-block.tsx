@@ -1,10 +1,10 @@
-import React, { FC } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { IActionBlock } from "../../../../shared/types/types";
 
 import ActionBlockStyles from "./css/style.module.css";
 
-export const ActionBlock: FC<IActionBlock> = ({ link, title, linkTitle, extraClass }) => {
+export const ActionBlock = ({ link, title, linkTitle, extraClass }: IActionBlock) => {
     return (
         <div className={`${ActionBlockStyles.actionBlock} ${extraClass}`}>
             <p className='text text_type_main-default text_color_inactive'>{title}</p>

@@ -1,18 +1,18 @@
-import React, { FC } from "react";
+import React from "react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalStyles from "./css/style.module.css"
 import { ModalOverlay } from "../modal-overlay/modal-overlay";
 
-const modalRoot = document.getElementById("react-modals");
+const modalRoot = document.getElementById("react-modals") as HTMLElement;
 
 interface IModal {
     handlerOpen: () => void;
     children: JSX.Element;
 }
 
-export const Modal: FC<IModal> = ({ handlerOpen, children }) => {
+export const Modal = ({ handlerOpen, children }: IModal) => {
     const closeModal = () => handlerOpen();
 
     useEffect(() => {
