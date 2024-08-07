@@ -1,3 +1,4 @@
+import React from 'react';
 import { useRef } from 'react';
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -10,10 +11,10 @@ import RegistrationStyles from "./css/style.module.css";
 export const RegistrationPage = () => {
     const { values, handleChange } = useForm({ email: '', password: '', name: '' });
 
-    const inputRef = useRef(null)
+    const inputRef = useRef<HTMLInputElement>(null)
     const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        alert('Icon Click Callback')
+        setTimeout(() => { if (inputRef.current !== null) inputRef.current.focus() }, 0);
+        alert('Icon Click Callback');
     }
 
     return (

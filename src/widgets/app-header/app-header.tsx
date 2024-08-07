@@ -1,8 +1,10 @@
+import React from "react";
+import { NavLink } from "react-router-dom";
+
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerIcon, ListIcon, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import AppHeaderStyles from "./css/style.module.css"
-import { NavLink } from "react-router-dom";
+import AppHeaderStyles from "./css/style.module.css";
 
 const NAVIGATION_VALUES = [
     {
@@ -22,14 +24,27 @@ const NAVIGATION_VALUES = [
     },
 ]
 
-const HeaderElem = (props) => {
+interface IHeaderElemProps {
+    link: string,
+    value: {
+        icon_primary: JSX.Element,
+        icon_secondary: JSX.Element,
+        text: string
+    }
+}
+
+const HeaderElem = ({ link, value }: IHeaderElemProps) => {
     return (
-        <NavLink to={props.link} className={({ isActive }) => {
+        <NavLink to={link} className={({ isActive }) => {
             return `${(!isActive) ? "text_color_inactive" : AppHeaderStyles.navElemColor} ${AppHeaderStyles.navElem} pr-5 text text_type_main-default`
         }}>
-            {(props.inactive) ? props.values.icon_secondary : props.values.icon_primary}
-            <p className="pl-2">{props.values.text}</p>
-        </NavLink>
+            {({ isActive }) => (
+                <>
+                    {((isActive) ? value.icon_primary : value.icon_secondary)}
+                    < p className="pl-2">{value.text}</p>
+                </>
+            )}
+        </NavLink >
     )
 }
 
@@ -38,13 +53,13 @@ export const AppHeader = () => {
         <header className={AppHeaderStyles.appHeaderWrapper}>
             <nav className={AppHeaderStyles.appHeaderContent}>
                 <div className={AppHeaderStyles.navigation}>
-                    <HeaderElem link={'/'} values={NAVIGATION_VALUES[0]} />
-                    <HeaderElem link={'/b'} values={NAVIGATION_VALUES[1]} />
+                    <HeaderElem link={'/'} value={NAVIGATION_VALUES[0]} />
+                    <HeaderElem link={'/b'} value={NAVIGATION_VALUES[1]} />
                 </div>
                 <span className={AppHeaderStyles.logo}>
                     <Logo />
                 </span>
-                <HeaderElem link={'/profile'} values={NAVIGATION_VALUES[2]} />
+                <HeaderElem link={'/profile'} value={NAVIGATION_VALUES[2]} />
             </nav>
         </header>
     )

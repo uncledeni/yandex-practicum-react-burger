@@ -1,3 +1,4 @@
+import React from 'react';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -11,8 +12,8 @@ export const Home = () => {
         <main className={HomeStyles.pageWrapper}>
             <div className={HomeStyles.mainWrapper}>
                 <DndProvider backend={HTML5Backend}>
-                    <BurgerIngredients className={HomeStyles.burgerIngredientsComponent} />
-                    <BurgerConstructor className={HomeStyles.burgerConstructorComponent} />
+                    <BurgerIngredients />
+                    <BurgerConstructor />
                 </DndProvider>
             </div>
         </main>

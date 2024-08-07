@@ -8,7 +8,8 @@ import {
 const initialState = {
     order: {},
     orderRequest: false,
-    orderFailed: false
+    orderFailed: false,
+    isLoading: false
 }
 
 export const orderDetailsReducer = ( state = initialState, action) => {
@@ -16,7 +17,8 @@ export const orderDetailsReducer = ( state = initialState, action) => {
         case GET_ORDER_DETAILS_REQUEST: {
             return {
                 ...state,
-                orderRequest: true
+                orderRequest: true,
+                isLoading: true
             };
         }
         case GET_ORDER_DETAILS_SUCCESS: {
@@ -24,14 +26,16 @@ export const orderDetailsReducer = ( state = initialState, action) => {
                 ...state,
                 order: action,
                 orderRequest: false,
-                orderFailed: false
+                orderFailed: false,
+                isLoading: false
             }
         }
         case GET_ORDER_DETAILS_FAILED: {
             return {
                 ...state,
                 orderRequest: false,
-                orderFailed: true
+                orderFailed: true,
+                isLoading: false
             }
         }
         case CLEAR_ORDER_DETAILS: {
@@ -39,7 +43,8 @@ export const orderDetailsReducer = ( state = initialState, action) => {
                 ...state,
                 order: {},
                 orderRequest: false,
-                orderFailed: false
+                orderFailed: false,
+                isLoading: false
             }
         }
         default: {
