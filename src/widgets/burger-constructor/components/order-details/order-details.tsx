@@ -1,15 +1,15 @@
-import React, { FC } from "react";
+import React from "react";
 import OrderDetailsStyles from "./style.module.css";
 import done from "../../../../shared/images/done.svg"
 import { checkOnUndefined } from "../../../../shared/utils/checks";
 import { useTypedSelector } from "../../../../shared/hooks/useTypedSelector";
-import { IOrderData } from "../../../../shared/types/types";
+import { IOrderAction } from "../../../../shared/types/types";
 import { Loader } from "../../../../shared/components/loader/loader";
 
-export const OrderDetails: FC = () => {
+export const OrderDetails = () => {
     const { order, isLoading } = useTypedSelector(store => store.orderDetails);
 
-    const orderNumber = (data: IOrderData): number | undefined => {
+    const orderNumber = (data: IOrderAction): number | undefined => {
         if (checkOnUndefined(data.order)) {
             return data.order.order.number;
         }

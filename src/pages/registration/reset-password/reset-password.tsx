@@ -25,7 +25,7 @@ export const ResetPassword = () => {
             <div className={ResetPasswordStyles.mainWrapper}>
                 <form className={ResetPasswordStyles.mainContainer} onSubmit={(e) => {
                     e.preventDefault();
-                    resetPassword(values).then(res => {
+                    resetPassword(values).then(() => {
                         try {
                             navigate('/login', { state: { from: location } });
                         } catch (err) {

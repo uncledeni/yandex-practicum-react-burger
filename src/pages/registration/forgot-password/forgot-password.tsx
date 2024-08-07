@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -8,7 +8,7 @@ import { useForm } from '../../../shared/hooks/useForm';
 
 import ForgotPasswordStyles from "./css/style.module.css";
 
-export const ForgotPasswordPage: FC = () => {
+export const ForgotPasswordPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { values, handleChange } = useForm({ email: '', password: '', name: '' });

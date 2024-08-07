@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDrag, useDrop } from "react-dnd";
@@ -12,20 +12,20 @@ import { DELETE_INGREDIENT_BURGER_CONSTRUCTOR, SWAP_INGREDIENTS, addIngredient }
 import { DECREASE_BUN_COUNTER, DECREASE_INGREDIENT_COUNTER, INCREASE_INGREDIENT_COUNTER } from "../../shared/services/actions/burger-ingredients";
 import { CLEAR_ORDER_DETAILS, getOrderDetails } from "../../shared/services/actions/order-details";
 import { useTypedSelector } from "../../shared/hooks/useTypedSelector";
-import { IBun, IFilling, IOffStackListElementType, IOrder, IStackListElementType, TODO_ANY } from "../../shared/types/types";
+import { IBun, IFilling, IIngredient, IOrder, TODO_ANY } from "../../shared/types/types";
 import { calcTotal } from "../../shared/utils/calculating";
 
 import BurgerConstructorStyles from "./css/style.module.css"
 
-interface IInfo {
+interface IInfoProps {
     constructorModal: () => void
 }
 
-const Info: FC<IInfo> = (props) => {
+const Info = ({ constructorModal }: IInfoProps) => {
     const navigate = useNavigate()
     const location = useLocation();
-    const arr: IOrder = useTypedSelector(store => store.order);
-    const user = useTypedSelector(store => store.auth.email);
+    const arr = useTypedSelector(store => store.order);
+    const { email } = useTypedSelector(store => store.auth);
 
     const dispatch: TODO_ANY = useDispatch();
 
@@ -46,9 +46,9 @@ const Info: FC<IInfo> = (props) => {
                 <CurrencyIcon type="primary" />
             </div>
             <Button disabled={(arr.bun === null)} htmlType="button" type="primary" size="medium" onClick={() => {
-                if (user) {
+                if (email) {
                     dispatch(getOrderDetails(orderDetailsArr(arr)));
-                    props.constructorModal();
+                    constructorModal();
                 } else {
                     navigate('/login', { state: { from: location } });
                 }
@@ -57,27 +57,39 @@ const Info: FC<IInfo> = (props) => {
     )
 }
 
-const OffStackListElement: FC<IOffStackListElementType> = (props) => {
+interface IOffStackListElementProps {
+    isTop: boolean;
+    bun: IIngredient
+}
+
+const OffStackListElement = ({ isTop, bun }: IOffStackListElementProps) => {
     return (
         <div className={BurgerConstructorStyles.offStackListElement}>
             <ConstructorElement
-                type={(props.isTop) ? 'top' : 'bottom'}
+                type={(isTop) ? 'top' : 'bottom'}
                 isLocked={true}
-                text={`${props.bun.name} ${(props.isTop) ? 'верх' : 'низ'}`}
-                price={props.bun.price}
-                thumbnail={props.bun.image}
+                text={`${bun.name} ${(isTop) ? 'верх' : 'низ'}`}
+                price={bun.price}
+                thumbnail={bun.image}
             />
         </div>
     )
 }
 
-interface DragItem {
+interface IDragItem {
     index: number
     id: string
     type: string
 }
 
-const StackListElement: FC<IStackListElementType> = ({ ingredient, id, index, swap }) => {
+interface IStackListElementProps {
+    ingredient: IIngredient;
+    id: string;
+    index: number;
+    swap: (dragIndex: number, hoverIndex: number) => void;
+}
+
+const StackListElement = ({ ingredient, id, index, swap }: IStackListElementProps) => {
 
     const ref = useRef<HTMLDivElement>(null);
 
@@ -91,14 +103,14 @@ const StackListElement: FC<IStackListElementType> = ({ ingredient, id, index, sw
         }),
     });
 
-    const [{ handlerId }, dropRef] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
+    const [{ handlerId }, dropRef] = useDrop<IDragItem, void, { handlerId: Identifier | null }>({
         accept: "self",
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId(),
             }
         },
-        hover(item: DragItem, monitor) {
+        hover(item: IDragItem, monitor) {
             if (!ref.current) {
                 return
             }
@@ -147,8 +159,8 @@ const StackListElement: FC<IStackListElementType> = ({ ingredient, id, index, sw
     )
 }
 
-const StackList: FC = () => {
-    const fillings = useTypedSelector(store => store.order.fillings);
+const StackList = () => {
+    const { fillings } = useTypedSelector(store => store.order);
 
     const dispatch = useDispatch();
     const swapIngredients = (dragIndex: number, hoverIndex: number) => {
@@ -175,7 +187,7 @@ const StackList: FC = () => {
 }
 
 const ConstructorComponent = () => {
-    const bun = useTypedSelector(store => store.order.bun);
+    const { bun } = useTypedSelector(store => store.order);
 
     const dispatch = useDispatch();
     const dropIngredient = (ingredient: IBun) => {

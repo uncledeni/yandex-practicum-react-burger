@@ -21,11 +21,11 @@ enum IngredientTypes {
     sauce = 'sauce'
 }
 
-interface IIngredientsTabsFC {
+interface IIngredientsTabsProps {
     current: string
 }
 
-const IngredientsTabs = ({ current }: IIngredientsTabsFC) => {
+const IngredientsTabs = ({ current }: IIngredientsTabsProps) => {
     return (
         <div className={BurgerIngredientsStyles.ingredientsTabsContainer}>
             <Tab onClick={() => { return }} value={IngredientTypes.bun} active={current === IngredientTypes.bun} >
@@ -41,11 +41,11 @@ const IngredientsTabs = ({ current }: IIngredientsTabsFC) => {
     )
 }
 
-interface IIngredientsFC {
+interface IIngredientsProps {
     setCurrentTab: (arg0: IngredientTypes) => void
 }
 
-const Ingredients = ({ setCurrentTab }: IIngredientsFC) => {
+const Ingredients = ({ setCurrentTab }: IIngredientsProps) => {
     const location = useLocation();
 
     const bunRef = useRef<HTMLParagraphElement>(null);
@@ -77,14 +77,14 @@ const Ingredients = ({ setCurrentTab }: IIngredientsFC) => {
     )
 }
 
-interface IIngredientsStackFC {
+interface IIngredientsStackProps {
     location: Location<TODO_ANY>;
     scrollRef: React.RefObject<HTMLParagraphElement>;
     title: string;
     type: IngredientTypes;
 }
 
-const IngredientsStack = ({ scrollRef, title, type, location }: IIngredientsStackFC) => {
+const IngredientsStack = ({ scrollRef, title, type, location }: IIngredientsStackProps) => {
     const { ingredients, isLoading } = useTypedSelector(store => store.ingredients);
 
     return (
@@ -107,11 +107,11 @@ const IngredientsStack = ({ scrollRef, title, type, location }: IIngredientsStac
     )
 }
 
-interface IIngredientElemFC {
+interface IIngredientElemProps {
     ingredient: IIngredient
 }
 
-const IngredientElem = ({ ingredient }: IIngredientElemFC) => {
+const IngredientElem = ({ ingredient }: IIngredientElemProps) => {
     const dispatch = useDispatch();
     const getIngredientDetails = (ingredient: IIngredient) => {
         dispatch({ type: GET_INGREDIENT_DETAILS, details: ingredient })

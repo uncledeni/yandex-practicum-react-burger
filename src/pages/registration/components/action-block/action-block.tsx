@@ -1,8 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IActionBlock } from "../../../../shared/types/types";
 
 import ActionBlockStyles from "./css/style.module.css";
+
+interface IActionBlock {
+    link: string;
+    title: string;
+    linkTitle: string;
+    extraClass?: string;
+}
 
 export const ActionBlock = ({ link, title, linkTitle, extraClass }: IActionBlock) => {
     return (

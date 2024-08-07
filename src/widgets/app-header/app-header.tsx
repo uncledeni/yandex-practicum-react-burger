@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -24,7 +24,7 @@ const NAVIGATION_VALUES = [
     },
 ]
 
-interface IHeaderElem {
+interface IHeaderElemProps {
     link: string,
     value: {
         icon_primary: JSX.Element,
@@ -33,7 +33,7 @@ interface IHeaderElem {
     }
 }
 
-const HeaderElem: FC<IHeaderElem> = ({ link, value }) => {
+const HeaderElem = ({ link, value }: IHeaderElemProps) => {
     return (
         <NavLink to={link} className={({ isActive }) => {
             return `${(!isActive) ? "text_color_inactive" : AppHeaderStyles.navElemColor} ${AppHeaderStyles.navElem} pr-5 text text_type_main-default`

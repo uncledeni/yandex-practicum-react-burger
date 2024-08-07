@@ -1,4 +1,4 @@
-import { IFilling, TODO_ANY } from "../types/types";
+import { IFilling, TODO_ANY, TRefreshResponse } from "../types/types";
 const BASE_URL = 'https://norma.nomoreparties.space/api/'
 
 // export const checkEmptyObj = (obj) => {
@@ -32,18 +32,9 @@ const checkResponse = <T>(res: Response): Promise<T> => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(`Ошибка: ${err}`));
 };
 
-type TServerResponse<T> = {
-    success: boolean;
-} & T;
-
-type TRefreshResponse = TServerResponse<{
-    refreshToken: string;
-    accessToken: string;
-}>
-
-export const request = async (endpoint: RequestInfo, options?: TODO_ANY) => {
+export const request = async <T>(endpoint: RequestInfo, options?: TODO_ANY) => {
     return fetch(`${BASE_URL}${endpoint}`, options)
-        .then(checkResponse)
+        .then((res: Response) => checkResponse<T>(res))
 };
 
 const refreshToken = async () => {

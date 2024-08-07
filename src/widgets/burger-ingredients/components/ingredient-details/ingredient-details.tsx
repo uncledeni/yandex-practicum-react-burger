@@ -9,8 +9,8 @@ import { IIngredient } from "../../../../shared/types/types";
 import BurgerIngredientsModalStyles from "./style.module.css";
 
 export const IngredientDetails = () => {
-    const ingredients = useTypedSelector(store => store.ingredients.ingredients);
-    const ingredient = useTypedSelector(store => store.ingredientsDetails.details);
+    const { ingredients } = useTypedSelector(store => store.ingredients);
+    const { details } = useTypedSelector(store => store.ingredientsDetails);
     const { id } = useParams();
     const dispatch = useDispatch();
 
@@ -29,25 +29,25 @@ export const IngredientDetails = () => {
             <div className={BurgerIngredientsModalStyles.titleButton}>
                 <p className="text text_type_main-large">Детали ингредиента</p>
             </div>
-            <img className={BurgerIngredientsModalStyles.ingredientModalIllustration} src={ingredient.image_large} alt={`${ingredient.name}`} />
+            <img className={BurgerIngredientsModalStyles.ingredientModalIllustration} src={details.image_large} alt={`${details.name}`} />
             <div className={BurgerIngredientsModalStyles.content}>
-                <p className={`${BurgerIngredientsModalStyles.ingredientTitle} text text_type_main-medium`}>{ingredient.name}</p>
+                <p className={`${BurgerIngredientsModalStyles.ingredientTitle} text text_type_main-medium`}>{details.name}</p>
                 <div className={BurgerIngredientsModalStyles.nutritionValues}>
                     <div>
                         <p className={`${BurgerIngredientsModalStyles.valueNames} text text_type_main-default`}>Калории,ккал</p>
-                        <p className={`${BurgerIngredientsModalStyles.values} text text_type_digits-default`}>{ingredient.calories}</p>
+                        <p className={`${BurgerIngredientsModalStyles.values} text text_type_digits-default`}>{details.calories}</p>
                     </div>
                     <div>
                         <p className={`${BurgerIngredientsModalStyles.valueNames} text text_type_main-default`}>Белки, г</p>
-                        <p className={`${BurgerIngredientsModalStyles.values} text text_type_digits-default`}>{ingredient.proteins}</p>
+                        <p className={`${BurgerIngredientsModalStyles.values} text text_type_digits-default`}>{details.proteins}</p>
                     </div>
                     <div>
                         <p className={`${BurgerIngredientsModalStyles.valueNames} text text_type_main-default`}>Жиры, г</p>
-                        <p className={`${BurgerIngredientsModalStyles.values} text text_type_digits-default`}>{ingredient.fat}</p>
+                        <p className={`${BurgerIngredientsModalStyles.values} text text_type_digits-default`}>{details.fat}</p>
                     </div>
                     <div>
                         <p className={`${BurgerIngredientsModalStyles.valueNames} text text_type_main-default`}>Углеводы, г</p>
-                        <p className={`${BurgerIngredientsModalStyles.values} text text_type_digits-default`}>{ingredient.carbohydrates}</p>
+                        <p className={`${BurgerIngredientsModalStyles.values} text text_type_digits-default`}>{details.carbohydrates}</p>
                     </div>
                 </div>
             </div>

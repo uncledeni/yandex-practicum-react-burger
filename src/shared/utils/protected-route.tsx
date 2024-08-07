@@ -2,9 +2,8 @@ import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 
-interface IProtected {
+interface IProtected extends IComponent {
     onlyUnAuth: boolean,
-    component: JSX.Element
 }
 
 interface IComponent {
