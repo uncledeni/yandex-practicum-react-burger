@@ -8,12 +8,12 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
-
-import BurgerIngredientsStyles from "./css/style.module.css";
 import { useTypedSelector } from "../../shared/hooks/useTypedSelector";
 import { Loader } from "../../shared/components/loader/loader";
 import { checkOnUndefined } from "../../shared/utils/checks";
 import { IIngredient, TODO_ANY } from "../../shared/types/types";
+
+import BurgerIngredientsStyles from "./css/style.module.css";
 
 enum IngredientTypes {
     bun = 'bun',
@@ -97,7 +97,7 @@ const IngredientsStack = ({ scrollRef, title, type, location }: IIngredientsStac
                 <div className={BurgerIngredientsStyles.ingredientsStackContent}>
                     {ingredients.map((ingredient: IIngredient) => (
                         (ingredient.type === type) &&
-                        <Link key={ingredient._id} to={`/ingredients/${ingredient._id}`} state={{ backgroundLocation: location }} >
+                        <Link className={BurgerIngredientsStyles.link} key={ingredient._id} to={`/ingredients/${ingredient._id}`} state={{ backgroundLocation: location }} >
                             <IngredientElem ingredient={ingredient} />
                         </Link>
                     ))}
