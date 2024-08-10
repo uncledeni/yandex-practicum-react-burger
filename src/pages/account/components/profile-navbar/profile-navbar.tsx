@@ -1,14 +1,15 @@
+import React from 'react';
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../../shared/services/actions/auth";
+import { TODO_ANY } from '../../../../shared/types/types';
 
 import ProfileNavbarStyles from "./css/style.module.css";
 
 export const ProfileNavbar = () => {
-    const dispatch = useDispatch();
+    const dispatch: TODO_ANY = useDispatch();
 
     return (
-        // 
         <div className={`${ProfileNavbarStyles.profileNavbarContainer} ml-15`}>
             <nav className={`${ProfileNavbarStyles.profileNavbar}`}>
                 <NavLink to={'/profile'} className={({ isActive }) => {

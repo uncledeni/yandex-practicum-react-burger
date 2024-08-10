@@ -1,15 +1,17 @@
+import React from 'react';
 import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { ProfileNavbar } from '../components/profile-navbar/profile-navbar';
 import { patchUserData } from '../../../shared/api/get-data-service';
 import { useForm } from '../../../shared/hooks/useForm';
+import { useTypedSelector } from '../../../shared/hooks/useTypedSelector';
 
 import ProfileStyles from "./css/style.module.css";
+import { deepEqual } from '../../../shared/utils/checks';
 
 export const ProfilePage = () => {
-    const auth = useSelector(store => store.auth);
+    const auth = useTypedSelector(store => store.auth);
     const [isEditable, setIsEditable] = useState(false);
     const { values, handleChange, setValues } = useForm({ name: auth.name, email: auth.email, password: '',  });
 
@@ -52,20 +54,15 @@ export const ProfilePage = () => {
                                 onChange={handleChange}
                                 value={values.email}
                                 name={'email'}
-                                isIcon={false}
-                                disabled={(!isEditable)}
-                                icon={'EditIcon'}
-                                onIconClick={onIconClick}
+                                isIcon={true}
                             />
                             <PasswordInput
                                 onChange={handleChange}
                                 value={values.password}
                                 name={'password'}
-                                disabled={(!isEditable)}
                                 icon={'EditIcon'}
-                                onIconClick={onIconClick}
                             />
-                            {(isEditable) && <div className={ProfileStyles.buttonsWrapper}>
+                            {(!deepEqual(values, {name: auth.name, email: auth.email, password: ''})) && <div className={ProfileStyles.buttonsWrapper}>
                                 <Button htmlType="button" type="secondary" size="medium" onClick={setDefaultValues}>Отмена</Button>
                                 <Button htmlType="submit" type="primary" size="medium" extraClass="ml-2">Сохранить</Button>
                             </div>}

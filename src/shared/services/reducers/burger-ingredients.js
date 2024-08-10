@@ -11,6 +11,7 @@ const initialState = {
     ingredients: [],
     ingredientsRequest: false,
     ingredientsFailed: false,
+    isLoading: false
 }
 
 export const burgerIngredientsReducer = (state = initialState, action) => {
@@ -18,7 +19,8 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
         case GET_BURGER_INGREDIENTS_REQUEST: {
             return {
                 ...state,
-                ingredientsRequest: true
+                ingredientsRequest: true,
+                isLoading: true
             };
         }
         case GET_BURGER_INGREDIENTS_SUCCESS: {
@@ -26,14 +28,16 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
                 ...state,
                 ingredients: action.ingredients,
                 ingredientsRequest: false,
-                ingredientsFailed: false
+                ingredientsFailed: false,
+                isLoading: false
             }
         }
         case GET_BURGER_INGREDIENTS_FAILED: {
             return {
                 ...state,
                 ingredientsRequest: false,
-                ingredientsFailed: true
+                ingredientsFailed: true,
+                isLoading: false
             }
         }
         case INCREASE_INGREDIENT_COUNTER: {
