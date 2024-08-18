@@ -54,7 +54,7 @@ export const AppHeader = () => {
             <nav className={AppHeaderStyles.appHeaderContent}>
                 <div className={AppHeaderStyles.navigation}>
                     <HeaderElem link={'/'} value={NAVIGATION_VALUES[0]} />
-                    <HeaderElem link={'/b'} value={NAVIGATION_VALUES[1]} />
+                    <HeaderElem link={'/feed'} value={NAVIGATION_VALUES[1]} />
                 </div>
                 <span className={AppHeaderStyles.logo}>
                     <Logo />

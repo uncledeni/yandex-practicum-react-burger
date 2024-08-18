@@ -16,6 +16,8 @@ import { IngredientDetailsModal } from '../widgets/burger-ingredients/components
 import { AppHeader } from '../widgets/app-header';
 import { getBurgerIngredients } from "../shared/services/actions/burger-ingredients";
 import { TODO_ANY } from '../shared/types/types';
+import { OrderFeed } from '../pages/feed/order-feed/order-feed';
+import { ProfileOrders } from '../pages/account/profile/profile-orders/profile-orders';
 
 function App() {
   const dispatch: TODO_ANY = useDispatch();
@@ -39,8 +41,9 @@ function App() {
         <Route path="/register" element={<OnlyUnAuth component={<RegistrationPage />} />} />
         <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
         <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword />} />} />
+        <Route path="/feed" element={<OrderFeed />} />
         <Route path="/profile" element={<OnlyAuth onlyUnAuth={false} component={<ProfilePage />} />} />
-        <Route path="/profile/orders" />
+        <Route path="/profile/orders" element={<OnlyAuth onlyUnAuth={false} component={<ProfileOrders />} />} />
         <Route path="/profile/orders/:number" />
         <Route path="/ingredients/:id" element={<IngredientPage />} />
         <Route path="*" element={<ErrorPage />} />

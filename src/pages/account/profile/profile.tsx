@@ -31,7 +31,7 @@ export const ProfilePage = () => {
                 <div className={ProfileStyles.mainContainer}>
                     <ProfileNavbar />
                     <div>
-                        <form className={`${ProfileStyles.profileInfo} ml-15`} onSubmit={(e) => {
+                        <form className={`${ProfileStyles.profileInfo}`} onSubmit={(e) => {
                             e.preventDefault()
                             patchUserData(values);
                             onIconClick();
