@@ -17,7 +17,7 @@ export interface IIngredient {
 }
 
 // -- INGREDIENT DETAILS --
-export type IIngredientDetailsType = Pick<IIngredient, 'name' | 'calories' | 'carbohydrates' | 'fat' | 'image_large' | 'proteins' >
+export type IIngredientDetailsType = Pick<IIngredient, 'name' | 'calories' | 'carbohydrates' | 'fat' | 'image_large' | 'proteins'>
 
 // -- BURGER CONSTRUCTOR --
 interface IConstructorElement {
@@ -68,7 +68,7 @@ export type ILoginData = Omit<IUserData, 'name'>
 
 export type IResetPasswordCode = Pick<IUserData, 'email'>
 
-export type IResetPassword = Pick<IUserData, 'password'> & {code: string;}
+export type IResetPassword = Pick<IUserData, 'password'> & { code: string; }
 
 export interface IPostOrder {
     ingredients: string[]
@@ -83,3 +83,11 @@ export type TRefreshResponse = TServerResponse<{
     refreshToken: string;
     accessToken: string;
 }>
+
+// ws
+
+export enum WebSocketStatus {
+    CONNECTING = 'CONNECTING...',
+    ONLINE = 'ONLINE',
+    OFFLINE = 'OFFLINE'
+}

@@ -10,13 +10,34 @@ import reportWebVitals from './reportWebVitals';
 import { rootReducer } from './shared/services/reducers';
 
 import './index.css';
+import { socketMiddleware } from './shared/services/middleware/socket-middleware';
+
+import {
+  connect as FeedDataWsConnect,
+  disconnect as FeedDataWsDisconnect,
+  wsConnecting as FeedDataWsConnecting,
+  wsOpen as FeedDataWsOpen,
+  wsClose as FeedDataWsClose,
+  wsError as FeedDataWsError,
+} from './shared/services/actions/wsActionTypes';
+
+const wsActions = {
+  wsConnect: FeedDataWsConnect,
+  wsDisconnect: FeedDataWsDisconnect,
+  wsConnecting: FeedDataWsConnecting,
+  onOpen: FeedDataWsOpen,
+  onClose: FeedDataWsClose,
+  onError: FeedDataWsError,
+};
+
+const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsUrl, wsActions)));
 
 const store = createStore(rootReducer, enhancer);
 
