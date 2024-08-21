@@ -64,14 +64,39 @@
     align-items: center;
 }
 
-.icon {
+.ingredientsContent {
+    width: 304px;
+    height: 64px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.firstIngredientWrapper, .ingredientWrapper {
     width: 64px;
     height: 64px;
-    background-color: red;
+    background-color: #131316;
     box-sizing: border-box;
-    border: 1px red solid;
-    border-radius: 40px;
+    border: 2px solid #801AB3;
+    /* border-image-source: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%); */
+    border-radius: 100px;
+    position: relative;
 }
+
+.ingredientWrapper {
+    /* left: -16px; */
+}
+
+.ingredient {
+    position: relative;
+    width: 112px;
+    height: 56px;
+    top: 4px;
+    left: -44%;
+}
+
 
 .feedList {
     display: block;

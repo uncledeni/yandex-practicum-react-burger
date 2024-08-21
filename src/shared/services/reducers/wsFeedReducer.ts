@@ -9,7 +9,7 @@ const initialState = {
   error: ''
 };
 
-export const wsReducer = createReducer(initialState, (builder) => {
+export const wsFeedReducer = createReducer(initialState, (builder) => {
   builder.addCase(wsConnecting, (state) => {
     state.status = WebSocketStatus.CONNECTING;
   })

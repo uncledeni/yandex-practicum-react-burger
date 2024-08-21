@@ -7,23 +7,25 @@ export type TwsActionTypes = {
   wsConnecting: ActionCreatorWithoutPayload,
   onOpen: ActionCreatorWithoutPayload,
   onClose: ActionCreatorWithoutPayload,
+  onMessage: ActionCreatorWithPayload<any>,
   onError: ActionCreatorWithoutPayload,
 }
 
-export const socketMiddleware = (wsUrl: string, wsActions): Middleware => {
+export const socketMiddleware = (wsActions): Middleware => {
   return ((store: MiddlewareAPI) => {
-    console.log(wsActions)
+    // console.log(wsActions)
     let socket: WebSocket | null = null;
-    const token = localStorage.getItem("accessToken")
 
     return next => (action) => {
       const { dispatch } = store;
       const { type } = action;
-      console.log(action, type)
-      const { wsConnect, onOpen, onClose, onError } = wsActions;
+      // console.log(action, type);
+      const { wsConnect, onOpen, onClose, onError, wsConnecting, onMessage, wsDisconnect } = wsActions;
       if (wsConnect.match(action)) {
-        socket = new WebSocket(`${wsUrl}?token=${token}`);
-        console.log(socket.readyState);
+        const wsUrl = action.payload;
+        socket = new WebSocket(wsUrl);
+        dispatch(wsConnecting())
+        // console.log(socket.readyState);
       }
       if (socket) {
         socket.onopen = event => {
@@ -34,17 +36,21 @@ export const socketMiddleware = (wsUrl: string, wsActions): Middleware => {
           dispatch(onError(event.type));
         };
 
-        // socket.onmessage = event => {
-        //   const { data } = event;
-        //   const parsedData = JSON.parse(data);
-        //   const { success, ...restParsedData } = parsedData;
+        socket.onmessage = event => {
+          const { data } = event;
+          // console.log(data);
+          const parsedData = JSON.parse(data);
 
-        //   dispatch({ type: onMessage, payload: { ...restParsedData } });
-        // };
+          dispatch(onMessage(parsedData));
+        };
 
         socket.onclose = event => {
           dispatch(onClose());
         };
+
+        if (wsDisconnect.match(action)) {
+          socket.close()
+        }
 
         // if (type === wsSendMessage) {
         //   const payload = action.payload;

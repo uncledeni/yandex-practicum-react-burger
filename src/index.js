@@ -18,8 +18,21 @@ import {
   wsConnecting as FeedDataWsConnecting,
   wsOpen as FeedDataWsOpen,
   wsClose as FeedDataWsClose,
+  wsMessage as FeedDataWsMessage,
   wsError as FeedDataWsError,
 } from './shared/services/actions/wsActionTypes';
+
+import {
+  connect as FeedDataWsConnect2,
+  disconnect as FeedDataWsDisconnect2,
+  wsConnecting as FeedDataWsConnecting2,
+  wsOpen as FeedDataWsOpen2,
+  wsClose as FeedDataWsClose2,
+  wsMessage as FeedDataWsMessage2,
+  wsError as FeedDataWsError2,
+} from './shared/services/actions/wsFeedActionTypes';
+
+import { configureStore } from '@reduxjs/toolkit';
 
 const wsActions = {
   wsConnect: FeedDataWsConnect,
@@ -27,19 +40,33 @@ const wsActions = {
   wsConnecting: FeedDataWsConnecting,
   onOpen: FeedDataWsOpen,
   onClose: FeedDataWsClose,
+  onMessage: FeedDataWsMessage,
   onError: FeedDataWsError,
 };
 
-const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
+const wsActions2 = {
+  wsConnect: FeedDataWsConnect2,
+  wsDisconnect: FeedDataWsDisconnect2,
+  wsConnecting: FeedDataWsConnecting2,
+  onOpen: FeedDataWsOpen2,
+  onClose: FeedDataWsClose2,
+  onMessage: FeedDataWsMessage2,
+  onError: FeedDataWsError2,
+};
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsUrl, wsActions)));
+const enhancer = composeEnhancers(applyMiddleware(thunk));
+const middleware = socketMiddleware(wsActions)
+const middleware2 = socketMiddleware(wsActions2)
 
-const store = createStore(rootReducer, enhancer);
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(thunk, middleware, middleware2)
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

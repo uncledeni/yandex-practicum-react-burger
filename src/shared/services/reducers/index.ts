@@ -5,6 +5,7 @@ import { burgerConstructorReducer } from "./burger-constructor";
 import { orderDetailsReducer } from "./order-details";
 import { authReducer } from "./auth";
 import { wsReducer } from './wsReducer';
+import { wsFeedReducer } from './wsFeedReducer';
 
 export const rootReducer = combineReducers({
     ingredients: burgerIngredientsReducer,
@@ -12,7 +13,8 @@ export const rootReducer = combineReducers({
     order: burgerConstructorReducer,
     orderDetails: orderDetailsReducer,
     auth: authReducer,
-    feed: wsReducer
+    feed: wsReducer,
+    profileFeed: wsFeedReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>
