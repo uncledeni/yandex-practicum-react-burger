@@ -24,7 +24,7 @@ const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
                 <p className="text text_type_digits-default">#{order.number}</p>
                 <p className="text text_type_main-default text_color_inactive">{order.createdAt}</p>
             </div>
-            <p className="text text_type_main-medium pt-6 pr-6 pl-6">{order.name}</p>
+            <p className="text text_type_main-medium pt-6 pr-6 pl-6">{(order.name.length >= 33) ? `${order.name.slice(0, 33)}...` : order.name}</p>
             <div className={`${Styles.feedContent} pt-6 pb-6 pr-6 pl-6`}>
                 <div className={Styles.ingredientsContent}>
                     {order.ingredients.map((ingredient, index) => {
