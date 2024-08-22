@@ -30,7 +30,6 @@ const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
         getIngredientDetails(order);
     }
 
-
     return (
         <div onClick={() => openModal()} className={`${Styles.feedElem} mb-4`}>
             <div className={`${Styles.feedHeader} pt-6 pr-6 pl-6`}>
@@ -70,7 +69,7 @@ const Feed = () => {
         <>
             {checkOnUndefined(orders) && <div className={`${Styles.feedList} mr-15`} >
                 {orders.map(order => (
-                    <Link className={Styles.link} key={order.number} to={`/feed/${order.number}`} state={{ backgroundLocation: location }} >
+                    <Link className={Styles.link} key={order.number} to={`/profile/orders/${order.number}`} state={{ backgroundLocation: location }} >
                         <FeedElem order={order} ingredientsList={ingredients} />
                     </Link>
                 ))}
@@ -118,10 +117,10 @@ const OrderDesk = () => {
     )
 }
 
-const token = localStorage.getItem("accessToken");
-const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
-
 export const OrderFeed = () => {
+    const token = localStorage.getItem("accessToken");
+    const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
+
     const { status, data } = useTypedSelector(state => state.feed);
     const dispatch = useDispatch();
     const isDisconnected = status !== WebSocketStatus.OFFLINE;
@@ -139,8 +138,6 @@ export const OrderFeed = () => {
     return (
         <main className={Styles.pageWrapper}>
             <div className={Styles.mainWrapper}>
-                {/* <button onClick={() => connectFeedData()}>CONNECT</button>
-                <button onClick={() => disconnectFeedData()}>DISCONNECT</button> */}
                 <p className="text text_type_main-large mt-10 mb-5">Лента заказов</p>
                 <div className={Styles.content} >
                     <Feed />

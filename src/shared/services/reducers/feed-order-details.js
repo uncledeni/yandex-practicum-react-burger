@@ -44,7 +44,7 @@ export const feedOrderDetailsReducer = (state = initialState, action) => {
         case GET_FEED_ORDER_DETAILS_SUCCESS: {
             return {
                 ...state,
-                details: action.details,
+                details: action.data.orders[0],
                 orderRequest: false,
                 orderFailed: false
             }

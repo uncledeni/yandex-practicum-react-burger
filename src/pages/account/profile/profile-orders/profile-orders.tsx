@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import { IIngredient, WebSocketStatus } from '../../../../shared/types/types';
 import { connect, disconnect } from '../../../../shared/services/actions/wsFeedActionTypes';
 import { checkOnUndefined } from '../../../../shared/utils/checks';
+import { GET_FEED_ORDER_DETAILS } from '../../../../shared/services/actions/feed-order-details';
+import { Link, useLocation } from 'react-router-dom';
 
 // const data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 //     10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -19,8 +21,18 @@ interface IFeedElem {
 }
 
 const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
+    const dispatch = useDispatch();
+
+    const getIngredientDetails = (order) => {
+        dispatch({ type: GET_FEED_ORDER_DETAILS, details: order })
+    }
+
+    const openModal = () => {
+        getIngredientDetails(order);
+    }
+
     return (
-        <div className={`${Styles.feedElem} mb-4 mr-2`}>
+        <div onClick={() => openModal()} className={`${Styles.feedElem} mb-4 mr-2`}>
             <div className={`${Styles.feedHeader} pt-6 pr-6 pl-6`}>
                 <p className="text text_type_digits-default">#{order.number}</p>
                 <p className="text text_type_main-default text_color_inactive">{order.createdAt}</p>
@@ -50,19 +62,19 @@ const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
     )
 }
 
-const token = localStorage.getItem("accessToken");
-const wsUrl = 'wss://norma.nomoreparties.space/orders';
-
 const Feed = () => {
-    const { status, data } = useTypedSelector(state => state.feed);
+    const { status, data } = useTypedSelector(state => state.profileFeed);
     const { ingredients, isLoading } = useTypedSelector(store => store.ingredients);
     const orders = data.orders;
+    const location = useLocation();
 
     return (
         <>
             {checkOnUndefined(orders) && <div className={`${Styles.feedList}`} >
                 {orders.map(order => (
-                    <FeedElem key={order.number} order={order} ingredientsList={ingredients} />
+                    <Link className={Styles.link} key={order.number} to={`/profile/orders/${order.number}`} state={{ backgroundLocation: location }} >
+                        <FeedElem order={order} ingredientsList={ingredients} />
+                    </Link>
                 ))}
             </div>}
         </>
@@ -70,6 +82,9 @@ const Feed = () => {
 }
 
 export const ProfileOrders = () => {
+    const token = localStorage.getItem("accessToken");
+    const wsUrl = 'wss://norma.nomoreparties.space/orders';
+
     const { status, data } = useTypedSelector(state => state.profileFeed);
     const dispatch = useDispatch();
     const isDisconnected = status !== WebSocketStatus.OFFLINE;

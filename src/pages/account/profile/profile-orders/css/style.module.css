@@ -105,3 +105,8 @@
     overflow-y: scroll;
     overflow-x: hidden;
 }
+
+.link {
+    text-decoration: none;
+    color: #ffff;
+}

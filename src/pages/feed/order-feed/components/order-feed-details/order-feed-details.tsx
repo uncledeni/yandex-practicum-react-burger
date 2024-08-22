@@ -2,9 +2,9 @@ import React, { useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { GET_FEED_ORDER_DETAILS, getFeedOrderDetails } from "../../../../../shared/services/actions/feed-order-details";
+import { getFeedOrderDetails } from "../../../../../shared/services/actions/feed-order-details";
 import { useTypedSelector } from "../../../../../shared/hooks/useTypedSelector";
-import { IIngredient, TODO_ANY } from "../../../../../shared/types/types";
+import { TODO_ANY } from "../../../../../shared/types/types";
 
 import Styles from "./style.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -20,14 +20,12 @@ export const FeedOrderDetails = () => {
     }, [dispatch])
 
     useEffect(() => {
-        console.log(number);
         if (details._id === '') {
             getIngredientDetails(number)
         }
     }, [dispatch, ingredients, number, getIngredientDetails])
 
     return (
-
         <div className={`${Styles.card} p-5`}>
             <p className={`${Styles.number} text text_type_digits-default mb-10`}>{`#${details.number}`}</p>
             <p className={`${Styles.name} text text_type_main-medium mb-3`}>{details.name}</p>
