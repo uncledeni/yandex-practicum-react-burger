@@ -7,6 +7,8 @@ import { IIngredient, WebSocketStatus } from "../../../shared/types/types";
 
 import { connect, disconnect } from '../../../shared/services/actions/wsActionTypes';
 import { checkOnUndefined } from "../../../shared/utils/checks";
+import { GET_FEED_ORDER_DETAILS } from "../../../shared/services/actions/feed-order-details";
+import { Link, useLocation } from "react-router-dom";
 
 // const data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 //     10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -18,8 +20,19 @@ interface IFeedElem {
 }
 
 const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
+    const dispatch = useDispatch();
+
+    const getIngredientDetails = (order) => {
+        dispatch({ type: GET_FEED_ORDER_DETAILS, details: order })
+    }
+
+    const openModal = () => {
+        getIngredientDetails(order);
+    }
+
+
     return (
-        <div className={`${Styles.feedElem} mb-4`}>
+        <div onClick={() => openModal()} className={`${Styles.feedElem} mb-4`}>
             <div className={`${Styles.feedHeader} pt-6 pr-6 pl-6`}>
                 <p className="text text_type_digits-default">#{order.number}</p>
                 <p className="text text_type_main-default text_color_inactive">{order.createdAt}</p>
@@ -32,8 +45,8 @@ const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
                             return i._id === ingredient;
                         })
                         return (
-                            <span className={(index === 0) ? Styles.firstIngredientWrapper : Styles.ingredientWrapper}>
-                                <img key={index} className={Styles.ingredient} src={tempSrc.image_mobile} alt={`${tempSrc.name}`} />
+                            <span key={index} className={(index === 0) ? Styles.firstIngredientWrapper : Styles.ingredientWrapper}>
+                                <img className={Styles.ingredient} src={tempSrc.image_mobile} alt={`${tempSrc.name}`} />
                             </span>
                         )
                     })}
@@ -51,14 +64,17 @@ const Feed = () => {
     const { status, data } = useTypedSelector(state => state.feed);
     const { ingredients, isLoading } = useTypedSelector(store => store.ingredients);
     const orders = data.orders;
+    const location = useLocation();
 
     return (
         <>
             {checkOnUndefined(orders) && <div className={`${Styles.feedList} mr-15`} >
                 {orders.map(order => (
-                    <FeedElem key={order.number} order={order} ingredientsList={ingredients} />
+                    <Link className={Styles.link} key={order.number} to={`/feed/${order.number}`} state={{ backgroundLocation: location }} >
+                        <FeedElem order={order} ingredientsList={ingredients} />
+                    </Link>
                 ))}
-            </div>}
+            </div >}
         </>
     )
 }
@@ -85,7 +101,7 @@ const OrderDesk = () => {
                     <p className="text text_type_main-medium mb-6">В работе:</p>
                     <div className={Styles.orderDeskOrders} >
                         {undoneOrders.map(order => (
-                            <p className="text text_type_digits-default mb-2">{order.number}</p>
+                            <p key={order.number} className="text text_type_digits-default mb-2">{order.number}</p>
                         ))}
                     </div>
                 </div>

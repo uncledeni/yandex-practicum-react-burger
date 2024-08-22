@@ -18,6 +18,8 @@ import { getBurgerIngredients } from "../shared/services/actions/burger-ingredie
 import { TODO_ANY } from '../shared/types/types';
 import { OrderFeed } from '../pages/feed/order-feed/order-feed';
 import { ProfileOrders } from '../pages/account/profile/profile-orders/profile-orders';
+import { FeedOrderDetails } from '../pages/feed/order-feed/components/order-feed-details/order-feed-details';
+import { FeedOrderDetailsModal } from '../pages/feed/order-feed/components/order-feed-details-modal/order-feed-details-modal';
 
 function App() {
   const dispatch: TODO_ANY = useDispatch();
@@ -30,7 +32,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getBurgerIngredients());
-}, [dispatch]);
+  }, [dispatch]);
 
   return (
     <>
@@ -42,6 +44,7 @@ function App() {
         <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
         <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword />} />} />
         <Route path="/feed" element={<OrderFeed />} />
+        <Route path="/feed/:number" element={<FeedOrderDetails />} />
         <Route path="/profile" element={<OnlyAuth onlyUnAuth={false} component={<ProfilePage />} />} />
         <Route path="/profile/orders" element={<OnlyAuth onlyUnAuth={false} component={<ProfileOrders />} />} />
         <Route path="/profile/orders/:number" />
@@ -53,6 +56,7 @@ function App() {
       {state?.backgroundLocation && (
         <Routes>
           <Route path="/ingredients/:id" element={<IngredientDetailsModal />} />
+          <Route path="/feed/:number" element={<FeedOrderDetailsModal />} />
         </Routes>
       )}
     </>

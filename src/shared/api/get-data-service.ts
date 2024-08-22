@@ -25,6 +25,18 @@ type TPostOrderResponse = TServerResponse <{
     order: IOrderData;
 }>
 
+export const getOrder = async (number: IPostOrder) => await request<TPostOrderResponse>(`orders/${number}`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+    },
+})
+
+// type TPostOrderResponse = TServerResponse <{
+//     name: string;
+//     order: IOrderData;
+// }>
+
 export const register = async (data: IUserData) => await fetchWithRefresh<TRegisterResponse>('auth/register', {
     method: 'POST',
     headers: {
