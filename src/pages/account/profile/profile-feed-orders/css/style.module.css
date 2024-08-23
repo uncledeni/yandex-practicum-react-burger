@@ -74,7 +74,7 @@
     position: relative;
 }
 
-.firstIngredientWrapper, .ingredientWrapper {
+.firstIngredientWrapper, .ingredientWrapper, .ingredientWrapperFade {
     width: 64px;
     height: 64px;
     background-color: #131316;
@@ -83,6 +83,13 @@
     /* border-image-source: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%); */
     border-radius: 100px;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingredientWrapperFade {
+    background-color: #13131677;
 }
 
 .ingredientWrapper {
@@ -90,13 +97,14 @@
 }
 
 .ingredient {
-    position: relative;
+    position: absolute;
     width: 112px;
     height: 56px;
-    top: 4px;
-    left: -44%;
 }
 
+.ingredientCount {
+    position: absolute;
+}
 
 .feedList {
     display: block;

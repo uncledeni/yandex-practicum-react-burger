@@ -8,7 +8,8 @@ import { TODO_ANY } from "../../shared/types/types";
 
 import Styles from "./style.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { current } from "@reduxjs/toolkit";
+import { orderIngredientsSort } from "../../shared/utils/sorting";
+import { feedOrderCalcTotal } from "../../shared/utils/calculating";
 
 export const FeedOrderDetails = () => {
     const { ingredients } = useTypedSelector(store => store.ingredients);
@@ -26,10 +27,8 @@ export const FeedOrderDetails = () => {
         }
     }, [dispatch, ingredients, number, getIngredientDetails])
 
-    const totalCalc = () => {
-        const total = details.ingredients.reduce((sum, current) => sum + (ingredients.find(i => {return i._id === current; })).price , 0);
-        return total;
-    }
+    const totalCalc = feedOrderCalcTotal(details.ingredients, ingredients);
+    const sortedObjArr = orderIngredientsSort(details.ingredients);
 
     return (
         <div className={`${Styles.card} p-5`}>
@@ -38,9 +37,9 @@ export const FeedOrderDetails = () => {
             <p className={`${Styles.status} text text_type_main-default mb-15`}>{details.status}</p>
             <p className={`text text_type_main-medium mb-6`}>Состав:</p>
             <div className={`${Styles.structure} mb-10`}>
-                {details.ingredients.map((ingredient, index) => {
+                {sortedObjArr.map((ingredientObj, index) => {
                     const tempSrc = ingredients.find(i => {
-                        return i._id === ingredient;
+                        return i._id === ingredientObj.value;
                     })
                     return (
                         <div className={`${Styles.ingredient} mb-4`} key={index}>
@@ -49,7 +48,7 @@ export const FeedOrderDetails = () => {
                             </span>
                             <p className={`${Styles.ingredientName} text text_type_main-default ml-4 mr-4`}>{tempSrc.name}</p>
                             <span className={`${Styles.price} pl-6`}>
-                                <p className="text text_type_digits-default mr-2">{`1 x ${tempSrc.price}`}</p>
+                                <p className="text text_type_digits-default mr-2">{`${ingredientObj.count} x ${tempSrc.price}`}</p>
                                 <CurrencyIcon type="primary" />
                             </span>
                         </div>
@@ -60,7 +59,7 @@ export const FeedOrderDetails = () => {
                 <p className="text text_type_main-default text_color_inactive">{details.createdAt}</p>
                 <span className={`${Styles.totalPrice} pl-6`}>
                     <p className="text text_type_digits-default mr-2">
-                        {totalCalc()}
+                        {totalCalc}
                     </p>
                     <CurrencyIcon type="primary" />
                 </span>

@@ -10,6 +10,8 @@ import { connect, disconnect } from '../../../../shared/services/actions/ws-prof
 import { checkOnUndefined } from '../../../../shared/utils/checks';
 import { GET_FEED_ORDER_DETAILS } from '../../../../shared/services/actions/feed-order-details';
 import { Link, useLocation } from 'react-router-dom';
+import { orderIngredientsSort } from "../../../../shared/utils/sorting";
+import { feedOrderCalcTotal } from "../../../../shared/utils/calculating";
 
 interface IFeedElem {
     order: number,
@@ -27,10 +29,8 @@ const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
         getIngredientDetails(order);
     }
 
-    const totalCalc = () => {
-        const total = order.ingredients.reduce((sum, current) => sum + (ingredientsList.find(i => {return i._id === current; })).price , 0);
-        return total;
-    }
+    const totalCalc = feedOrderCalcTotal(order.ingredients, ingredientsList);
+    const sortedObjArr = orderIngredientsSort(order.ingredients);
 
     return (
         <div onClick={() => openModal()} className={`${Styles.feedElem} mb-4 mr-2`}>
@@ -40,22 +40,23 @@ const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
             </div>
             <p className="text text_type_main-medium pt-6 pr-6 pl-6">{(order.name.length >= 53) ? `${order.name.slice(0, 53)}...` : order.name}</p>
             <p className="text text_type_main-default pt-2 pr-6 pl-6">{order.status}</p>
-
             <div className={`${Styles.feedContent} pt-6 pb-6 pr-6 pl-6`}>
                 <div className={Styles.ingredientsContent}>
-                    {order.ingredients.map((ingredient, index) => {
+                {sortedObjArr.map((ingredientObj, index) => {
                         const tempSrc = ingredientsList.find(i => {
-                            return i._id === ingredient;
+                            return i._id === ingredientObj.value;
                         })
                         return (
                             <span key={index} className={(index === 0) ? Styles.firstIngredientWrapper : Styles.ingredientWrapper}>
                                 <img className={Styles.ingredient} src={tempSrc.image_mobile} alt={`${tempSrc.name}`} />
+                                {(ingredientObj.count > 1) && <span className={Styles.ingredientWrapperFade} />}
+                                {(ingredientObj.count > 1) && <p className={`${Styles.ingredientCount} text text_type_digits-default`}>{`+${ingredientObj.count}`}</p>}
                             </span>
                         )
                     })}
                 </div>
                 <span className={`${Styles.price} pl-6`}>
-                    <p className="text text_type_digits-default mr-2">{totalCalc()}</p>
+                    <p className="text text_type_digits-default mr-2">{totalCalc}</p>
                     <CurrencyIcon type="primary" />
                 </span>
             </div>

@@ -47,7 +47,7 @@ function App() {
         <Route path="/feed/:number" element={<FeedOrderDetailsPage />} />
         <Route path="/profile" element={<OnlyAuth onlyUnAuth={false} component={<ProfilePage />} />} />
         <Route path="/profile/orders" element={<OnlyAuth onlyUnAuth={false} component={<ProfileFeedOrders />} />} />
-        <Route path="/profile/orders/:number" element={<FeedOrderDetailsPage />} />
+        <Route path="/profile/orders/:number" element={<OnlyAuth onlyUnAuth={false} component={<FeedOrderDetailsPage />} />} />
         <Route path="/ingredients/:id" element={<IngredientPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
@@ -57,7 +57,7 @@ function App() {
         <Routes>
           <Route path="/ingredients/:id" element={<IngredientDetailsModal />} />
           <Route path="/feed/:number" element={<FeedOrderDetailsModal />} />
-          <Route path="/profile/orders/:number" element={<FeedOrderDetailsModal />} />
+          <Route path="/profile/orders/:number" element={<OnlyAuth onlyUnAuth={false} component={<FeedOrderDetailsModal />} />} />
         </Routes>
       )}
     </>
