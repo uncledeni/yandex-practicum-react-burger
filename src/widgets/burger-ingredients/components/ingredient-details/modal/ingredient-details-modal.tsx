@@ -1,9 +1,9 @@
 import React, { useDispatch } from "react-redux";
-import { Modal } from "../../../../shared/components/modal/modal";
+import { Modal } from "../../../../../shared/components/modal/modal";
 import { useNavigate } from "react-router-dom";
-import { CLEAR_INGREDIENT_DETAILS } from "../../../../shared/services/actions/ingredient-details";
-import { IngredientDetails } from "../ingredient-details/ingredient-details";
-import { TODO_ANY } from "../../../../shared/types/types";
+import { CLEAR_INGREDIENT_DETAILS } from "../../../../../shared/services/actions/ingredient-details";
+import { IngredientDetails } from "../ingredient-details";
+import { TODO_ANY } from "../../../../../shared/types/types";
 
 export const IngredientDetailsModal = () => {
     const dispatch: TODO_ANY = useDispatch();

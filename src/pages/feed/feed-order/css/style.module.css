@@ -85,7 +85,7 @@
 
 .orderDesk {
     width: 580px;
-    height: 626px;
+    height: fit-content;
 }
 
 .orderDeskCollumnsContainer {
@@ -96,8 +96,11 @@
 }
 
 .orderDeskOrders {
-    height: calc(100% - 54px);
-    overflow-y: scroll;
+    height: 321px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    overflow-x: scroll;
 }
 
 .orderDeskCollumn {
@@ -107,6 +110,7 @@
 
 .orderDeskCollumnDone {
     color: #00CCCC;
+    margin-right: 16px;
 }
 
 .orderDeskTotal, .orderDeskToday {

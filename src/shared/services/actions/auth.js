@@ -78,8 +78,8 @@ export const checkUserAuth = () => {
 
 export const logout = () => {
     return (dispatch) => {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            dispatch(setUser(null, null));
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        dispatch(setUser(null, null));
     }
 }

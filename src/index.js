@@ -20,7 +20,7 @@ import {
   wsClose as FeedDataWsClose,
   wsMessage as FeedDataWsMessage,
   wsError as FeedDataWsError,
-} from './shared/services/actions/wsActionTypes';
+} from './shared/services/actions/ws-feed-action-types';
 
 import {
   connect as FeedDataWsConnect2,
@@ -30,7 +30,7 @@ import {
   wsClose as FeedDataWsClose2,
   wsMessage as FeedDataWsMessage2,
   wsError as FeedDataWsError2,
-} from './shared/services/actions/wsFeedActionTypes';
+} from './shared/services/actions/ws-profile-feed-action-types';
 
 import { configureStore } from '@reduxjs/toolkit';
 

@@ -29,7 +29,7 @@ export const deepEqual = (a: TODO_ANY, b: TODO_ANY) => {
   }
 
 const checkResponse = <T>(res: Response): Promise<T> => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(`Ошибка: ${err}`));
+    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
 export const request = async <T>(endpoint: RequestInfo, options?: TODO_ANY) => {
@@ -38,7 +38,7 @@ export const request = async <T>(endpoint: RequestInfo, options?: TODO_ANY) => {
 };
 
 const refreshToken = async () => {
-    return fetch(`${BASE_URL}/auth/token`, {
+    return fetch(`${BASE_URL}auth/token`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -55,22 +55,25 @@ const refreshToken = async () => {
                 return Promise.reject(refreshData);
             }
             localStorage.setItem("refreshToken", refreshData.refreshToken);
-            localStorage.setItem("accessToken", refreshData.accessToken);
+            localStorage.setItem("accessToken", refreshData.accessToken.split('Bearer ')[1]);
             return refreshData;
         });
 };
 
 export const fetchWithRefresh = async <T>(endpoint: RequestInfo, options?: TODO_ANY) => {
     try {
+        console.log("try");
         const res = await fetch(`${BASE_URL}${endpoint}`, options);
         return await checkResponse<T>(res);
     } catch (err) {
-        if ((err as {message: string}).message === "jwt expired") {
+        if ((err as {message: string}).message === ("jwt expired" || "invalid signature")) {
+            // console.log("token refresh");
             const refreshData = await refreshToken(); //обновляем токен
             options.headers.authorization = refreshData.accessToken;
             const res = await fetch(`${BASE_URL}${endpoint}`, options); //повторяем запрос
             return await checkResponse<T>(res);
         } else {
+            // console.log(err);
             return Promise.reject(err);
         }
     }

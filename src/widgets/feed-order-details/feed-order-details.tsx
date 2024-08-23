@@ -2,12 +2,13 @@ import React, { useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { getFeedOrderDetails } from "../../../../../shared/services/actions/feed-order-details";
-import { useTypedSelector } from "../../../../../shared/hooks/useTypedSelector";
-import { TODO_ANY } from "../../../../../shared/types/types";
+import { getFeedOrderDetails } from "../../shared/services/actions/feed-order-details";
+import { useTypedSelector } from "../../shared/hooks/useTypedSelector";
+import { TODO_ANY } from "../../shared/types/types";
 
 import Styles from "./style.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { current } from "@reduxjs/toolkit";
 
 export const FeedOrderDetails = () => {
     const { ingredients } = useTypedSelector(store => store.ingredients);
@@ -24,6 +25,11 @@ export const FeedOrderDetails = () => {
             getIngredientDetails(number)
         }
     }, [dispatch, ingredients, number, getIngredientDetails])
+
+    const totalCalc = () => {
+        const total = details.ingredients.reduce((sum, current) => sum + (ingredients.find(i => {return i._id === current; })).price , 0);
+        return total;
+    }
 
     return (
         <div className={`${Styles.card} p-5`}>
@@ -53,7 +59,9 @@ export const FeedOrderDetails = () => {
             <div className={Styles.bottom}>
                 <p className="text text_type_main-default text_color_inactive">{details.createdAt}</p>
                 <span className={`${Styles.totalPrice} pl-6`}>
-                    <p className="text text_type_digits-default mr-2">480</p>
+                    <p className="text text_type_digits-default mr-2">
+                        {totalCalc()}
+                    </p>
                     <CurrencyIcon type="primary" />
                 </span>
 

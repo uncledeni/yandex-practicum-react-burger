@@ -12,14 +12,14 @@ import { ErrorPage } from '../pages/error/error';
 import { IngredientPage } from '../pages/ingredient-info/ingredient-page/ingredient-page';
 import { OnlyAuth, OnlyUnAuth } from '../shared/utils/protected-route';
 import { checkUserAuth } from '../shared/services/actions/auth';
-import { IngredientDetailsModal } from '../widgets/burger-ingredients/components/ingredient-details-modal/ingredient-details-modal';
+import { IngredientDetailsModal } from '../widgets/burger-ingredients/components/ingredient-details/modal/ingredient-details-modal';
 import { AppHeader } from '../widgets/app-header';
 import { getBurgerIngredients } from "../shared/services/actions/burger-ingredients";
 import { TODO_ANY } from '../shared/types/types';
-import { OrderFeed } from '../pages/feed/order-feed/order-feed';
-import { ProfileOrders } from '../pages/account/profile/profile-orders/profile-orders';
-import { FeedOrderDetails } from '../pages/feed/order-feed/components/order-feed-details/order-feed-details';
-import { FeedOrderDetailsModal } from '../pages/feed/order-feed/components/order-feed-details-modal/order-feed-details-modal';
+import { FeedOrders } from '../pages/feed/feed-order/feed-order';
+import { ProfileFeedOrders } from '../pages/account/profile/profile-feed-orders/profile-feed-orders';
+import { FeedOrderDetailsModal } from '../widgets/feed-order-details/modal/feed-order-details-modal';
+import { FeedOrderDetailsPage } from '../pages/feed/feed-order-details-page/feed-order-details-page';
 
 function App() {
   const dispatch: TODO_ANY = useDispatch();
@@ -43,11 +43,11 @@ function App() {
         <Route path="/register" element={<OnlyUnAuth component={<RegistrationPage />} />} />
         <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
         <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword />} />} />
-        <Route path="/feed" element={<OrderFeed />} />
-        <Route path="/feed/:number" element={<FeedOrderDetails />} />
+        <Route path="/feed" element={<FeedOrders />} />
+        <Route path="/feed/:number" element={<FeedOrderDetailsPage />} />
         <Route path="/profile" element={<OnlyAuth onlyUnAuth={false} component={<ProfilePage />} />} />
-        <Route path="/profile/orders" element={<OnlyAuth onlyUnAuth={false} component={<ProfileOrders />} />} />
-        <Route path="/profile/orders/:number" element={<FeedOrderDetails />} />
+        <Route path="/profile/orders" element={<OnlyAuth onlyUnAuth={false} component={<ProfileFeedOrders />} />} />
+        <Route path="/profile/orders/:number" element={<FeedOrderDetailsPage />} />
         <Route path="/ingredients/:id" element={<IngredientPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>

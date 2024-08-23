@@ -19,13 +19,11 @@ export const socketMiddleware = (wsActions): Middleware => {
     return next => (action) => {
       const { dispatch } = store;
       const { type } = action;
-      // console.log(action, type);
       const { wsConnect, onOpen, onClose, onError, wsConnecting, onMessage, wsDisconnect } = wsActions;
       if (wsConnect.match(action)) {
         const wsUrl = action.payload;
         socket = new WebSocket(wsUrl);
         dispatch(wsConnecting())
-        // console.log(socket.readyState);
       }
       if (socket) {
         socket.onopen = event => {
@@ -38,7 +36,6 @@ export const socketMiddleware = (wsActions): Middleware => {
 
         socket.onmessage = event => {
           const { data } = event;
-          // console.log(data);
           const parsedData = JSON.parse(data);
 
           dispatch(onMessage(parsedData));

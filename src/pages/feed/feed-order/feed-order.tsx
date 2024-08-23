@@ -5,14 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTypedSelector } from "../../../shared/hooks/useTypedSelector";
 import { IIngredient, WebSocketStatus } from "../../../shared/types/types";
 
-import { connect, disconnect } from '../../../shared/services/actions/wsActionTypes';
+import { connect, disconnect } from '../../../shared/services/actions/ws-feed-action-types';
 import { checkOnUndefined } from "../../../shared/utils/checks";
 import { GET_FEED_ORDER_DETAILS } from "../../../shared/services/actions/feed-order-details";
 import { Link, useLocation } from "react-router-dom";
-
-// const data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-//     10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-//     20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
 
 interface IFeedElem {
     order: number,
@@ -28,6 +24,11 @@ const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
 
     const openModal = () => {
         getIngredientDetails(order);
+    }
+
+    const totalCalc = () => {
+        const total = order.ingredients.reduce((sum, current) => sum + (ingredientsList.find(i => {return i._id === current; })).price , 0);
+        return total;
     }
 
     return (
@@ -51,7 +52,7 @@ const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
                     })}
                 </div>
                 <span className={`${Styles.price} pl-6`}>
-                    <p className="text text_type_digits-default mr-2">480</p>
+                    <p className="text text_type_digits-default mr-2">{totalCalc()}</p>
                     <CurrencyIcon type="primary" />
                 </span>
             </div>
@@ -117,7 +118,7 @@ const OrderDesk = () => {
     )
 }
 
-export const OrderFeed = () => {
+export const FeedOrders = () => {
     const token = localStorage.getItem("accessToken");
     const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
 
@@ -133,7 +134,7 @@ export const OrderFeed = () => {
         return () => {
             disconnectFeedData();
         }
-    }, [dispatch])
+    }, [])
 
     return (
         <main className={Styles.pageWrapper}>

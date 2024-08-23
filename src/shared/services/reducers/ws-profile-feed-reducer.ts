@@ -1,6 +1,6 @@
 import { error } from 'console';
 import { WebSocketStatus } from '../../types/types';
-import { wsOpen, wsError, wsConnecting, wsMessage } from '../actions/wsActionTypes';
+import { wsOpen, wsError, wsConnecting, wsMessage, wsClose } from '../actions/ws-profile-feed-action-types';
 import { createReducer } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -9,7 +9,7 @@ const initialState = {
   error: ''
 };
 
-export const wsReducer = createReducer(initialState, (builder) => {
+export const wsProfileFeedReducer = createReducer(initialState, (builder) => {
   builder.addCase(wsConnecting, (state) => {
     state.status = WebSocketStatus.CONNECTING;
   })
@@ -17,12 +17,16 @@ export const wsReducer = createReducer(initialState, (builder) => {
     state.status = WebSocketStatus.ONLINE;
     state.error = '';
   })
+  builder.addCase(wsClose, (state) => {
+    state.status = WebSocketStatus.OFFLINE;
+    state.data = {};
+    state.error = '';
+  })
   builder.addCase(wsError, (state, action) => {
     state.status = WebSocketStatus.OFFLINE;
     state.error = action.payload;
   })
   builder.addCase(wsMessage, (state, action) => {
-    console.log(action.payload)
     state.data = action.payload;
   })
 })
