@@ -4,11 +4,10 @@ import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-de
 
 import { ProfileNavbar } from '../components/profile-navbar/profile-navbar';
 import { patchUserData } from '../../../shared/api/get-data-service';
-import { useForm } from '../../../shared/hooks/useForm';
-import { useTypedSelector } from '../../../shared/hooks/useTypedSelector';
+import { useForm, useTypedSelector } from '../../../shared/hooks';
+import { deepEqual } from '../../../shared/utils';
 
 import ProfileStyles from "./css/style.module.css";
-import { deepEqual } from '../../../shared/utils/checks';
 
 export const ProfilePage = () => {
     const auth = useTypedSelector(store => store.auth);

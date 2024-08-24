@@ -1,12 +1,12 @@
-import React, { useDispatch } from "react-redux";
-import { Modal } from "../../../shared/components/modal/modal";
+import React from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../../../shared/components/modal/modal";
 import { CLEAR_FEED_ORDER_DETAILS } from "../../../shared/services/actions/feed-order-details";
 import { FeedOrderDetails } from "../feed-order-details";
-import { TODO_ANY } from "../../../shared/types/types";
+import { useTypedDispatch } from "../../../shared/hooks";
 
 export const FeedOrderDetailsModal = () => {
-    const dispatch: TODO_ANY = useDispatch();
+    const dispatch = useTypedDispatch();
     const navigate = useNavigate();
 
     const clearIngredientDetails = () => {

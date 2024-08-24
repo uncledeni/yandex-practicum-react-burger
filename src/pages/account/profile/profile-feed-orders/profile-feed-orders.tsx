@@ -3,15 +3,12 @@ import React, { useEffect } from 'react';
 import Styles from "./css/style.module.css";
 import { ProfileNavbar } from '../../components/profile-navbar/profile-navbar';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useTypedSelector } from '../../../../shared/hooks/useTypedSelector';
-import { useDispatch } from 'react-redux';
 import { IIngredient, WebSocketStatus } from '../../../../shared/types/types';
 import { connect, disconnect } from '../../../../shared/services/actions/ws-profile-feed-action-types';
-import { checkOnUndefined } from '../../../../shared/utils/checks';
 import { GET_FEED_ORDER_DETAILS } from '../../../../shared/services/actions/feed-order-details';
 import { Link, useLocation } from 'react-router-dom';
-import { orderIngredientsSort } from "../../../../shared/utils/sorting";
-import { feedOrderCalcTotal } from "../../../../shared/utils/calculating";
+import { orderIngredientsSort, feedOrderCalcTotal, checkOnUndefined } from "../../../../shared/utils";
+import { useTypedSelector, useTypedDispatch } from '../../../../shared/hooks';
 
 interface IFeedElem {
     order: number,
@@ -19,7 +16,7 @@ interface IFeedElem {
 }
 
 const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
 
     const getIngredientDetails = (order) => {
         dispatch({ type: GET_FEED_ORDER_DETAILS, details: order })
@@ -88,8 +85,7 @@ export const ProfileFeedOrders = () => {
     const wsUrl = 'wss://norma.nomoreparties.space/orders';
 
     const { status, data } = useTypedSelector(state => state.profileFeed);
-    const dispatch = useDispatch();
-    const isDisconnected = status !== WebSocketStatus.OFFLINE;
+    const dispatch = useTypedDispatch();
 
     const connectFeedData = () => dispatch(connect(`${wsUrl}?token=${token}`));
     const disconnectFeedData = () => dispatch(disconnect());

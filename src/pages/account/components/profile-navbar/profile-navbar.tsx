@@ -1,13 +1,12 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { logout } from "../../../../shared/services/actions/auth";
-import { TODO_ANY } from '../../../../shared/types/types';
+import { useTypedDispatch } from '../../../../shared/hooks';
 
 import ProfileNavbarStyles from "./css/style.module.css";
 
 export const ProfileNavbar = () => {
-    const dispatch: TODO_ANY = useDispatch();
+    const dispatch = useTypedDispatch();
 
     return (
         <div className={`${ProfileNavbarStyles.profileNavbarContainer} mr-15`}>

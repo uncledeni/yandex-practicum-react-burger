@@ -62,7 +62,7 @@ const refreshToken = async () => {
 
 export const fetchWithRefresh = async <T>(endpoint: RequestInfo, options?: TODO_ANY) => {
     try {
-        console.log("try");
+        // console.log("try");
         const res = await fetch(`${BASE_URL}${endpoint}`, options);
         return await checkResponse<T>(res);
     } catch (err) {

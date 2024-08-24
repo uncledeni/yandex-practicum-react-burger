@@ -1,11 +1,15 @@
-import { error } from 'console';
-import { WebSocketStatus } from '../../types/types';
 import { wsOpen, wsError, wsConnecting, wsMessage, wsClose } from '../actions/ws-profile-feed-action-types';
+import { WebSocketStatus, IWSFeedReducer } from '../../types/types';
 import { createReducer } from '@reduxjs/toolkit';
 
-const initialState = {
+const initialState: IWSFeedReducer = {
   status: WebSocketStatus.OFFLINE,
-  data: {},
+  data: {
+    orders: [],
+    success: false,
+    total: 0,
+    totalToday: 0
+  },
   error: ''
 };
 
@@ -19,7 +23,7 @@ export const wsProfileFeedReducer = createReducer(initialState, (builder) => {
   })
   builder.addCase(wsClose, (state) => {
     state.status = WebSocketStatus.OFFLINE;
-    state.data = {};
+    state.data = initialState.data;
     state.error = '';
   })
   builder.addCase(wsError, (state, action) => {

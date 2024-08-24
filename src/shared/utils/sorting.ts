@@ -1,4 +1,9 @@
-export const orderIngredientsSort = (arr) => {
+interface IOrderIngredientsSort {
+    value: string,
+    count: number
+}
+
+export const orderIngredientsSort = (arr: string[]): IOrderIngredientsSort[]=> {
     let map = Object.create(null);
     for (let x of arr) (map[x] = map[x] || []).push(x);
 

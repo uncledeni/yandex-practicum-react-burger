@@ -7,14 +7,24 @@ import {
     DECREASE_BUN_COUNTER
 } from "../actions/burger-ingredients";
 
-const initialState = {
+import { IIngredient } from "../../types/types";
+import { AppActions } from "../../types/action-types";
+
+interface IInitialState {
+    ingredients: IIngredient[],
+    ingredientsRequest: boolean,
+    ingredientsFailed: boolean,
+    isLoading: boolean
+}
+
+const initialState: IInitialState = {
     ingredients: [],
     ingredientsRequest: false,
     ingredientsFailed: false,
     isLoading: false
 }
 
-export const burgerIngredientsReducer = (state = initialState, action) => {
+export const burgerIngredientsReducer = (state = initialState, action: AppActions) => {
     switch (action.type) {
         case GET_BURGER_INGREDIENTS_REQUEST: {
             return {

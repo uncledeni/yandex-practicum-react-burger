@@ -1,28 +1,27 @@
 import React, { useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { getFeedOrderDetails } from "../../shared/services/actions/feed-order-details";
-import { useTypedSelector } from "../../shared/hooks/useTypedSelector";
-import { TODO_ANY } from "../../shared/types/types";
+import { orderIngredientsSort, feedOrderCalcTotal } from "../../shared/utils";
+import { IIngredient } from "../../shared/types/types";
+import { useTypedDispatch, useTypedSelector } from "../../shared/hooks";
 
 import Styles from "./style.module.css";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { orderIngredientsSort } from "../../shared/utils/sorting";
-import { feedOrderCalcTotal } from "../../shared/utils/calculating";
 
 export const FeedOrderDetails = () => {
     const { ingredients } = useTypedSelector(store => store.ingredients);
     const { details } = useTypedSelector(store => store.feedOrderDetails);
     const { number } = useParams();
-    const dispatch: TODO_ANY = useDispatch();
+    const dispatch = useTypedDispatch();
 
-    const getIngredientDetails = useCallback((_id) => {
+    const getIngredientDetails = useCallback((_id: string | undefined) => {
         dispatch(getFeedOrderDetails(_id))
     }, [dispatch])
 
     useEffect(() => {
         if (details._id === '') {
+            console.log(typeof number)
             getIngredientDetails(number)
         }
     }, [dispatch, ingredients, number, getIngredientDetails])
@@ -38,7 +37,7 @@ export const FeedOrderDetails = () => {
             <p className={`text text_type_main-medium mb-6`}>Состав:</p>
             <div className={`${Styles.structure} mb-10`}>
                 {sortedObjArr.map((ingredientObj, index) => {
-                    const tempSrc = ingredients.find(i => {
+                    const tempSrc = ingredients.find((i: IIngredient) => {
                         return i._id === ingredientObj.value;
                     })
                     return (

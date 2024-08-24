@@ -1,5 +1,5 @@
+import { v4 as uuid } from 'uuid';
 import React, { useCallback, useRef } from "react";
-import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier, XYCoord } from 'dnd-core'
@@ -7,13 +7,12 @@ import { Button, ConstructorElement, CurrencyIcon, DragIcon } from "@ya.praktiku
 
 import { OrderDetails } from "./components/order-details/order-details";
 import { Modal } from "../../shared/components/modal/modal";
-import { useModal } from "../../shared/hooks/useModal";
-import { DELETE_INGREDIENT_BURGER_CONSTRUCTOR, SWAP_INGREDIENTS, addIngredient } from "../../shared/services/actions/burger-constructor";
+import { ADD_INGREDIENT_BURGER_CONSTRUCTOR, DELETE_INGREDIENT_BURGER_CONSTRUCTOR, SWAP_INGREDIENTS } from "../../shared/services/actions/burger-constructor";
 import { DECREASE_BUN_COUNTER, DECREASE_INGREDIENT_COUNTER, INCREASE_INGREDIENT_COUNTER } from "../../shared/services/actions/burger-ingredients";
 import { CLEAR_ORDER_DETAILS, getOrderDetails } from "../../shared/services/actions/order-details";
-import { useTypedSelector } from "../../shared/hooks/useTypedSelector";
-import { IBun, IFilling, IIngredient, IOrder, TODO_ANY } from "../../shared/types/types";
-import { calcTotal } from "../../shared/utils/calculating";
+import { useTypedSelector, useTypedDispatch, useModal } from "../../shared/hooks";
+import { calcTotal } from "../../shared/utils";
+import { IBun, IFilling, IIngredient, IOrder } from "../../shared/types/types";
 
 import BurgerConstructorStyles from "./css/style.module.css"
 
@@ -27,7 +26,7 @@ const Info = ({ constructorModal }: IInfoProps) => {
     const arr = useTypedSelector(store => store.order);
     const { email } = useTypedSelector(store => store.auth);
 
-    const dispatch: TODO_ANY = useDispatch();
+    const dispatch = useTypedDispatch();
 
     const orderDetailsArr = (data: IOrder): (string[] | undefined) => {
         if (data.bun !== null) {
@@ -138,7 +137,7 @@ const StackListElement = ({ ingredient, id, index, swap }: IStackListElementProp
     const opacity = isDragging ? 0 : 1
     dragRef(dropRef(ref))
 
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
     const deleteIngredient = () => {
         dispatch({ type: DELETE_INGREDIENT_BURGER_CONSTRUCTOR, id });
         dispatch({ type: DECREASE_INGREDIENT_COUNTER, ingredient });
@@ -162,8 +161,9 @@ const StackListElement = ({ ingredient, id, index, swap }: IStackListElementProp
 const StackList = () => {
     const { fillings } = useTypedSelector(store => store.order);
 
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
     const swapIngredients = (dragIndex: number, hoverIndex: number) => {
+        console.log(dragIndex, hoverIndex)
         dispatch({ type: SWAP_INGREDIENTS, dragIndex, hoverIndex })
     }
 
@@ -189,9 +189,9 @@ const StackList = () => {
 const ConstructorComponent = () => {
     const { bun } = useTypedSelector(store => store.order);
 
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
     const dropIngredient = (ingredient: IBun) => {
-        dispatch(addIngredient(ingredient));
+        dispatch({ type: ADD_INGREDIENT_BURGER_CONSTRUCTOR, payload: { ...ingredient, id: uuid() } });
 
         if (ingredient.ingredient.type === 'bun') {
             if (bun === null) {
@@ -229,9 +229,10 @@ const ConstructorComponent = () => {
 export const BurgerConstructor = () => {
     const { isModalOpen, openModal, closeModal } = useModal();
 
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
 
     const clearOrderDetails = () => {
+        alert("AAA")
         dispatch({ type: CLEAR_ORDER_DETAILS })
     }
 

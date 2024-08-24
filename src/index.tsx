@@ -54,12 +54,12 @@ const wsActions2 = {
   onError: FeedDataWsError2,
 };
 
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
+// const composeEnhancers =
+//   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+//     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+//     : compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+// const enhancer = composeEnhancers(applyMiddleware(thunk));
 const middleware = socketMiddleware(wsActions)
 const middleware2 = socketMiddleware(wsActions2)
 

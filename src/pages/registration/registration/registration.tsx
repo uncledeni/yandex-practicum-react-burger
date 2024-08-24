@@ -4,7 +4,7 @@ import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-de
 
 import { ActionBlock } from '../components/action-block/action-block';
 import { register } from '../../../shared/api/get-data-service';
-import { useForm } from '../../../shared/hooks/useForm';
+import { useForm } from '../../../shared/hooks';
 
 import RegistrationStyles from "./css/style.module.css";
 

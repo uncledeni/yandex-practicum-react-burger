@@ -8,17 +8,16 @@ export type TwsActionTypes = {
   onOpen: ActionCreatorWithoutPayload,
   onClose: ActionCreatorWithoutPayload,
   onMessage: ActionCreatorWithPayload<any>,
-  onError: ActionCreatorWithoutPayload,
+  onError: ActionCreatorWithPayload<string>,
 }
 
-export const socketMiddleware = (wsActions): Middleware => {
+export const socketMiddleware = (wsActions: TwsActionTypes): Middleware => {
   return ((store: MiddlewareAPI) => {
     // console.log(wsActions)
     let socket: WebSocket | null = null;
 
     return next => (action) => {
       const { dispatch } = store;
-      const { type } = action;
       const { wsConnect, onOpen, onClose, onError, wsConnecting, onMessage, wsDisconnect } = wsActions;
       if (wsConnect.match(action)) {
         const wsUrl = action.payload;
@@ -48,10 +47,6 @@ export const socketMiddleware = (wsActions): Middleware => {
         if (wsDisconnect.match(action)) {
           socket.close()
         }
-
-        // if (type === wsSendMessage) {
-        //   const payload = action.payload;
-        // }
       }
 
       next(action);

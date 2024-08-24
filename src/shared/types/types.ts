@@ -36,16 +36,19 @@ export interface IOrder {
 }
 
 // -- ORDER DETAILS --
-export interface IOrderData {
-    createdAt: string;
-    ingredients: IIngredient[];
+export interface IFeedOrder {
+    _id: string
     name: string;
     number: number
+    ingredients: IIngredient[];
+    status: string
+    createdAt: string;
+    updatedAt: string
+}
+
+export interface IOrderData extends IFeedOrder {
     owner: { name: string, email: string, createdAt: string, updatedAt: string }
     price: number
-    status: string
-    updatedAt: string
-    _id: string
 }
 
 export interface IOrderAction {
@@ -90,4 +93,17 @@ export enum WebSocketStatus {
     CONNECTING = 'CONNECTING...',
     ONLINE = 'ONLINE',
     OFFLINE = 'OFFLINE'
+}
+
+export interface IWSActionPayload {
+    orders: IFeedOrder[],
+    success: boolean,
+    total: number,
+    totalToday: number,
+}
+
+export interface IWSFeedReducer {
+    status: WebSocketStatus,
+    data: IWSActionPayload,
+    error: string
 }

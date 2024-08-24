@@ -1,3 +1,4 @@
+import { AppActions } from "../../types/action-types";
 import {
     GET_ORDER_DETAILS_REQUEST,
     GET_ORDER_DETAILS_SUCCESS,
@@ -12,7 +13,7 @@ const initialState = {
     isLoading: false
 }
 
-export const orderDetailsReducer = ( state = initialState, action) => {
+export const orderDetailsReducer = ( state = initialState, action: AppActions) => {
     switch (action.type) {
         case GET_ORDER_DETAILS_REQUEST: {
             return {
@@ -22,6 +23,7 @@ export const orderDetailsReducer = ( state = initialState, action) => {
             };
         }
         case GET_ORDER_DETAILS_SUCCESS: {
+            console.log(action)
             return {
                 ...state,
                 order: action,

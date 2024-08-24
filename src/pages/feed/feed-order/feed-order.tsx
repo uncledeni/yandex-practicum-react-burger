@@ -1,16 +1,14 @@
 import React, { useEffect } from "react";
-import Styles from './css/style.module.css';
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useTypedSelector } from "../../../shared/hooks/useTypedSelector";
-import { IIngredient, WebSocketStatus } from "../../../shared/types/types";
-
-import { connect, disconnect } from '../../../shared/services/actions/ws-feed-action-types';
-import { checkOnUndefined } from "../../../shared/utils/checks";
-import { GET_FEED_ORDER_DETAILS } from "../../../shared/services/actions/feed-order-details";
 import { Link, useLocation } from "react-router-dom";
-import { orderIngredientsSort } from "../../../shared/utils/sorting";
-import { feedOrderCalcTotal } from "../../../shared/utils/calculating";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+
+import { useTypedSelector, useTypedDispatch } from "../../../shared/hooks";
+import { checkOnUndefined, orderIngredientsSort, feedOrderCalcTotal } from "../../../shared/utils";
+import { IIngredient, WebSocketStatus } from "../../../shared/types/types";
+import { connect, disconnect } from '../../../shared/services/actions/ws-feed-action-types';
+import { GET_FEED_ORDER_DETAILS } from "../../../shared/services/actions/feed-order-details";
+
+import Styles from './css/style.module.css';
 
 interface IFeedElem {
     order: number,
@@ -18,7 +16,7 @@ interface IFeedElem {
 }
 
 const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
 
     const getIngredientDetails = (order) => {
         dispatch({ type: GET_FEED_ORDER_DETAILS, details: order })
@@ -125,7 +123,7 @@ export const FeedOrders = () => {
     const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
 
     const { status, data } = useTypedSelector(state => state.feed);
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
     const isDisconnected = status !== WebSocketStatus.OFFLINE;
 
     const connectFeedData = () => dispatch(connect(`${wsUrl}?token=${token}`));

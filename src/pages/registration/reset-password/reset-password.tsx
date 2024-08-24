@@ -5,7 +5,7 @@ import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burg
 
 import { ActionBlock } from '../components/action-block/action-block';
 import { resetPassword } from '../../../shared/api/get-data-service';
-import { useForm } from '../../../shared/hooks/useForm';
+import { useForm } from '../../../shared/hooks';
 
 import ResetPasswordStyles from "./css/style.module.css";
 

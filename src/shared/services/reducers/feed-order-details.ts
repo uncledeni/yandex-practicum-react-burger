@@ -1,3 +1,4 @@
+import { AppActions } from '../../types/action-types';
 import {
     GET_FEED_ORDER_DETAILS,
     CLEAR_FEED_ORDER_DETAILS,
@@ -20,7 +21,7 @@ const initialState = {
     orderFailed: false,
 }
 
-export const feedOrderDetailsReducer = (state = initialState, action) => {
+export const feedOrderDetailsReducer = (state = initialState, action: AppActions) => {
     switch (action.type) {
         case GET_FEED_ORDER_DETAILS: {
             return {
@@ -42,6 +43,7 @@ export const feedOrderDetailsReducer = (state = initialState, action) => {
             };
         }
         case GET_FEED_ORDER_DETAILS_SUCCESS: {
+            console.log(action)
             return {
                 ...state,
                 details: action.data.orders[0],

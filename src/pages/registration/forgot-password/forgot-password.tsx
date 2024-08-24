@@ -4,7 +4,7 @@ import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-comp
 
 import { ActionBlock } from '../components/action-block/action-block';
 import { getResetPasswordCode } from '../../../shared/api/get-data-service';
-import { useForm } from '../../../shared/hooks/useForm';
+import { useForm } from '../../../shared/hooks';
 
 import ForgotPasswordStyles from "./css/style.module.css";
 

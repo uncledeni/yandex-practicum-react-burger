@@ -1,17 +1,16 @@
 import React, { useRef } from "react";
 import { Link, useLocation, Location } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { useDrag } from "react-dnd";
 
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
-import { useTypedSelector } from "../../shared/hooks/useTypedSelector";
-import { Loader } from "../../shared/components/loader/loader";
 import { checkOnUndefined } from "../../shared/utils/checks";
 import { IIngredient, TODO_ANY } from "../../shared/types/types";
+import { GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
+import { useTypedSelector, useTypedDispatch } from "../../shared/hooks";
+import { Loader } from "../../shared/components/loader/loader";
 
 import BurgerIngredientsStyles from "./css/style.module.css";
 
@@ -112,7 +111,7 @@ interface IIngredientElemProps {
 }
 
 const IngredientElem = ({ ingredient }: IIngredientElemProps) => {
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
     const getIngredientDetails = (ingredient: IIngredient) => {
         dispatch({ type: GET_INGREDIENT_DETAILS, details: ingredient })
     }

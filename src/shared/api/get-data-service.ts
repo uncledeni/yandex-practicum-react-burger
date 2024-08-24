@@ -1,15 +1,22 @@
-import { IIngredient, ILoginData, IOrderData, IPostOrder, IResetPassword, IResetPasswordCode, IUserData, TServerResponse } from "../types/types";
+import {
+    TGetDataServiceResponse,
+    TFeedOrdersResponse,
+    TGetResetPasswordCodeResponse,
+    TGetUserDataResponse,
+    TLoginResponse,
+    TPatchUserData,
+    TPostOrderResponse,
+    TRegisterResponse,
+    TResetPasswordResponse
+} from "../types/get-data-service-types";
+import { ILoginData, IResetPassword, IResetPasswordCode, IUserData } from "../types/types";
+
 import { request } from "../utils/checks";
 import { fetchWithRefresh } from "../utils/checks";
 
-
 export const getDataService = async () => await request<TGetDataServiceResponse>('ingredients');
 
-type TGetDataServiceResponse = TServerResponse<{
-    data: IIngredient[];
-}>
-
-export const postOrder = async (data: IPostOrder) => await fetchWithRefresh<TPostOrderResponse>('orders', {
+export const postOrder = async (data: string | undefined) => await fetchWithRefresh<TPostOrderResponse>('orders', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json;charset=utf-8',
@@ -20,22 +27,12 @@ export const postOrder = async (data: IPostOrder) => await fetchWithRefresh<TPos
     })
 })
 
-type TPostOrderResponse = TServerResponse <{
-    name: string;
-    order: IOrderData;
-}>
-
-export const getOrder = async (number: IPostOrder) => await request<TPostOrderResponse>(`orders/${number}`, {
+export const getOrder = async (number: string | undefined) => await request<TFeedOrdersResponse>(`orders/${number}`, {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json;charset=utf-8',
     },
 })
-
-// type TPostOrderResponse = TServerResponse <{
-//     name: string;
-//     order: IOrderData;
-// }>
 
 export const register = async (data: IUserData) => await fetchWithRefresh<TRegisterResponse>('auth/register', {
     method: 'POST',
@@ -49,10 +46,6 @@ export const register = async (data: IUserData) => await fetchWithRefresh<TRegis
     })
 })
 
-type TRegisterResponse = TServerResponse<{
-    user: IUserData;
-}>
-
 export const login = async (data: ILoginData) => await fetchWithRefresh<TLoginResponse>('auth/login', {
     method: 'POST',
     headers: {
@@ -64,10 +57,6 @@ export const login = async (data: ILoginData) => await fetchWithRefresh<TLoginRe
     })
 })
 
-type TLoginResponse = TServerResponse<{
-    user: IUserData;
-}>
-
 export const getResetPasswordCode = async (data: IResetPasswordCode) => await request<TGetResetPasswordCodeResponse>('password-reset', {
     method: 'POST',
     headers: {
@@ -77,10 +66,6 @@ export const getResetPasswordCode = async (data: IResetPasswordCode) => await re
         "email": data.email
     })
 })
-
-type TGetResetPasswordCodeResponse = TServerResponse<{
-    message: string;
-}>
 
 export const resetPassword = async (data: IResetPassword) => await request<TResetPasswordResponse>('password-reset/reset', {
     method: 'POST',
@@ -93,10 +78,6 @@ export const resetPassword = async (data: IResetPassword) => await request<TRese
     })
 })
 
-type TResetPasswordResponse = TServerResponse<{
-    message: string;
-}>
-
 export const getUserData = async () => await fetchWithRefresh<TGetUserDataResponse>('auth/user', {
     method: 'GET',
     headers: {
@@ -104,10 +85,6 @@ export const getUserData = async () => await fetchWithRefresh<TGetUserDataRespon
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
     }
 })
-
-type TGetUserDataResponse = TServerResponse<{
-    user: IUserData;
-}>
 
 export const patchUserData = async (data: IUserData) => await fetchWithRefresh<TPatchUserData>('auth/user', {
     method: 'PATCH',
@@ -121,7 +98,3 @@ export const patchUserData = async (data: IUserData) => await fetchWithRefresh<T
         "name": data.name
     })
 })
-
-type TPatchUserData = TServerResponse<{
-    user: IUserData;
-}>
