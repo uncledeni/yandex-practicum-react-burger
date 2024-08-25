@@ -9,11 +9,11 @@ export const checkEmptyArr = (arr: IFilling[]): boolean => {
     return (arr.length > 0);
 }
 
-export const checkOnUndefined = (data: TODO_ANY): boolean => {
+export const checkOnUndefined = <T>(data: T): boolean => {
     return !(data === undefined);
 }
 
-export const checkOnNull = (data: TODO_ANY): boolean => {
+export const checkOnNull = <T>(data: T): boolean => {
     return !(data === null)
 }
 
@@ -32,7 +32,7 @@ const checkResponse = <T>(res: Response): Promise<T> => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const request = async <T>(endpoint: RequestInfo, options?: TODO_ANY) => {
+export const request = async <T>(endpoint: RequestInfo, options?: RequestInit) => {
     return fetch(`${BASE_URL}${endpoint}`, options)
         .then((res: Response) => checkResponse<T>(res))
 };
@@ -60,16 +60,19 @@ const refreshToken = async () => {
         });
 };
 
-export const fetchWithRefresh = async <T>(endpoint: RequestInfo, options?: TODO_ANY) => {
+export const fetchWithRefresh = async <T>(endpoint: RequestInfo, options?: RequestInit) => {
     try {
         // console.log("try");
         const res = await fetch(`${BASE_URL}${endpoint}`, options);
         return await checkResponse<T>(res);
     } catch (err) {
-        if ((err as {message: string}).message === ("jwt expired" || "invalid signature")) {
+        if ((err as {message: string}).message === ("invalid signature")) {
             // console.log("token refresh");
             const refreshData = await refreshToken(); //обновляем токен
-            options.headers.authorization = refreshData.accessToken;
+            if (options?.headers !== undefined) {
+                options.headers = {} as { [key: string]: string }
+                options.headers.Authorization = refreshData.accessToken;
+            }
             const res = await fetch(`${BASE_URL}${endpoint}`, options); //повторяем запрос
             return await checkResponse<T>(res);
         } else {

@@ -1,4 +1,5 @@
 import { AppActions } from "../../types/action-types";
+import { IOrderAction } from "../../types/types";
 import {
     GET_ORDER_DETAILS_REQUEST,
     GET_ORDER_DETAILS_SUCCESS,
@@ -7,7 +8,7 @@ import {
 } from "../actions/order-details";
 
 const initialState = {
-    order: {},
+    order: {} as IOrderAction,
     orderRequest: false,
     orderFailed: false,
     isLoading: false

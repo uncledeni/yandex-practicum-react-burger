@@ -41,7 +41,7 @@ export const FeedOrderDetails = () => {
                         return i._id === ingredientObj.value;
                     })
                     return (
-                        <div className={`${Styles.ingredient} mb-4`} key={index}>
+                        (tempSrc !== undefined) && <div className={`${Styles.ingredient} mb-4`} key={index}>
                             <span key={index} className={(index === 0) ? Styles.firstIngredientWrapper : Styles.ingredientWrapper}>
                                 <img className={Styles.ingredientImage} src={tempSrc.image_mobile} alt={`${tempSrc.name}`} />
                             </span>

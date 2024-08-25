@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Styles from "./css/style.module.css";
 import { ProfileNavbar } from '../../components/profile-navbar/profile-navbar';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IIngredient, WebSocketStatus } from '../../../../shared/types/types';
+import { IFeedOrder, IIngredient, WebSocketStatus } from '../../../../shared/types/types';
 import { connect, disconnect } from '../../../../shared/services/actions/ws-profile-feed-action-types';
 import { GET_FEED_ORDER_DETAILS } from '../../../../shared/services/actions/feed-order-details';
 import { Link, useLocation } from 'react-router-dom';
@@ -11,14 +11,14 @@ import { orderIngredientsSort, feedOrderCalcTotal, checkOnUndefined } from "../.
 import { useTypedSelector, useTypedDispatch } from '../../../../shared/hooks';
 
 interface IFeedElem {
-    order: number,
+    order: IFeedOrder,
     ingredientsList: IIngredient[]
 }
 
 const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
     const dispatch = useTypedDispatch();
 
-    const getIngredientDetails = (order) => {
+    const getIngredientDetails = (order: IFeedOrder) => {
         dispatch({ type: GET_FEED_ORDER_DETAILS, details: order })
     }
 
@@ -45,7 +45,7 @@ const FeedElem = ({ order, ingredientsList }: IFeedElem) => {
                         })
                         return (
                             <span key={index} className={(index === 0) ? Styles.firstIngredientWrapper : Styles.ingredientWrapper}>
-                                <img className={Styles.ingredient} src={tempSrc.image_mobile} alt={`${tempSrc.name}`} />
+                                {(tempSrc !== undefined) && <img className={Styles.ingredient} src={tempSrc.image_mobile} alt={`${tempSrc.name}`} />}
                                 {(ingredientObj.count > 1) && <span className={Styles.ingredientWrapperFade} />}
                                 {(ingredientObj.count > 1) && <p className={`${Styles.ingredientCount} text text_type_digits-default`}>{`+${ingredientObj.count}`}</p>}
                             </span>

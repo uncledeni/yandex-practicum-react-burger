@@ -14,7 +14,7 @@ const setAuthChecked = (value: boolean): AppActions => ({
     isAuthChecked: value
 })
 
-const setUser = (email: string | null, name: string | null): AppActions => ({
+const setUser = (email: string, name: string): AppActions => ({
     type: SET_USER,
     email: email,
     name: name
@@ -61,7 +61,7 @@ export const checkUserAuth = (): AppThunk => {
                 .catch(() => {
                     localStorage.removeItem('accessToken');
                     localStorage.removeItem('refreshToken');
-                    dispatch(setUser(null, null));
+                    dispatch(setUser('', ''));
                 })
                 .finally(() => dispatch(setAuthChecked(true)));
         } else {
@@ -74,6 +74,6 @@ export const logout = (): AppThunk => {
     return (dispatch) => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        dispatch(setUser(null, null));
+        dispatch(setUser('', ''));
     }
 }

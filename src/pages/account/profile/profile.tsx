@@ -8,11 +8,12 @@ import { useForm, useTypedSelector } from '../../../shared/hooks';
 import { deepEqual } from '../../../shared/utils';
 
 import ProfileStyles from "./css/style.module.css";
+import { IUserData } from '../../../shared/types/types';
 
 export const ProfilePage = () => {
     const auth = useTypedSelector(store => store.auth);
     const [isEditable, setIsEditable] = useState(false);
-    const { values, handleChange, setValues } = useForm({ name: auth.name, email: auth.email, password: '',  });
+    const { values, handleChange, setValues } = useForm<IUserData>({ name: auth.name, email: auth.email, password: '' });
 
     const setDefaultValues = () => {
         setValues({ name: auth.name, email: auth.email, password: '',  });

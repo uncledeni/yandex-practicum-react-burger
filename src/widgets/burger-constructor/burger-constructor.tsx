@@ -58,7 +58,7 @@ const Info = ({ constructorModal }: IInfoProps) => {
 
 interface IOffStackListElementProps {
     isTop: boolean;
-    bun: IIngredient
+    bun: IBun | IIngredient 
 }
 
 const OffStackListElement = ({ isTop, bun }: IOffStackListElementProps) => {

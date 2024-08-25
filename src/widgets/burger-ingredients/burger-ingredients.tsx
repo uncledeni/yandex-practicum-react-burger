@@ -7,7 +7,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { checkOnUndefined } from "../../shared/utils/checks";
-import { IIngredient, TODO_ANY } from "../../shared/types/types";
+import { IIngredient } from "../../shared/types/types";
 import { GET_INGREDIENT_DETAILS } from "../../shared/services/actions/ingredient-details";
 import { useTypedSelector, useTypedDispatch } from "../../shared/hooks";
 import { Loader } from "../../shared/components/loader/loader";
@@ -77,7 +77,7 @@ const Ingredients = ({ setCurrentTab }: IIngredientsProps) => {
 }
 
 interface IIngredientsStackProps {
-    location: Location<TODO_ANY>;
+    location: Location;
     scrollRef: React.RefObject<HTMLParagraphElement>;
     title: string;
     type: IngredientTypes;

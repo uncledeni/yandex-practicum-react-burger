@@ -33,7 +33,7 @@ type TDecreaseIngredientCounter = {
 
 type TDecreaseBunCounter = {
     type: typeof DECREASE_BUN_COUNTER,
-    ingredient: IBun
+    bun: IBun
 }
 
 export type TBurgerIngredientsActions = TGetBurgerIngredientsRequest

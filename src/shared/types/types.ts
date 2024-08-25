@@ -31,7 +31,7 @@ export interface IFilling extends IConstructorElement {
 }
 
 export interface IOrder {
-    bun: IIngredient;
+    bun: IBun;
     fillings: IFilling[];
 }
 
@@ -40,7 +40,7 @@ export interface IFeedOrder {
     _id: string
     name: string;
     number: number
-    ingredients: IIngredient[];
+    ingredients: string[];
     status: string
     createdAt: string;
     updatedAt: string

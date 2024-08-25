@@ -27,8 +27,8 @@ type TSetAuthChecked = {
 
 type TSetUser = {
     type: typeof SET_USER,
-    email: string | null,
-    name: string | null
+    email: string,
+    name: string
 }
 
 export type TAuth = TLoginRequest
