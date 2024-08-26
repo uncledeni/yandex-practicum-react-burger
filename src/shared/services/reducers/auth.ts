@@ -1,3 +1,4 @@
+import { AppActions } from "../../types/action-types";
 import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
@@ -14,7 +15,7 @@ const initialState = {
     isAuthChecked: false
 }
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (state = initialState, action: AppActions) => {
     switch (action.type) {
         case LOGIN_REQUEST: {
             return {

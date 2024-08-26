@@ -1,15 +1,22 @@
+import { AppActions } from "../../types/action-types";
+import { IBun, IFilling } from "../../types/types";
 import {
     ADD_INGREDIENT_BURGER_CONSTRUCTOR,
     DELETE_INGREDIENT_BURGER_CONSTRUCTOR,
     SWAP_INGREDIENTS
 } from "../actions/burger-constructor";
 
-const initialState = {
+interface IInitialState {
+    bun: IBun | null,
+    fillings: IFilling[]
+}
+
+const initialState: IInitialState = {
     bun: null,
     fillings: []
 }
 
-export const burgerConstructorReducer = (state = initialState, action) => {
+export const burgerConstructorReducer = (state = initialState, action: AppActions) => {
     switch (action.type) {
         case ADD_INGREDIENT_BURGER_CONSTRUCTOR: {
             return {
@@ -29,10 +36,11 @@ export const burgerConstructorReducer = (state = initialState, action) => {
             }
         }
         case DELETE_INGREDIENT_BURGER_CONSTRUCTOR: {
+            console.log(...state.fillings)
             return {
                 ...state,
                 fillings:
-                    [...state.fillings].filter(ingredient => ingredient.id !== action.id)
+                    [...state.fillings].filter((ingredient: IFilling) => { console.log(ingredient); return ingredient.id !== action.id})
             }
         }
         case SWAP_INGREDIENTS: {

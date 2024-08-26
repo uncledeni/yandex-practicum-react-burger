@@ -4,16 +4,16 @@ import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-de
 
 import { ProfileNavbar } from '../components/profile-navbar/profile-navbar';
 import { patchUserData } from '../../../shared/api/get-data-service';
-import { useForm } from '../../../shared/hooks/useForm';
-import { useTypedSelector } from '../../../shared/hooks/useTypedSelector';
+import { useForm, useTypedSelector } from '../../../shared/hooks';
+import { deepEqual } from '../../../shared/utils';
 
 import ProfileStyles from "./css/style.module.css";
-import { deepEqual } from '../../../shared/utils/checks';
+import { IUserData } from '../../../shared/types/types';
 
 export const ProfilePage = () => {
     const auth = useTypedSelector(store => store.auth);
     const [isEditable, setIsEditable] = useState(false);
-    const { values, handleChange, setValues } = useForm({ name: auth.name, email: auth.email, password: '',  });
+    const { values, handleChange, setValues } = useForm<IUserData>({ name: auth.name, email: auth.email, password: '' });
 
     const setDefaultValues = () => {
         setValues({ name: auth.name, email: auth.email, password: '',  });
@@ -31,7 +31,7 @@ export const ProfilePage = () => {
                 <div className={ProfileStyles.mainContainer}>
                     <ProfileNavbar />
                     <div>
-                        <form className={`${ProfileStyles.profileInfo} ml-15`} onSubmit={(e) => {
+                        <form className={`${ProfileStyles.profileInfo}`} onSubmit={(e) => {
                             e.preventDefault()
                             patchUserData(values);
                             onIconClick();

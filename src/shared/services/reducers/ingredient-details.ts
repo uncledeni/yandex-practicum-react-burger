@@ -1,3 +1,4 @@
+import { AppActions } from "../../types/action-types";
 import {
     GET_INGREDIENT_DETAILS,
     CLEAR_INGREDIENT_DETAILS
@@ -14,7 +15,7 @@ const initialState = {
     }
 }
 
-export const ingredientDetailsReducer = ( state = initialState, action) => {
+export const ingredientDetailsReducer = ( state = initialState, action: AppActions) => {
     switch (action.type) {
         case GET_INGREDIENT_DETAILS: {
             return {

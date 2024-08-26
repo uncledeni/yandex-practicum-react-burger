@@ -1,0 +1,134 @@
+.pageWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #131316;
+}
+
+.mainWrapper {
+    height: calc(100vh - 88px);
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    height: calc(100% - 100px);
+}
+
+.ingredientsContent {
+    width: 304px;
+    height: 64px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.firstIngredientWrapper, .ingredientWrapper, .ingredientWrapperFade {
+    width: 64px;
+    height: 64px;
+    background-color: #131316;
+    box-sizing: border-box;
+    border: 2px solid #801AB3;
+    /* border-image-source: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%); */
+    border-radius: 100px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingredientWrapperFade {
+    background-color: #13131677;
+}
+
+.ingredientWrapper {
+    /* left: -16px; */
+}
+
+.ingredient {
+    position: absolute;
+    width: 112px;
+    height: 56px;
+}
+
+.ingredientCount {
+    position: absolute;
+}
+
+.feedList {
+    display: block;
+    width: 608px;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.feedElem {
+    width: 584px;
+    height: 214px;
+    border-radius: 40px;
+    background-color: #1C1C21;
+}
+
+.feedHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.feedContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.orderDesk {
+    width: 580px;
+    height: fit-content;
+}
+
+.orderDeskCollumnsContainer {
+    width: 100%;
+    height: calc(100% - 420px);
+    display: flex;
+    align-items: center;
+}
+
+.orderDeskOrders {
+    height: 340px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    overflow-x: scroll;
+}
+
+.orderDeskCollumn {
+    width: 100%;
+    height: 100%;
+}
+
+.orderDeskCollumnDone {
+    color: #00CCCC;
+    margin-right: 16px;
+}
+
+.orderDeskTotal, .orderDeskToday {
+    box-shadow: 0px 4px 32px 0px #3333FF80;
+    box-shadow: 0px 0px 8px 8px #3333FF40;
+    box-shadow: 0px 0px 16px 8px #3333FF40;
+}
+
+.link {
+    text-decoration: none;
+    color: #ffff;
+}

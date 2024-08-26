@@ -7,14 +7,39 @@ import {
     DECREASE_BUN_COUNTER
 } from "../actions/burger-ingredients";
 
-const initialState = {
-    ingredients: [],
+import { IIngredient } from "../../types/types";
+import { AppActions } from "../../types/action-types";
+
+interface IInitialState {
+    ingredients: IIngredient[],
+    ingredientsRequest: boolean,
+    ingredientsFailed: boolean,
+    isLoading: boolean
+}
+
+const initialState: IInitialState = {
+    ingredients: [
+        {
+            calories: 0,
+            carbohydrates: 0,
+            fat: 0,
+            image: '',
+            image_large: '',
+            image_mobile: '',
+            name: '',
+            price: 0,
+            proteins: 0,
+            type: '',
+            __v: 0,
+            _id: ''
+        }
+    ],
     ingredientsRequest: false,
     ingredientsFailed: false,
     isLoading: false
 }
 
-export const burgerIngredientsReducer = (state = initialState, action) => {
+export const burgerIngredientsReducer = (state = initialState, action: AppActions) => {
     switch (action.type) {
         case GET_BURGER_INGREDIENTS_REQUEST: {
             return {
@@ -43,19 +68,19 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
         case INCREASE_INGREDIENT_COUNTER: {
             return {
                 ...state,
-                ingredients: [...state.ingredients].map(ingredient => (ingredient._id === action.ingredient.ingredient._id) ? {...ingredient, __v: ingredient.__v + 1} : ingredient)
+                ingredients: [...state.ingredients].map(ingredient => (ingredient._id === action.ingredient.ingredient._id) ? { ...ingredient, __v: ingredient.__v + 1 } : ingredient)
             }
         }
         case DECREASE_INGREDIENT_COUNTER: {
             return {
                 ...state,
-                ingredients: [...state.ingredients].map(ingredient => (ingredient._id === action.ingredient._id) ? {...ingredient, __v: ingredient.__v - 1} : ingredient)
+                ingredients: [...state.ingredients].map(ingredient => (ingredient._id === action.ingredient._id) ? { ...ingredient, __v: ingredient.__v - 1 } : ingredient)
             }
         }
         case DECREASE_BUN_COUNTER: {
             return {
                 ...state,
-                ingredients: [...state.ingredients].map(ingredient => (ingredient._id === action.bun._id) ? {...ingredient, __v: ingredient.__v - 1} : ingredient)
+                ingredients: [...state.ingredients].map(ingredient => (ingredient._id === action.bun._id) ? { ...ingredient, __v: ingredient.__v - 1 } : ingredient)
             }
         }
         default: {

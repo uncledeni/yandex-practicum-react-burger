@@ -1,32 +1,26 @@
 import { login, getUserData } from "../../api/get-data-service";
+import { AppActions, AppThunk } from "../../types/action-types";
+import { ILoginData } from "../../types/types";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 
-export const REGISTER_REQUEST = 'REGISTER_REQUEST';
-export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
-export const REGISTER_FAILED = 'REGISTER_FAILED';
-
-export const TOKEN_REQUEST = 'TOKEN_REQUEST';
-export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
-export const TOKEN_FAILED = 'TOKEN_FAILED';
-
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
 export const SET_USER = 'SET_USER';
 
-const setAuthChecked = (value) => ({
+const setAuthChecked = (value: boolean): AppActions => ({
     type: SET_AUTH_CHECKED,
     isAuthChecked: value
 })
 
-const setUser = (email, name) => ({
+const setUser = (email: string, name: string): AppActions => ({
     type: SET_USER,
     email: email,
     name: name
 })
 
-const getUser = () => {
+const getUser = (): AppThunk => {
     return async function (dispatch) {
         return getUserData().then((res) => {
             dispatch(setUser(res.user.email, res.user.name))
@@ -34,7 +28,7 @@ const getUser = () => {
     }
 }
 
-export const loginThunk = (data) => {
+export const loginThunk = (data: ILoginData): AppThunk => {
     return function (dispatch) {
         dispatch({
             type: LOGIN_REQUEST
@@ -60,14 +54,14 @@ export const loginThunk = (data) => {
     }
 }
 
-export const checkUserAuth = () => {
+export const checkUserAuth = (): AppThunk => {
     return (dispatch) => {
         if (localStorage.getItem('accessToken')) {
             dispatch(getUser())
                 .catch(() => {
                     localStorage.removeItem('accessToken');
                     localStorage.removeItem('refreshToken');
-                    dispatch(setUser(null, null));
+                    dispatch(setUser('', ''));
                 })
                 .finally(() => dispatch(setAuthChecked(true)));
         } else {
@@ -76,10 +70,10 @@ export const checkUserAuth = () => {
     }
 }
 
-export const logout = () => {
+export const logout = (): AppThunk => {
     return (dispatch) => {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            dispatch(setUser(null, null));
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        dispatch(setUser('', ''));
     }
 }

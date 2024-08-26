@@ -17,7 +17,7 @@ export interface IIngredient {
 }
 
 // -- INGREDIENT DETAILS --
-export type IIngredientDetailsType = Pick<IIngredient, 'name' | 'calories' | 'carbohydrates' | 'fat' | 'image_large' | 'proteins' >
+export type IIngredientDetailsType = Pick<IIngredient, 'name' | 'calories' | 'carbohydrates' | 'fat' | 'image_large' | 'proteins'>
 
 // -- BURGER CONSTRUCTOR --
 interface IConstructorElement {
@@ -31,21 +31,24 @@ export interface IFilling extends IConstructorElement {
 }
 
 export interface IOrder {
-    bun: IIngredient;
+    bun: IBun;
     fillings: IFilling[];
 }
 
 // -- ORDER DETAILS --
-export interface IOrderData {
-    createdAt: string;
-    ingredients: IIngredient[];
+export interface IFeedOrder {
+    _id: string
     name: string;
     number: number
+    ingredients: string[];
+    status: string
+    createdAt: string;
+    updatedAt: string
+}
+
+export interface IOrderData extends IFeedOrder {
     owner: { name: string, email: string, createdAt: string, updatedAt: string }
     price: number
-    status: string
-    updatedAt: string
-    _id: string
 }
 
 export interface IOrderAction {
@@ -68,7 +71,7 @@ export type ILoginData = Omit<IUserData, 'name'>
 
 export type IResetPasswordCode = Pick<IUserData, 'email'>
 
-export type IResetPassword = Pick<IUserData, 'password'> & {code: string;}
+export type IResetPassword = Pick<IUserData, 'password'> & { code: string; }
 
 export interface IPostOrder {
     ingredients: string[]
@@ -83,3 +86,24 @@ export type TRefreshResponse = TServerResponse<{
     refreshToken: string;
     accessToken: string;
 }>
+
+// ws
+
+export enum WebSocketStatus {
+    CONNECTING = 'CONNECTING...',
+    ONLINE = 'ONLINE',
+    OFFLINE = 'OFFLINE'
+}
+
+export interface IWSActionPayload {
+    orders: IFeedOrder[],
+    success: boolean,
+    total: number,
+    totalToday: number,
+}
+
+export interface IWSFeedReducer {
+    status: WebSocketStatus,
+    data: IWSActionPayload,
+    error: string
+}

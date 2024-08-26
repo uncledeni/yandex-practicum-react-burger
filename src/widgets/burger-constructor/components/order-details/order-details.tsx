@@ -2,7 +2,7 @@ import React from "react";
 import OrderDetailsStyles from "./style.module.css";
 import done from "../../../../shared/images/done.svg"
 import { checkOnUndefined } from "../../../../shared/utils/checks";
-import { useTypedSelector } from "../../../../shared/hooks/useTypedSelector";
+import { useTypedSelector } from "../../../../shared/hooks";
 import { IOrderAction } from "../../../../shared/types/types";
 import { Loader } from "../../../../shared/components/loader/loader";
 

@@ -9,11 +9,11 @@ export const checkEmptyArr = (arr: IFilling[]): boolean => {
     return (arr.length > 0);
 }
 
-export const checkOnUndefined = (data: TODO_ANY): boolean => {
+export const checkOnUndefined = <T>(data: T): boolean => {
     return !(data === undefined);
 }
 
-export const checkOnNull = (data: TODO_ANY): boolean => {
+export const checkOnNull = <T>(data: T): boolean => {
     return !(data === null)
 }
 
@@ -29,16 +29,16 @@ export const deepEqual = (a: TODO_ANY, b: TODO_ANY) => {
   }
 
 const checkResponse = <T>(res: Response): Promise<T> => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(`Ошибка: ${err}`));
+    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const request = async <T>(endpoint: RequestInfo, options?: TODO_ANY) => {
+export const request = async <T>(endpoint: RequestInfo, options?: RequestInit) => {
     return fetch(`${BASE_URL}${endpoint}`, options)
         .then((res: Response) => checkResponse<T>(res))
 };
 
 const refreshToken = async () => {
-    return fetch(`${BASE_URL}/auth/token`, {
+    return fetch(`${BASE_URL}auth/token`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -55,22 +55,28 @@ const refreshToken = async () => {
                 return Promise.reject(refreshData);
             }
             localStorage.setItem("refreshToken", refreshData.refreshToken);
-            localStorage.setItem("accessToken", refreshData.accessToken);
+            localStorage.setItem("accessToken", refreshData.accessToken.split('Bearer ')[1]);
             return refreshData;
         });
 };
 
-export const fetchWithRefresh = async <T>(endpoint: RequestInfo, options?: TODO_ANY) => {
+export const fetchWithRefresh = async <T>(endpoint: RequestInfo, options?: RequestInit) => {
     try {
+        // console.log("try");
         const res = await fetch(`${BASE_URL}${endpoint}`, options);
         return await checkResponse<T>(res);
     } catch (err) {
-        if ((err as {message: string}).message === "jwt expired") {
+        if ((err as {message: string}).message === ("invalid signature")) {
+            // console.log("token refresh");
             const refreshData = await refreshToken(); //обновляем токен
-            options.headers.authorization = refreshData.accessToken;
+            if (options?.headers !== undefined) {
+                options.headers = {} as { [key: string]: string }
+                options.headers.Authorization = refreshData.accessToken;
+            }
             const res = await fetch(`${BASE_URL}${endpoint}`, options); //повторяем запрос
             return await checkResponse<T>(res);
         } else {
+            // console.log(err);
             return Promise.reject(err);
         }
     }

@@ -1,16 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { ActionBlock } from '../components/action-block/action-block';
 import { loginThunk } from '../../../shared/services/actions/auth';
-import { useForm } from '../../../shared/hooks/useForm';
+import { useForm, useTypedDispatch } from '../../../shared/hooks';
 
 import SignInStyles from "./css/style.module.css";
-import { TODO_ANY } from '../../../shared/types/types';
 
 export const SignInPage = () => {
-    const dispatch: TODO_ANY = useDispatch();
+    const dispatch = useTypedDispatch();
     const { values, handleChange } = useForm({ email: '', password: '' });
 
     return (

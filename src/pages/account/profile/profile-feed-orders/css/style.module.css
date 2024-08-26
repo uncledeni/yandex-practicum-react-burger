@@ -1,0 +1,120 @@
+.pageWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #131316;
+}
+
+.mainWrapper {
+    width: 100vw;
+    height: calc(100vh - 88px);
+}
+
+.mainContainer {
+    display: flex;
+    width: 1280px;
+    margin-top: 120px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.title {
+    text-align: center;
+}
+
+.profileInfo {
+    display: grid;
+    gap: 24px;
+}
+
+.buttonsWrapper {
+    display: flex;
+    justify-content: end
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+}
+
+.feedElem {
+    width: auto;
+    height: 246px;
+    border-radius: 40px;
+    background-color: #1C1C21;
+}
+
+.feedHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.feedContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ingredientsContent {
+    width: 304px;
+    height: 64px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.firstIngredientWrapper, .ingredientWrapper, .ingredientWrapperFade {
+    width: 64px;
+    height: 64px;
+    background-color: #131316;
+    box-sizing: border-box;
+    border: 2px solid #801AB3;
+    /* border-image-source: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%); */
+    border-radius: 100px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingredientWrapperFade {
+    background-color: #13131677;
+}
+
+.ingredientWrapper {
+    /* left: -16px; */
+}
+
+.ingredient {
+    position: absolute;
+    width: 112px;
+    height: 56px;
+}
+
+.ingredientCount {
+    position: absolute;
+}
+
+.feedList {
+    display: block;
+    width: 100%;
+    height: calc(100vh - 208px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.link {
+    text-decoration: none;
+    color: #ffff;
+}
