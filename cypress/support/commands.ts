@@ -35,3 +35,22 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add('prepare', (email, password) => {
+    cy.viewport(1920, 1080);
+    // cy.intercept('POST', 'auth/login', {fixture: 'login'});
+    cy.intercept({ method: "GET", url: "ingredients" }, { statusCode: 200, fixture: "ingredients.json" });
+    // cy.intercept('GET', 'auth/user', {fixture: 'user'});
+
+    // cy.visit('http://localhost:3000/profile');
+    // cy.get('[data-testid=email-input]').type(`${email}`);
+    // cy.get('[data-testid=password-input]').type(`${password}`);
+    // cy.get('[data-testid=submit-button]').type(`{enter}`);
+    // window.localStorage.setItem(
+    //     "refreshToken", JSON.stringify("aa70f81f6fd1346c64cc70d8cc64e750a41aabb3dce8f697b59e648a645eb10c32c4cf4d8d955507")
+    // );
+    // window.localStorage.setItem(
+    //     "accessToken", JSON.stringify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTc4MWJkMTE5ZDQ1MDAxYjRmOTg0ZSIsImlhdCI6MTcyNTM2MDk1NiwiZXhwIjoxNzI1MzYyMTU2fQ.x8NNZ7fMK9IVdFAAuczIk8HE5Bq13tGcZXqS2EsxxII")
+    // );
+
+})

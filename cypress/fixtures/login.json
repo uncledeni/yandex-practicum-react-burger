@@ -1,0 +1,9 @@
+{
+    "refreshToken": "aa70f81f6fd1346c64cc70d8cc64e750a41aabb3dce8f697b59e648a645eb10c32c4cf4d8d955507",
+    "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTc4MWJkMTE5ZDQ1MDAxYjRmOTg0ZSIsImlhdCI6MTcyNTM2MDk1NiwiZXhwIjoxNzI1MzYyMTU2fQ.x8NNZ7fMK9IVdFAAuczIk8HE5Bq13tGcZXqS2EsxxII",
+    "success": true,
+    "user": {
+        "email": "uncledeni@yandex.ru",
+        "name": "DenisAb"
+    }
+}

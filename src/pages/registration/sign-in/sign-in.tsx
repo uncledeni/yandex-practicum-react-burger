@@ -25,6 +25,7 @@ export const SignInPage = () => {
                         name={'email'}
                         isIcon={false}
                         extraClass='mt-6'
+                        data-testid='email-input'
                     />
                     <PasswordInput
                         onChange={handleChange}
@@ -32,9 +33,10 @@ export const SignInPage = () => {
                         name={'password'}
                         extraClass='mt-6'
                         autoComplete="on"
+                        data-testid='password-input'
                     />
                     <div className={`${SignInStyles.button} mt-6 mb-20`}>
-                        <Button htmlType="submit" type="primary" size="large" >
+                        <Button data-testid='submit-button' htmlType="submit" type="primary" size="large" >
                             Войти
                         </Button>
                     </div>
