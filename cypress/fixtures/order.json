@@ -1,7 +1,49 @@
 {
+    "name": "Флюоресцентный бургер",
     "success": true,
-    "name": "Название бургера",
     "order": {
-        "number": 123
+        "createdAt": "2024-09-03T21:43:28.825Z",
+        "ingredients": [
+            {
+                "calories": 643,
+                "carbohydrates": 85,
+                "fat": 26,
+                "image": "https://code.s3.yandex.net/react/code/bun-01.png",
+                "image_large": "https://code.s3.yandex.net/react/code/bun-01-large.png",
+                "image_mobile": "https://code.s3.yandex.net/react/code/bun-01-mobile.png",
+                "name": "Флюоресцентная булка R2-D3",
+                "price": 988,
+                "proteins": 44,
+                "type": "bun",
+                "__v": 0,
+                "_id": "643d69a5c3f7b9001cfa093d"
+            },
+            {
+                "calories": 643,
+                "carbohydrates": 85,
+                "fat": 26,
+                "image": "https://code.s3.yandex.net/react/code/bun-01.png",
+                "image_large": "https://code.s3.yandex.net/react/code/bun-01-large.png",
+                "image_mobile": "https://code.s3.yandex.net/react/code/bun-01-mobile.png",
+                "name": "Флюоресцентная булка R2-D3",
+                "price": 988,
+                "proteins": 44,
+                "type": "bun",
+                "__v": 0,
+                "_id": "643d69a5c3f7b9001cfa093d"
+            }
+        ],
+        "name": "Флюоресцентный бургер",
+        "number": 51927,
+        "owner": {
+            "createdAt": "2024-07-17T08:33:01.005Z",
+            "email": "uncledeni@yandex.ru",
+            "name": "DenisAb",
+            "updatedAt": "2024-08-07T07:48:01.721Z"
+        },
+        "price": 1976,
+        "status": "done",
+        "updatedAt": "2024-09-03T21:43:29.310Z",
+        "_id": "66d78300119d45001b503f4d"
     }
 }

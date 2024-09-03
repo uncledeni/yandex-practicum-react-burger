@@ -15,6 +15,7 @@ export const getBurgerIngredients = (): AppThunk => {
             type: GET_BURGER_INGREDIENTS_REQUEST
         });
         getDataService().then(res => {
+            console.log(res)
             try {
                 dispatch({
                     type: GET_BURGER_INGREDIENTS_SUCCESS,
