@@ -1,5 +1,5 @@
 import { IFilling, TODO_ANY, TRefreshResponse } from "../types/types";
-const BASE_URL = 'https://norma.nomoreparties.space/api/'
+export const BASE_URL = 'https://norma.nomoreparties.space/api/'
 
 // export const checkEmptyObj = (obj) => {
 //     return !(Object.keys(obj).length === 0)
