@@ -37,30 +37,9 @@
 // }
 
 Cypress.Commands.add('prepare', (email, password) => {
-    cy.visit('http://localhost:3000/profile');
-    cy.viewport(1920, 1080);
-    cy.intercept({ method: 'POST', url: 'auth/login' }, { fixture: 'login.json' }).as('postLogin');
-    cy.intercept({ method: "GET", url: "ingredients" }, { fixture: "ingredients.json" });
-    cy.intercept({ method: 'GET', url: 'auth/user' }, { fixture: 'user.json' });
-    
+    // cy.intercept({ method: "GET", url: "ingredients" }, { fixture: "ingredients.json" }).as('getIngredients');
     cy.visit('http://localhost:3000/profile');
     cy.get('[data-testid=email-input]').type(`${email}`);
     cy.get('[data-testid=password-input]').type(`${password}`);
     cy.get('[data-testid=submit-button]').type(`{enter}`);
-    // cy.wait('@postLogin').its('request.body').should('deep.equal', {
-    //     "success": true,
-    //     "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTc4MWJkMTE5ZDQ1MDAxYjRmOTg0ZSIsImlhdCI6MTcyNTM5Mjg3NywiZXhwIjoxNzI1Mzk0MDc3fQ.BbFim3T6RlaNXUcOPHIngEeOeZJy1Gp8YvJ4AnBCzyU",
-    //     "refreshToken": "99e576975094ea97d7b981a5d4cec23b7f21d9d085f317a0ca0f94318ec3263cae8ece89c5f43fe6",
-    //     "user": {
-    //         "email": "uncledeni@yandex.ru",
-    //         "name": "DenisAb"
-    //     }
-    // })
-    // window.localStorage.setItem(
-    //     "refreshToken", JSON.stringify("aa70f81f6fd1346c64cc70d8cc64e750a41aabb3dce8f697b59e648a645eb10c32c4cf4d8d955507")
-    // );
-    // window.localStorage.setItem(
-    //     "accessToken", JSON.stringify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTc4MWJkMTE5ZDQ1MDAxYjRmOTg0ZSIsImlhdCI6MTcyNTM2MDk1NiwiZXhwIjoxNzI1MzYyMTU2fQ.x8NNZ7fMK9IVdFAAuczIk8HE5Bq13tGcZXqS2EsxxII")
-    // );
-
 })
