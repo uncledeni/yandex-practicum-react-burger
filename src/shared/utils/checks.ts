@@ -23,10 +23,10 @@ export const deepEqual = (a: TODO_ANY, b: TODO_ANY) => {
     const keysA = Object.keys(a), keysB = Object.keys(b);
     if (keysA.length !== keysB.length) return false;
     for (const key of keysA) {
-      if (!keysB.includes(key) || !deepEqual(a[key], b[key])) return false;
+        if (!keysB.includes(key) || !deepEqual(a[key], b[key])) return false;
     }
     return true;
-  }
+}
 
 const checkResponse = <T>(res: Response): Promise<T> => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -66,7 +66,10 @@ export const fetchWithRefresh = async <T>(endpoint: RequestInfo, options?: Reque
         const res = await fetch(`${BASE_URL}${endpoint}`, options);
         return await checkResponse<T>(res);
     } catch (err) {
-        if ((err as {message: string}).message === ("invalid signature")) {
+        if ((err as { message: string }).message === ("invalid signature") ||
+            (err as { message: string }).message === ("invalid token") ||
+            (err as { message: string }).message === ("jwt expired")
+        ) {
             // console.log("token refresh");
             const refreshData = await refreshToken(); //обновляем токен
             if (options?.headers !== undefined) {

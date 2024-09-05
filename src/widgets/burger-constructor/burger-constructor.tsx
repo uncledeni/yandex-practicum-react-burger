@@ -232,7 +232,6 @@ export const BurgerConstructor = () => {
     const dispatch = useTypedDispatch();
 
     const clearOrderDetails = () => {
-        alert("AAA")
         dispatch({ type: CLEAR_ORDER_DETAILS })
     }
 
