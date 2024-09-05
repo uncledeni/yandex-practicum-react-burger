@@ -7,7 +7,7 @@ import {
     CLEAR_ORDER_DETAILS
 } from "../actions/order-details";
 
-const initialState = {
+export const initialState = {
     order: {} as IOrderAction,
     orderRequest: false,
     orderFailed: false,
