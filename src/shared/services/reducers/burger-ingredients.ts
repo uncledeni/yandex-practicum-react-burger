@@ -17,7 +17,7 @@ interface IInitialState {
     isLoading: boolean
 }
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
     ingredients: [
         {
             calories: 0,

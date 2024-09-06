@@ -24,7 +24,6 @@ export const orderDetailsReducer = ( state = initialState, action: AppActions) =
             };
         }
         case GET_ORDER_DETAILS_SUCCESS: {
-            console.log(action)
             return {
                 ...state,
                 order: action,
