@@ -1,9 +1,0 @@
-{
-    "success": true,
-    "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTc4MWJkMTE5ZDQ1MDAxYjRmOTg0ZSIsImlhdCI6MTcyNTM5Mjg3NywiZXhwIjoxNzI1Mzk0MDc3fQ.BbFim3T6RlaNXUcOPHIngEeOeZJy1Gp8YvJ4AnBCzyUqq",
-    "refreshToken": "99e576975094ea97d7b981a5d4cec23b7f21d9d085f317a0ca0f94318ec3263cae8ece89c5f43fe6qq",
-    "user": {
-        "email": "uncledeni@yandex.ru",
-        "name": "TestUser"
-    }
-}
