@@ -7,7 +7,7 @@ import {
     SET_USER
 } from "../actions/auth"
 
-const initialState = {
+export const initialState = {
     email: '',
     name: '',
     loginRequest: false,

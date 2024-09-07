@@ -1,5 +1,3 @@
-import configureMockStore from 'redux-mock-store';
-import { thunk } from 'redux-thunk';
 import * as actions from '../actions';
 import { initialState, feedOrderDetailsReducer } from './feed-order-details';
 
@@ -35,16 +33,6 @@ describe('redux test', () => {
     })
 
     test('should complete successfully', () => {
-        // console.log(
-        //     feedOrderDetailsReducer(undefined, {
-        //         type: actions.feedOrderDetailsActions.GET_FEED_ORDER_DETAILS_SUCCESS,
-        //         data: {
-        //             success: true,
-        //             orders: [order]
-        //         }
-        //     })
-
-        // )
         expect(feedOrderDetailsReducer(undefined, {
             type: actions.feedOrderDetailsActions.GET_FEED_ORDER_DETAILS_SUCCESS,
             data: {
@@ -58,59 +46,48 @@ describe('redux test', () => {
         })
     })
 
-    // test('should increase ingredient counter', () => {
-    //     expect(feedOrderDetailsReducer(undefined, {
-    //         type: actions.feedOrderDetailsActions.INCREASE_INGREDIENT_COUNTER,
-    //         ingredient: { ingredient: ingredient }
-    //     })).toEqual({
-    //         ingredients: [
-    //             {
-    //                 "calories": 0,
-    //                 "carbohydrates": 0,
-    //                 "fat": 0,
-    //                 "image": "",
-    //                 "image_large": "",
-    //                 "image_mobile": "",
-    //                 "name": "",
-    //                 "price": 0,
-    //                 "proteins": 0,
-    //                 "type": "",
-    //                 "__v": 1,
-    //                 "_id": ""
-    //             }
-    //         ],
-    //         ingredientsRequest: false,
-    //         ingredientsFailed: false,
-    //         isLoading: false
-    //     })
-    // })
+    test('should increase ingredient counter', () => {
+        expect(feedOrderDetailsReducer(undefined, {
+            type: actions.feedOrderDetailsActions.GET_FEED_ORDER_DETAILS,
+            details: {
+                _id: "66dafb7b119d45001b5049ec",
+                ingredients: ['a', 'b', 'c'],
+                status: "done",
+                name: "Флюоресцентный люминесцентный бургер",
+                createdAt: "2024-09-06T12:54:19.465Z",
+                updatedAt: "2024-09-06T12:54:20.014Z",
+                number: 52131,
+            }
+        })).toEqual({
+            details: {
+                _id: "66dafb7b119d45001b5049ec",
+                ingredients: ['a', 'b', 'c'],
+                status: "done",
+                name: "Флюоресцентный люминесцентный бургер",
+                createdAt: "2024-09-06T12:54:19.465Z",
+                updatedAt: "2024-09-06T12:54:20.014Z",
+                number: 52131,
+            },
+            orderRequest: false,
+            orderFailed: false
+        })
+    })
 
-    // test('should decrease ingredient counter', () => {
-    //     expect(feedOrderDetailsReducer(undefined, {
-    //         type: actions.feedOrderDetailsActions.DECREASE_INGREDIENT_COUNTER,
-    //         ingredient: ingredient
-    //     })).toEqual({
-    //         ingredients: [
-    //             {
-    //                 "calories": 0,
-    //                 "carbohydrates": 0,
-    //                 "fat": 0,
-    //                 "image": "",
-    //                 "image_large": "",
-    //                 "image_mobile": "",
-    //                 "name": "",
-    //                 "price": 0,
-    //                 "proteins": 0,
-    //                 "type": "",
-    //                 "__v": -1,
-    //                 "_id": ""
-    //             }
-    //         ],
-    //         ingredientsRequest: false,
-    //         ingredientsFailed: false,
-    //         isLoading: false
-    //     })
-    // })
-
-
+    test('should decrease ingredient counter', () => {
+        expect(feedOrderDetailsReducer(undefined, {
+            type: actions.feedOrderDetailsActions.CLEAR_FEED_ORDER_DETAILS
+        })).toEqual({
+            details: {
+                _id: "",
+                number: 0,
+                name: "",
+                status: "",
+                createdAt: "",
+                updatedAt: "",
+                ingredients: [],
+            },
+            orderRequest: false,
+            orderFailed: false
+        })
+    })
 })
