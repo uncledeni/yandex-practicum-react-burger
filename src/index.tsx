@@ -68,7 +68,7 @@ const store = configureStore({
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(thunk, middleware, middleware2)
 });
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <BrowserRouter>

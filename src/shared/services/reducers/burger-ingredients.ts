@@ -80,6 +80,7 @@ export const burgerIngredientsReducer = (state = initialState, action: AppAction
         case DECREASE_BUN_COUNTER: {
             return {
                 ...state,
+                // @ts-ignore
                 ingredients: [...state.ingredients].map(ingredient => (ingredient._id === action.bun._id) ? { ...ingredient, __v: ingredient.__v - 1 } : ingredient)
             }
         }

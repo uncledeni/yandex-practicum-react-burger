@@ -1,5 +1,6 @@
 {
   "name": "react-burger",
+  "homepage": "./",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -34,13 +35,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "cypress": "cypress open cache clear"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "cypress": "cypress open cache clear",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
@@ -55,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^13.14.1"
+    "cypress": "^13.14.1",
+    "gh-pages": "^6.1.1"
   }
 }

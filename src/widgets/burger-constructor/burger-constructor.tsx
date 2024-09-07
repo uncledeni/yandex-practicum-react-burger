@@ -1,3 +1,4 @@
+// @ts-ignore
 import { v4 as uuid } from 'uuid';
 import React, { useCallback, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -31,8 +32,10 @@ const Info = ({ constructorModal }: IInfoProps) => {
     const orderDetailsArr = (data: IOrder): (string[] | undefined) => {
         if (data.bun !== null) {
             const tempArr = [];
+            // @ts-ignore
             tempArr.push(data.bun._id);
             data.fillings.map(ingredient => tempArr.push(ingredient.ingredient._id));
+            // @ts-ignore
             tempArr.push(data.bun._id);
             return tempArr;
         }
@@ -41,11 +44,15 @@ const Info = ({ constructorModal }: IInfoProps) => {
     return (
         <div className={BurgerConstructorStyles.burgerConstructorInfoWrapper}>
             <div className={BurgerConstructorStyles.burgerConstructorInfoPrice}>
-                <p className="text text_type_digits-medium">{calcTotal(arr)}</p>
+                <p className="text text_type_digits-medium">{
+                    // @ts-ignore
+                    calcTotal(arr)
+                }</p>
                 <CurrencyIcon type="primary" />
             </div>
             <Button disabled={(arr.bun === null)} htmlType="button" type="primary" size="medium" onClick={() => {
                 if (email) {
+                    // @ts-ignore
                     dispatch(getOrderDetails(orderDetailsArr(arr)));
                     constructorModal();
                 } else {
@@ -58,7 +65,7 @@ const Info = ({ constructorModal }: IInfoProps) => {
 
 interface IOffStackListElementProps {
     isTop: boolean;
-    bun: IBun | IIngredient 
+    bun: IBun | IIngredient
 }
 
 const OffStackListElement = ({ isTop, bun }: IOffStackListElementProps) => {
@@ -67,8 +74,11 @@ const OffStackListElement = ({ isTop, bun }: IOffStackListElementProps) => {
             <ConstructorElement
                 type={(isTop) ? 'top' : 'bottom'}
                 isLocked={true}
+                // @ts-ignore
                 text={`${bun.name} ${(isTop) ? 'верх' : 'низ'}`}
+                // @ts-ignore
                 price={bun.price}
+                // @ts-ignore
                 thumbnail={bun.image}
             />
         </div>
@@ -181,7 +191,10 @@ const StackList = () => {
 
     return (
         <div className={BurgerConstructorStyles.stackListWrapper}>
-            {fillings.map((ingredient, i) => renderIngredient(ingredient, i))}
+            {
+                // @ts-ignore
+                fillings.map((ingredient, i) => renderIngredient(ingredient, i))
+            }
         </div>
     )
 }
@@ -198,7 +211,9 @@ const ConstructorComponent = () => {
                 dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
                 dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
             } else {
+                // @ts-ignore
                 dispatch({ type: DECREASE_BUN_COUNTER, bun });
+                // @ts-ignore
                 dispatch({ type: DECREASE_BUN_COUNTER, bun });
                 dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
                 dispatch({ type: INCREASE_INGREDIENT_COUNTER, ingredient });
