@@ -36,9 +36,11 @@
 //   }
 // }
 
+const url = Cypress.config().baseUrl;
+
 Cypress.Commands.add('prepare', (email, password) => {
     // cy.intercept({ method: "GET", url: "ingredients" }, { fixture: "ingredients.json" }).as('getIngredients');
-    cy.visit('http://localhost:3000/profile');
+    cy.visit(`${url}/profile`);
     cy.get('[data-testid=email-input]').type(`${email}`);
     cy.get('[data-testid=password-input]').type(`${password}`);
     cy.get('[data-testid=submit-button]').type(`{enter}`);
