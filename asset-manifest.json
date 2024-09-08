@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/yandex-practicum-react-burger/static/css/main.c6845ff2.css",
-    "main.js": "/yandex-practicum-react-burger/static/js/main.12642bbb.js",
+    "main.js": "/yandex-practicum-react-burger/static/js/main.1e4eeb8f.js",
     "static/js/453.8915ba24.chunk.js": "/yandex-practicum-react-burger/static/js/453.8915ba24.chunk.js",
     "static/media/JetBrainsMono-Bold.woff": "/yandex-practicum-react-burger/static/media/JetBrainsMono-Bold.3914674f1cb2335acf26.woff",
     "static/media/JetBrainsMono-Regular.woff": "/yandex-practicum-react-burger/static/media/JetBrainsMono-Regular.f52bee61d00ce995b89f.woff",
@@ -12,11 +12,11 @@
     "static/media/iceland.woff2": "/yandex-practicum-react-burger/static/media/iceland.4ae67a017a5ff82bbbb7.woff2",
     "index.html": "/yandex-practicum-react-burger/index.html",
     "main.c6845ff2.css.map": "/yandex-practicum-react-burger/static/css/main.c6845ff2.css.map",
-    "main.12642bbb.js.map": "/yandex-practicum-react-burger/static/js/main.12642bbb.js.map",
+    "main.1e4eeb8f.js.map": "/yandex-practicum-react-burger/static/js/main.1e4eeb8f.js.map",
     "453.8915ba24.chunk.js.map": "/yandex-practicum-react-burger/static/js/453.8915ba24.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c6845ff2.css",
-    "static/js/main.12642bbb.js"
+    "static/js/main.1e4eeb8f.js"
   ]
 }
