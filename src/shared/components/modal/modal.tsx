@@ -35,7 +35,7 @@ export const Modal = ({ handlerOpen, children }: IModal) => {
                 <div className={ModalStyles.modalContainer}>
                     <div className={ModalStyles.modal}>
                         {children}
-                        <span className={`${ModalStyles.closeIcon}`}>
+                        <span data-testid='close-modal-span' className={`${ModalStyles.closeIcon}`}>
                             <CloseIcon type='primary' onClick={() => closeModal()} />
                         </span>
                     </div>

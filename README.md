@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Link to deploied site on GitHub Pages 
+
+https://uncledeni.github.io/yandex-practicum-react-burger/
+
 ## Available Scripts
 
 In the project directory, you can run:

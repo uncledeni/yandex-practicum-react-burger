@@ -23,7 +23,10 @@ export const OrderDetails = () => {
                     loadingText="пожалуйста подождите, идёт обработка заказа..."
                 >
                     <>
-                        <p className={`text text_type_digits-large pt-30`}>{orderNumber(order)}</p>
+                        <p className={`text text_type_digits-large pt-30`}>{
+                            // @ts-ignore
+                            orderNumber(order)
+                        }</p>
                         <p className={`text text_type_main-medium pt-8`}>идентификатор заказа</p>
                         <div className={`${OrderDetailsStyles.done} pt-15`}>
                             <img src={done} alt="done" />

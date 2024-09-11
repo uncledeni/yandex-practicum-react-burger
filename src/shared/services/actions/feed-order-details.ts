@@ -15,6 +15,8 @@ export function getFeedOrderDetails(_id: string | undefined): AppThunk {
         });
         getOrder(_id).then(res => {
             try {
+                console.log(res)
+                // @ts-ignore
                 dispatch({
                     type: GET_FEED_ORDER_DETAILS_SUCCESS,
                     data: res

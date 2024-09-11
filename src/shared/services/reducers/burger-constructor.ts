@@ -11,7 +11,7 @@ interface IInitialState {
     fillings: IFilling[]
 }
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
     bun: null,
     fillings: []
 }
@@ -36,7 +36,6 @@ export const burgerConstructorReducer = (state = initialState, action: AppAction
             }
         }
         case DELETE_INGREDIENT_BURGER_CONSTRUCTOR: {
-            console.log(...state.fillings)
             return {
                 ...state,
                 fillings:

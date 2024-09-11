@@ -19,6 +19,7 @@ export const IngredientDetails = () => {
 
     useEffect(() => {
         if (ingredients.length !== 0) {
+            // @ts-ignore
             getIngredientDetails(ingredients.find((ingredient: IIngredient) => ingredient._id === id))
         }
     }, [dispatch, ingredients, id, getIngredientDetails])

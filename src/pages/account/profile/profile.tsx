@@ -49,6 +49,7 @@ export const ProfilePage = () => {
                                 onIconClick={onIconClick}
                                 errorText={'Ошибка'}
                                 size={'default'}
+                                data-testid='name'
                             />
                             <EmailInput
                                 onChange={handleChange}

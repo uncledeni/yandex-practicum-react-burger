@@ -57,13 +57,13 @@ export const loginThunk = (data: ILoginData): AppThunk => {
 export const checkUserAuth = (): AppThunk => {
     return (dispatch) => {
         if (localStorage.getItem('accessToken')) {
-            dispatch(getUser())
-                .catch(() => {
-                    localStorage.removeItem('accessToken');
-                    localStorage.removeItem('refreshToken');
-                    dispatch(setUser('', ''));
-                })
-                .finally(() => dispatch(setAuthChecked(true)));
+            // @ts-ignore
+                dispatch(getUser()).catch(() => {
+                        localStorage.removeItem('accessToken');
+                        localStorage.removeItem('refreshToken');
+                        dispatch(setUser('', ''));
+                    })
+                    .finally(() => dispatch(setAuthChecked(true)));
         } else {
             dispatch(setAuthChecked(true));
         }

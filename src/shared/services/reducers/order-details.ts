@@ -7,7 +7,7 @@ import {
     CLEAR_ORDER_DETAILS
 } from "../actions/order-details";
 
-const initialState = {
+export const initialState = {
     order: {} as IOrderAction,
     orderRequest: false,
     orderFailed: false,
@@ -24,7 +24,6 @@ export const orderDetailsReducer = ( state = initialState, action: AppActions) =
             };
         }
         case GET_ORDER_DETAILS_SUCCESS: {
-            console.log(action)
             return {
                 ...state,
                 order: action,

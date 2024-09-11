@@ -28,7 +28,6 @@
     top: 360px;
     padding: 16px 100px 0px;
     gap: 32px;
-    opacity: 0px;
 
 }
 
@@ -41,7 +40,6 @@
     justify-content: space-evenly;
     align-items: center;
     gap: 20px;
-    opacity: 0px;
     padding-top: 20px;
 }
 

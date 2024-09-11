@@ -7,7 +7,7 @@ import {
     GET_FEED_ORDER_DETAILS_FAILED
 } from '../actions/feed-order-details';
 
-const initialState = {
+export const initialState = {
     details: {
         _id: '',
         number: 0,
@@ -43,7 +43,6 @@ export const feedOrderDetailsReducer = (state = initialState, action: AppActions
             };
         }
         case GET_FEED_ORDER_DETAILS_SUCCESS: {
-            console.log(action)
             return {
                 ...state,
                 details: action.data.orders[0],
